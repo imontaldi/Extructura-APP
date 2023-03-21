@@ -1,4 +1,4 @@
-package com.example.extructura_app
+package com.extructura.app
 
 import io.flutter.embedding.android.FlutterActivity
 

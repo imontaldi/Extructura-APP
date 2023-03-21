@@ -2,7 +2,7 @@
 
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:dio_http_cache/dio_http_cache.dart';
+import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'http_method_enum.dart';
 import 'network_request.dart';
 import 'network_response.dart';
@@ -61,7 +61,17 @@ class Network {
   static final Network _singleton = Network._internal();
   static const maxConnectionAttempts = 1;
   String? token;
-  final _dioCacheManager = DioCacheManager(CacheConfig());
+  // final _dioCacheManager = DioCacheManager(CacheConfig());
+  final _options = CacheOptions(
+    store: MemCacheStore(),
+    policy: CachePolicy.request,
+    hitCacheOnErrorExcept: [401, 403],
+    maxStale: const Duration(minutes: 5),
+    priority: CachePriority.normal,
+    cipher: null,
+    keyBuilder: CacheOptions.defaultCacheKeyBuilder,
+    allowPostMethod: false,
+  );
 
   factory Network() {
     return _singleton;
@@ -129,17 +139,17 @@ class Network {
                 : 1);
         // ignore: dead_code
         attempt++) {
-      Options options = request.enableCache
-          ? buildCacheOptions(Duration(minutes: request.cacheDurationInMinutes),
-              forceRefresh: request.forceRefresh)
-          : Options();
-      //_options.headers["authorization"] = 'Bearer $token';
-      options.headers = {};
+      // Options options = request.enableCache
+      //     ? buildCacheOptions(Duration(minutes: request.cacheDurationInMinutes),
+      //         forceRefresh: request.forceRefresh)
+      //     : Options();
+      // //_options.headers["authorization"] = 'Bearer $token';
+      Options options = Options();
       // options.headers?["authorization"] = 'Bearer $token';
       Dio dio = Dio();
 
       if (request.enableCache) {
-        dio.interceptors.add(_dioCacheManager.interceptor);
+        dio.interceptors.add(DioCacheInterceptor(options: _options));
       }
 
       Response result = await dio
