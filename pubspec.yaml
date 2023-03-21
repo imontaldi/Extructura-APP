@@ -52,7 +52,6 @@ flutter:
     - i18n/es.json
     - i18n/en.json
     - images/
-    - lib/settings/app_settings.json
   fonts:
     - family: Sans 
       fonts:

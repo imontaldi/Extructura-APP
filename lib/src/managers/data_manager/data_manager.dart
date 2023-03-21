@@ -1,7 +1,7 @@
 import 'dart:io';
+import 'package:extructura_app/src/data_access/dummy_data_access.dart';
+import 'package:extructura_app/src/data_access/remote_data_access.dart';
 import 'package:flutter/material.dart';
-import 'package:extructura_app/src/data_access/dummy_data_access/dummy_data_access.dart';
-import 'package:extructura_app/src/data_access/remote_data_access/remote_data_access.dart';
 import 'package:extructura_app/src/enums/culture.dart';
 import 'package:extructura_app/src/interfaces/i_data_access.dart';
 import 'package:extructura_app/utils/extensions.dart';
