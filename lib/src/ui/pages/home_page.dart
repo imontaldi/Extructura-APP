@@ -27,6 +27,12 @@ class HomePageState extends StateMVC<HomePage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
 
   @override
+  void initState() {
+    _con.initPage(arguments: widget.args);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -57,18 +63,6 @@ class HomePageState extends StateMVC<HomePage> {
                         color: KGrey,
                       ),
                     ),
-                    // const SizedBox(height: 15),
-                    // FutureBuilder(
-                    //   future: _con.reload(),
-                    //   builder: (BuildContext context,
-                    //       AsyncSnapshot<dynamic> snapshot) {
-                    //     if (snapshot.connectionState == ConnectionState.done) {
-                    //       return snapshot.data;
-                    //     } else {
-                    //       return const CircularProgressIndicator();
-                    //     }
-                    //   },
-                    // ),
                     const SizedBox(
                       height: 15,
                     ),

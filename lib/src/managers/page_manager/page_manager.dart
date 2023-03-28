@@ -1,6 +1,7 @@
+import 'package:extructura_app/src/ui/pages/review_data_page.dart';
 import 'package:flutter/material.dart';
 import 'package:extructura_app/src/enums/page_names.dart';
-import 'package:extructura_app/src/managers/data_manager/data_manager.dart';
+import 'package:extructura_app/src/managers/data_manager.dart';
 import 'package:extructura_app/src/providers/app_provider.dart';
 import 'package:extructura_app/src/ui/pages/home_page.dart';
 import 'package:extructura_app/src/ui/pages/pdf_view_page.dart';
@@ -51,6 +52,9 @@ class PageManager with PageManagerPopUp {
         return MaterialPageRoute(builder: (context) => HomePage(arguments));
       case PageNames.pdfView:
         return MaterialPageRoute(builder: (context) => PdfViewPage(arguments));
+      case PageNames.reviewData:
+        return MaterialPageRoute(
+            builder: (context) => ReviewDataPage(arguments));
 
       default:
     }
@@ -80,13 +84,11 @@ class PageManager with PageManagerPopUp {
       navigatorKey.currentState!
           .popAndPushNamed(specificPage.toString(), arguments: args);
     } else {
-      //Navigator.pop(navigatorKey.currentContext, args);
       Navigator.pop(navigatorKey.currentState!.overlay!.context, args);
     }
   }
 
   goRootPage() {
-    //navigatorKey.currentState!.popUntil(ModalRoute.withName('/'));
     navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
 
@@ -96,11 +98,6 @@ class PageManager with PageManagerPopUp {
     //goLoginPage();
   }
 
-  /* goLoginPage({PageArgs? args, Function(PageArgs? args)? actionBack}) {
-    _goPage(PageNames.login.toString(),
-        actionBack: actionBack, makeRootPage: true);
-  } */
-
   goHomePage({PageArgs? args, Function(PageArgs? args)? actionBack}) {
     _goPage(PageNames.home.toString(),
         actionBack: actionBack, makeRootPage: true);
@@ -108,6 +105,10 @@ class PageManager with PageManagerPopUp {
 
   goPdfViewPage({PageArgs? args, Function(PageArgs? args)? actionBack}) {
     _goPage(PageNames.pdfView.toString(), actionBack: actionBack);
+  }
+
+  goReviewDataPage({PageArgs? args, Function(PageArgs? args)? actionBack}) {
+    _goPage(PageNames.reviewData.toString(), actionBack: actionBack);
   }
 
   goTestPage({PageArgs? args, Function(PageArgs? args)? actionBack}) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:extructura_app/src/enums/culture.dart';
-import 'package:extructura_app/src/managers/data_manager/data_manager.dart';
+import 'package:extructura_app/src/managers/data_manager.dart';
 import 'package:extructura_app/src/managers/page_manager/page_manager.dart';
 import 'package:extructura_app/src/providers/app_provider.dart';
 import 'package:extructura_app/src/support/futuristic.dart';

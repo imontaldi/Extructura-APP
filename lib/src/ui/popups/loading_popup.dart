@@ -9,6 +9,7 @@ class LoadingPopup {
   final Future onLoading;
   Function? onResult;
   Function? onError;
+  String? loadingText;
 
   LoadingPopup({
     required this.context,
@@ -16,6 +17,7 @@ class LoadingPopup {
     this.onResult,
     this.onError,
     this.backgroundColor = const Color(0x80707070),
+    this.loadingText,
   });
 
   final double radius = 20;
@@ -57,10 +59,13 @@ class LoadingPopup {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          loadingComponent(true,
-              color: Colors.white,
-              size: 50,
-              backgroundColor: Colors.transparent),
+          loadingComponent(
+            true,
+            color: Colors.white,
+            size: 50,
+            backgroundColor: Colors.transparent,
+            loadingText: loadingText,
+          ),
         ],
       ),
     );

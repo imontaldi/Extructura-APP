@@ -1,5 +1,6 @@
 // ignore_for_file: unnecessary_type_check, unnecessary_null_comparison
 
+import 'package:extructura_app/values/k_values.dart';
 import 'package:flutter/material.dart';
 import 'package:extructura_app/values/k_colors.dart';
 
@@ -92,16 +93,41 @@ Widget loadingComponent(bool isVisible,
     {Color color = KPrimary,
     Color backgroundColor = Colors.white,
     double size = 50,
-    EdgeInsetsGeometry? padding}) {
+    EdgeInsetsGeometry? padding,
+    String? loadingText}) {
   return Visibility(
     visible: isVisible,
     child: Container(
       padding: padding ?? const EdgeInsets.all(0),
       color: backgroundColor,
       alignment: Alignment.center,
-      child: Loading(
-        color: color,
-        size: size,
+      child: Column(
+        children: [
+          Loading(
+            color: color,
+            size: size,
+          ),
+          Visibility(
+            visible: loadingText != null,
+            child: Column(
+              children: [
+                const SizedBox(height: 30),
+                Material(
+                  color: Colors.transparent,
+                  child: Text(
+                    loadingText ?? "",
+                    style: TextStyle(
+                      color: KWhite,
+                      fontSize: KFontSizeXLarge45,
+                      fontWeight: FontWeight.w700,
+                      background: Paint()..color = Colors.transparent,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     ),
   );

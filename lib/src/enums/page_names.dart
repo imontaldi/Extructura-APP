@@ -4,5 +4,6 @@ enum PageNames {
   //Common
   home,
   pdfView,
+  reviewData,
   test,
 }

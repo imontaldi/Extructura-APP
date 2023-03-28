@@ -1,13 +1,14 @@
 import 'dart:io';
 import 'package:extructura_app/src/data_access/dummy_data_access.dart';
 import 'package:extructura_app/src/data_access/remote_data_access.dart';
+import 'package:extructura_app/src/models/invoice_model.dart';
 import 'package:flutter/material.dart';
 import 'package:extructura_app/src/enums/culture.dart';
 import 'package:extructura_app/src/interfaces/i_data_access.dart';
 import 'package:extructura_app/utils/extensions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../models/image_model.dart';
+import '../models/image_model.dart';
 
 class DataManager {
   static final DataManager _instance = DataManager._constructor();
@@ -74,12 +75,23 @@ class DataManager {
   }
 
   // Requests
-
-  Future<bool?> getItems() async {
-    return await dataAccess.getItems();
+  Future<InvoiceModel?> getInvoice() async {
+    return await dataAccess.getInvoice();
   }
 
   Future<bool?> postSendImage(ImageModel image) async {
     return await dataAccess.postSendImage(image);
+  }
+
+  Future<bool?> postRequestHeaderProcessing() async {
+    return await dataAccess.postRequestHeaderProcessing();
+  }
+
+  Future<bool?> postRequestItemsProcessing() async {
+    return await dataAccess.postRequestItemsProcessing();
+  }
+
+  Future<bool?> postRequestFooterProcessing() async {
+    return await dataAccess.postRequestFooterProcessing();
   }
 }
