@@ -36,6 +36,7 @@ class HomePageState extends StateMVC<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: KBackground,
         key: _key,
         drawer: MenuComponent(
           closeMenu: () => {_key.currentState!.openEndDrawer()},

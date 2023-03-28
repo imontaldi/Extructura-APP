@@ -46,3 +46,5 @@ const Color KBlue = Color(0xFF3E73D6);
 
 const Color KDisableButton = Color(0xFFF5BFC0);
 const Color KDisableText = Color(0xFFBABABA);
+const Color KBackground = Color(0xFFF2F3F6);
+const Color KTransparent = Colors.transparent;
