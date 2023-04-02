@@ -7,6 +7,8 @@ class CFooterModel implements IFooterModel {
   String? otherTaxesAmount;
   @override
   String? total;
+  @override
+  String? exchangeRate;
   String? subtotal;
 
   CFooterModel({
@@ -14,6 +16,7 @@ class CFooterModel implements IFooterModel {
     this.otherTaxesAmount,
     this.total,
     this.subtotal,
+    this.exchangeRate,
   });
 
   CFooterModel.fromJson(Map<String, dynamic> json) {
@@ -21,5 +24,6 @@ class CFooterModel implements IFooterModel {
     otherTaxesAmount = json["other_taxes_ammout"];
     total = json["total"];
     subtotal = json["subtotal"];
+    exchangeRate = json["exchange_rate"];
   }
 }

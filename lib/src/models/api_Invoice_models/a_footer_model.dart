@@ -7,6 +7,8 @@ class AFooterModel implements IFooterModel {
   String? otherTaxesAmount;
   @override
   String? total;
+  @override
+  String? exchangeRate;
   String? netAmountTaxed;
   String? vat27;
   String? vat21;
@@ -15,18 +17,18 @@ class AFooterModel implements IFooterModel {
   String? vat2_5;
   String? vat0;
 
-  AFooterModel({
-    this.currency,
-    this.otherTaxesAmount,
-    this.total,
-    this.netAmountTaxed,
-    this.vat27,
-    this.vat21,
-    this.vat10_5,
-    this.vat5,
-    this.vat2_5,
-    this.vat0,
-  });
+  AFooterModel(
+      {this.currency,
+      this.otherTaxesAmount,
+      this.total,
+      this.netAmountTaxed,
+      this.vat27,
+      this.vat21,
+      this.vat10_5,
+      this.vat5,
+      this.vat2_5,
+      this.vat0,
+      this.exchangeRate});
 
   AFooterModel.fromJson(Map<String, dynamic> json) {
     currency = json["currency"];
@@ -39,5 +41,6 @@ class AFooterModel implements IFooterModel {
     vat5 = json["vat_5"];
     vat2_5 = json["vat_2_5"];
     vat0 = json["vat_0"];
+    exchangeRate = json["exchange_rate"];
   }
 }

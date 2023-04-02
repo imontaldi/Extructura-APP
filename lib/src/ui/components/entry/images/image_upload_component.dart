@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -153,14 +154,34 @@ class ImageUploadComponentState extends State<ImageUploadComponent> {
   }
 
   Future<bool> checkStoragePermissions() async {
-    Map<permission_handler.Permission, permission_handler.PermissionStatus>
+    if (Platform.isAndroid) {
+      final androidInfo = await DeviceInfoPlugin().androidInfo;
+      Map<permission_handler.Permission, permission_handler.PermissionStatus>
+          statuses = {};
+      if ((androidInfo.version.sdkInt ?? 0) <= 32) {
         statuses = await [
-      permission_handler.Permission.storage,
-      permission_handler.Permission.photos,
-    ].request();
+          permission_handler.Permission.storage,
+        ].request();
+        return statuses[permission_handler.Permission.storage]!.isGranted ==
+            true;
+      } else {
+        statuses = await [
+          permission_handler.Permission.photos,
+        ].request();
+        return statuses[permission_handler.Permission.photos]!.isGranted ==
+            true;
+      }
+    } else {
+      Map<permission_handler.Permission, permission_handler.PermissionStatus>
+          statuses = await [
+        permission_handler.Permission.storage,
+        permission_handler.Permission.photos,
+      ].request();
 
-    return statuses[permission_handler.Permission.storage]!.isGranted == true &&
-        statuses[permission_handler.Permission.photos]!.isGranted == true;
+      return statuses[permission_handler.Permission.storage]!.isGranted ==
+              true &&
+          statuses[permission_handler.Permission.photos]!.isGranted == true;
+    }
   }
 
   // Fin Gallery
@@ -178,20 +199,22 @@ class ImageUploadComponentState extends State<ImageUploadComponent> {
       debugPrint("Document selection cancelled");
       file = null;
     }
-    // ignore: use_build_context_synchronously
-    String? navigationResult = await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => PdfViewPage(PageArgs(pdfFileToShow: file)),
-      ),
-    );
-    if (navigationResult != null) {
-      if (widget.editImageAfterPick) {
-        File? temp = await cropImage(navigationResult);
-        if (temp != null) {
-          navigationResult = temp.path;
+    if (file != null) {
+      // ignore: use_build_context_synchronously
+      String? navigationResult = await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => PdfViewPage(PageArgs(pdfFileToShow: file)),
+        ),
+      );
+      if (navigationResult != null) {
+        if (widget.editImageAfterPick) {
+          File? temp = await cropImage(navigationResult);
+          if (temp != null) {
+            navigationResult = temp.path;
+          }
         }
+        showFilePicked(navigationResult);
       }
-      showFilePicked(navigationResult);
     }
   }
 
@@ -258,22 +281,20 @@ class ImageUploadComponentState extends State<ImageUploadComponent> {
         widget.customCropperOptions ?? CustomCropperOptions();
     customOptions.aspectRatio =
         CropAspectRatio(ratioX: widget.cropRatio, ratioY: 1);
-    // ignore: prefer_conditional_assignment
-    if (customOptions.uiSettings == null) {
-      customOptions.uiSettings = [
-        AndroidUiSettings(
-          statusBarColor: KPrimary,
-          toolbarTitle: "",
-          toolbarColor: KPrimary,
-          //lockAspectRatio: true,
-          toolbarWidgetColor: KWhite,
-          initAspectRatio: CropAspectRatioPreset.ratio16x9,
-        ),
-        IOSUiSettings(
-          title: "",
-        ),
-      ];
-    }
+
+    customOptions.uiSettings ??= [
+      AndroidUiSettings(
+        statusBarColor: KPrimary,
+        toolbarTitle: "",
+        toolbarColor: KPrimary,
+        //lockAspectRatio: true,
+        toolbarWidgetColor: KWhite,
+        initAspectRatio: CropAspectRatioPreset.ratio16x9,
+      ),
+      IOSUiSettings(
+        title: "",
+      ),
+    ];
     if (path != null) {
       try {
         CroppedFile? temp = await ImageCropper().cropImage(

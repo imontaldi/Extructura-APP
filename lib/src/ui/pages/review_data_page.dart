@@ -1,4 +1,5 @@
 import 'package:extructura_app/src/ui/page_controllers/review_data_page_controller.dart';
+import 'package:extructura_app/values/k_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:extructura_app/utils/page_args.dart';
@@ -26,6 +27,11 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: KBackground,
+        body: Container(),
+      ),
+    );
   }
 }

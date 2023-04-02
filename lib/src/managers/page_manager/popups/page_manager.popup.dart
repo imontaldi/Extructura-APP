@@ -116,4 +116,41 @@ mixin PageManagerPopUp {
       isCancellable: isCancellable ?? false,
     ).show();
   }
+
+  Future<void> openInvoiceProcessedSuccessfullyPopup({
+    String? imageURL,
+    double? imageHeight = 0,
+    double? imageWidth = 0,
+    String? title = "",
+    TextStyle? titleStyle,
+    String? labelButtonAccept = "",
+    String? labelButtonCancel = "",
+    Function? onAccept,
+    Function? onCancel,
+    bool? isCancellable = true,
+    String? subtitle = "",
+    TextStyle? subtitleStyle,
+  }) async {
+    BuildContext context = PageManager().navigatorKey.currentContext!;
+    return await InformationAlertPopup(
+      context: context,
+      image: imageURL != null
+          ? Image.asset(
+              imageURL,
+              height: imageHeight,
+              width: imageWidth,
+              color: KPrimary,
+            )
+          : null,
+      title: title,
+      titleStyle: titleStyle,
+      subtitle1: subtitle,
+      subtitle1Style: subtitleStyle,
+      labelButtonAccept: labelButtonAccept,
+      labelButtonCancel: labelButtonCancel,
+      onAccept: onAccept,
+      onCancel: onCancel,
+      isCancellable: isCancellable ?? false,
+    ).show();
+  }
 }

@@ -78,6 +78,8 @@ class HomePageState extends StateMVC<HomePage> {
                           _con.image = null;
                         }),
                         file: _con.image,
+                        editImageAfterPick: true,
+                        cropRatio: 210 / 297,
                       ),
                     ),
                     const SizedBox(
@@ -85,9 +87,9 @@ class HomePageState extends StateMVC<HomePage> {
                     ),
                     RoundedButton(
                       onPressed: () async {
-                        await _con.onCropImage();
+                        await _con.onAnalizeInvoice();
                       },
-                      text: "Crop Image",
+                      text: "Analizar",
                       width: double.infinity,
                       fontSize: KFontSizeLarge40,
                       fontWeight: FontWeight.bold,

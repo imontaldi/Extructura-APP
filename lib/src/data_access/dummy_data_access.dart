@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:extructura_app/src/exceptions/exception_launcher.dart';
 import 'package:extructura_app/src/interfaces/i_data_access.dart';
+import 'package:extructura_app/src/models/api_Invoice_models/invoice_model.dart';
 import 'package:extructura_app/src/models/image_model.dart';
-import 'package:extructura_app/src/models/invoice_model.dart';
 
 class DummyDataAccess implements IDataAccess {
   // Add this function in every dummy function for exception testing

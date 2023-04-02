@@ -1,11 +1,11 @@
 import 'package:extructura_app/src/enums/invoice_type_enum.dart';
 import 'package:extructura_app/src/interfaces/i_footer_model.dart';
 import 'package:extructura_app/src/interfaces/i_item_model.dart';
-import 'package:extructura_app/src/models/a_footer_model.dart';
-import 'package:extructura_app/src/models/a_item_model.dart';
-import 'package:extructura_app/src/models/c_footer_model.dart';
-import 'package:extructura_app/src/models/c_item_model.dart';
-import 'package:extructura_app/src/models/header_model.dart';
+import 'package:extructura_app/src/models/api_Invoice_models/a_footer_model.dart';
+import 'package:extructura_app/src/models/api_Invoice_models/a_item_model.dart';
+import 'package:extructura_app/src/models/api_Invoice_models/c_footer_model.dart';
+import 'package:extructura_app/src/models/api_Invoice_models/c_item_model.dart';
+import 'package:extructura_app/src/models/api_Invoice_models/header_model.dart';
 
 class InvoiceModel {
   InvoiceTypeEnum? type;
