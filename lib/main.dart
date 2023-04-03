@@ -34,7 +34,6 @@ class MyHomePageState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    //_initApp(context);
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: KPrimary));
     _locale = Locale(getCode(DataManager().selectedCulture), '');
@@ -64,7 +63,6 @@ class MyHomePageState extends State<MyApp> {
           trackBorderColor: MaterialStateProperty.all(Colors.grey),
           trackVisibility: MaterialStateProperty.all(true),
         ),
-        //primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: _home(),
@@ -106,7 +104,6 @@ class MyHomePageState extends State<MyApp> {
   }
 
   _initApp() async {
-    //AppSettings.init(context);
     await DataManager().init();
     await AppProvider().init();
   }
