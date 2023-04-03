@@ -64,7 +64,6 @@ class MyHomePageState extends State<MyApp> {
           trackBorderColor: MaterialStateProperty.all(Colors.grey),
           trackVisibility: MaterialStateProperty.all(true),
         ),
-        //primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: _home(),
