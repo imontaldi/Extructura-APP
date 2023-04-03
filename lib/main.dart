@@ -55,7 +55,7 @@ class MyHomePageState extends State<MyApp> {
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      title: '',
+      title: 'Extructura',
       theme: ThemeData(
         fontFamily: 'Sans',
         scrollbarTheme: ScrollbarThemeData(
@@ -88,9 +88,6 @@ class MyHomePageState extends State<MyApp> {
 
   _initPage() {
     return const HomePage(null);
-    /* return Dashoard o login? */ /* DataManager().hasSession()
-        ? InitPage(PageArgs(fromPage: PageNames.main))
-        : const LoginPage(); */
   }
 
   changeLanguage(Locale locale) {
