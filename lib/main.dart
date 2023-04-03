@@ -55,7 +55,7 @@ class MyHomePageState extends State<MyApp> {
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      title: '',
+      title: 'Extructura',
       theme: ThemeData(
         fontFamily: 'Sans',
         scrollbarTheme: ScrollbarThemeData(
