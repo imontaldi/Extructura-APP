@@ -88,9 +88,6 @@ class MyHomePageState extends State<MyApp> {
 
   _initPage() {
     return const HomePage(null);
-    /* return Dashoard o login? */ /* DataManager().hasSession()
-        ? InitPage(PageArgs(fromPage: PageNames.main))
-        : const LoginPage(); */
   }
 
   changeLanguage(Locale locale) {
