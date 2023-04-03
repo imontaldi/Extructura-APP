@@ -2,11 +2,11 @@
 
 ## Descripción de los cambios
 
-<!-- Add the decription -->
+<!-- Añadir la descripción -->
 
-## 📷 Screenshots / 📹 Videos (Si fuera necesario)
+## 📷 Screenshots / 📹 Videos
 
-<!-- Upload screenshots or videos -->
+<!-- Subir screenshots o videos si fuera necesario, con captura de el estado anterior y el nuevo luego de los cambios  -->
 
 ## Checklist
 Como desarrollador, me comprometo haber realizado estos pasos antes de solicitar a otro colaborador una code review:
