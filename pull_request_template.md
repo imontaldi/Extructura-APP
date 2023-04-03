@@ -8,9 +8,9 @@
 No se considera necesario una captura o video <!-- Borrar línea si sí se desea usa esta sección -->
 
 <!-- Borrar este cuerpo en caso de no usar esta sección -->
-###Actual
+  ### Actual
   <!-- Captura o video del estado anterior-->
-###Luego de los cambios realizados
+  ### Luego de los cambios realizados
   <!-- Captura o video del estado luego de cambios-->
 <!-------------------------------------------------------->
 
