@@ -39,6 +39,7 @@ dependencies:
   permission_handler: ^10.0.0
   provider: ^6.0.2
   shared_preferences: ^2.0.13
+  flutter_native_splash: any
   
 
 dev_dependencies:
@@ -56,6 +57,11 @@ flutter_icons:
   # iOS
   ios: true
 
+flutter_native_splash:
+  color: "#0D658B"
+  image: "images/app_icon/icon_transparent_background.png"
+  android_12:
+    image: images/app_icon/icon_transparent_background.png
 
 flutter:
   uses-material-design: true
@@ -74,3 +80,4 @@ flutter:
         - asset: fonts/DMSans-Medium.ttf
           weight: 500
         - asset: fonts/DMSans-Regular.ttf
+  

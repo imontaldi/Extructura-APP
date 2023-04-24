@@ -40,7 +40,8 @@ class HomePageController extends ControllerMVC implements IViewController {
   Future<void> onAnalizeInvoice() async {
     await LoadingPopup(
       context: PageManager().navigatorKey.currentContext!,
-      onLoading: DataManager().postSendImage(ImageModel(path: image!.path)),
+      onLoading:
+          DataManager().postSendImage(ImageModel(path: image!.path), true),
       loadingText: "Enviando imágen...",
       onResult: (data) => {},
       onError: (error) => onErrorFunction(
@@ -48,46 +49,46 @@ class HomePageController extends ControllerMVC implements IViewController {
         onRetry: () {},
       ),
     ).show();
-    // await LoadingPopup(
-    //   context: PageManager().navigatorKey.currentContext!,
-    //   onLoading: DataManager().postRequestHeaderProcessing(),
-    //   loadingText: "Procesando encabezado de factura...",
-    //   onResult: (data) => {},
-    //   onError: (error) => onErrorFunction(
-    //     error: error,
-    //     onRetry: () {},
-    //   ),
-    // ).show();
-    // await LoadingPopup(
-    //   context: PageManager().navigatorKey.currentContext!,
-    //   onLoading: DataManager().postRequestItemsProcessing(),
-    //   loadingText: "Procesando productos...",
-    //   onResult: (data) => {},
-    //   onError: (error) => onErrorFunction(
-    //     error: error,
-    //     onRetry: () {},
-    //   ),
-    // ).show();
-    // await LoadingPopup(
-    //   context: PageManager().navigatorKey.currentContext!,
-    //   onLoading: DataManager().postRequestFooterProcessing(),
-    //   loadingText: "Procesando pie de factura...",
-    //   onResult: (data) => {},
-    //   onError: (error) => onErrorFunction(
-    //     error: error,
-    //     onRetry: () {},
-    //   ),
-    // ).show();
-    // await LoadingPopup(
-    //   context: PageManager().navigatorKey.currentContext!,
-    //   onLoading: DataManager().getInvoice(),
-    //   loadingText: "Obteniendo datos de factura...",
-    //   onResult: (data) => {onGetInvoiceResult(data)},
-    //   onError: (error) => onErrorFunction(
-    //     error: error,
-    //     onRetry: () {},
-    //   ),
-    // ).show();
+    await LoadingPopup(
+      context: PageManager().navigatorKey.currentContext!,
+      onLoading: DataManager().postRequestHeaderProcessing(),
+      loadingText: "Procesando encabezado de factura...",
+      onResult: (data) => {},
+      onError: (error) => onErrorFunction(
+        error: error,
+        onRetry: () {},
+      ),
+    ).show();
+    await LoadingPopup(
+      context: PageManager().navigatorKey.currentContext!,
+      onLoading: DataManager().postRequestItemsProcessing(),
+      loadingText: "Procesando productos...",
+      onResult: (data) => {},
+      onError: (error) => onErrorFunction(
+        error: error,
+        onRetry: () {},
+      ),
+    ).show();
+    await LoadingPopup(
+      context: PageManager().navigatorKey.currentContext!,
+      onLoading: DataManager().postRequestFooterProcessing(),
+      loadingText: "Procesando pie de factura...",
+      onResult: (data) => {},
+      onError: (error) => onErrorFunction(
+        error: error,
+        onRetry: () {},
+      ),
+    ).show();
+    await LoadingPopup(
+      context: PageManager().navigatorKey.currentContext!,
+      onLoading: DataManager().getInvoice(),
+      loadingText: "Obteniendo datos de factura...",
+      onResult: (data) => {onGetInvoiceResult(data)},
+      onError: (error) => onErrorFunction(
+        error: error,
+        onRetry: () {},
+      ),
+    ).show();
   }
 
   onGetInvoiceResult(InvoiceModel? invoice) async {

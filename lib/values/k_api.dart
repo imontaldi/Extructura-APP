@@ -1,4 +1,5 @@
-const kApiUrl = "http://localhost:8000/";
+// const kApiUrl = "http://localhost:8000/"; // Celu
+const kApiUrl = "http://10.0.2.2:8000/"; // Bluestacks
 
 const kApiHeader = "${kApiUrl}header";
 const kApiItems = "${kApiUrl}items";

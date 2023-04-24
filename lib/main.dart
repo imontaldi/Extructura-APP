@@ -75,14 +75,16 @@ class MyHomePageState extends State<MyApp> {
     return Futuristic<void>(
       autoStart: true,
       futureBuilder: () => _initApp(),
-      busyBuilder: (context) => SizedBox(
-        height: MediaQuery.of(context).size.height * 0.37,
-        child: loadingComponent(
-          true,
-          backgroundColor: Colors.white,
+      busyBuilder: (context) => Container(
+        height: MediaQuery.of(context).size.height,
+        color: KWhite,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [loadingComponent(true, backgroundColor: Colors.white)],
         ),
       ),
       dataBuilder: (context, data) => _initPage(),
+      errorBuilder: (context, error, retry) => _initPage(),
     );
   }
 
