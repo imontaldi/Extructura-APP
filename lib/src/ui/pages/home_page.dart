@@ -1,7 +1,9 @@
+import 'dart:io';
+
+import 'package:extructura_app/src/enums/image_type_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:extructura_app/src/ui/components/appbar/custom_navigation_bar_component.dart';
-import 'package:extructura_app/src/ui/components/buttons/rounded_button_component.dart';
 import 'package:extructura_app/src/ui/components/entry/images/image_upload_component.dart';
 import 'package:extructura_app/src/ui/components/menu/menu_component.dart';
 import 'package:extructura_app/src/ui/page_controllers/home_page_controller.dart';
@@ -42,33 +44,22 @@ class HomePageState extends StateMVC<HomePage> {
           closeMenu: () => {_key.currentState!.openEndDrawer()},
         ),
         appBar: simpleNavigationBar(
-          title: "Página Principal",
+          title: "Carga de imágen",
           hideInfoButton: true,
           hideNotificationButton: true,
           onMenu: () => {_key.currentState!.openDrawer()},
         ),
-        body: CustomScrollView(
-          physics: const ClampingScrollPhysics(),
-          slivers: [
-            SliverFillRemaining(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _con.title,
-                      style: const TextStyle(
-                        fontSize: KFontSizeXXLarge50,
-                        fontWeight: FontWeight.w700,
-                        color: KGrey,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Expanded(
-                      child: ImageUploadComponent(
+        body: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ImageUploadComponent(
                         getFile: (file) {
                           setState(() {
                             _con.image = file;
@@ -80,26 +71,89 @@ class HomePageState extends StateMVC<HomePage> {
                         file: _con.image,
                         editImageAfterPick: true,
                         cropRatio: 210 / 297,
+                        height: (MediaQuery.of(context).size.width - 40) *
+                            (297 / 210),
+                        width: MediaQuery.of(context).size.width - 40,
+                        imageTypePicked: (imageType) {
+                          _con.setSelectedRadio(imageType.value);
+                        },
                       ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    RoundedButton(
-                      onPressed: () async {
-                        await _con.onAnalizeInvoice();
-                      },
-                      text: "Analizar",
-                      width: double.infinity,
-                      fontSize: KFontSizeLarge40,
-                      fontWeight: FontWeight.bold,
-                      isEnabled: _con.image != null,
-                    ),
-                  ],
+                      Visibility(
+                        visible: _con.image != null,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 20),
+                            const Text(
+                              "Tipo de imágen subida",
+                              style: TextStyle(
+                                fontSize: KFontSizeLarge40,
+                                fontWeight: FontWeight.w500,
+                                color: KGrey,
+                              ),
+                            ),
+                            ButtonBar(
+                              children: getImageTypeOptionsByPlatform(),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
+            footer(),
           ],
+        ),
+      ),
+    );
+  }
+
+  List<Widget> getImageTypeOptionsByPlatform() {
+    List<Widget> outList = [];
+    outList.add(radioOption(ImageTypeEnum.values[0]));
+    if (!Platform.isWindows) {
+      outList.add(radioOption(ImageTypeEnum.values[1]));
+    }
+    if (Platform.isWindows) {
+      outList.add(radioOption(ImageTypeEnum.values[2]));
+    }
+    return outList;
+  }
+
+  Widget radioOption(ImageTypeEnum imageType) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Radio(
+          activeColor: KPrimary,
+          value: imageType.value,
+          groupValue: _con.imageType?.value,
+          onChanged: (value) => _con.setSelectedRadio(value),
+        ),
+        Text(imageType.name),
+      ],
+    );
+  }
+
+  Widget footer() {
+    return InkWell(
+      onTap: () async {
+        _con.image != null ? await _con.onAnalizeInvoice() : null;
+      },
+      child: Container(
+        height: 50,
+        color: _con.image != null ? KPrimary : KGrey_L2,
+        child: Center(
+          child: Text(
+            "Analizar factura",
+            style: TextStyle(
+              color: _con.image != null ? KWhite : KWhite,
+              fontSize: KFontSizeLarge40,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ),
     );

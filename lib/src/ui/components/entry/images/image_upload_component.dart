@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:extructura_app/src/enums/image_type_enum.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,7 @@ class ImageUploadComponent extends StatefulWidget {
   CustomCropperOptions? customCropperOptions;
   bool enableGallery = true;
   bool enableCamera = true;
+  Function(ImageTypeEnum)? imageTypePicked;
 
   ImageUploadComponent({
     Key? key,
@@ -50,6 +52,7 @@ class ImageUploadComponent extends StatefulWidget {
     this.customCropperOptions,
     this.enableCamera = true,
     this.enableGallery = true,
+    this.imageTypePicked,
   }) : super(key: key);
 
   @override
@@ -143,7 +146,7 @@ class ImageUploadComponentState extends State<ImageUploadComponent> {
               file = temp;
             }
           }
-          showFilePicked(file.path);
+          showFilePicked(file.path, ImageTypeEnum.pdf);
         }
       } catch (ex) {
         debugPrint(ex.toString());
@@ -207,13 +210,7 @@ class ImageUploadComponentState extends State<ImageUploadComponent> {
         ),
       );
       if (navigationResult != null) {
-        if (widget.editImageAfterPick) {
-          File? temp = await cropImage(navigationResult);
-          if (temp != null) {
-            navigationResult = temp.path;
-          }
-        }
-        showFilePicked(navigationResult);
+        showFilePicked(navigationResult, ImageTypeEnum.pdf);
       }
     }
   }
@@ -263,16 +260,17 @@ class ImageUploadComponentState extends State<ImageUploadComponent> {
           navigationResult = temp.path;
         }
       }
-      showFilePicked(navigationResult);
+      showFilePicked(navigationResult, ImageTypeEnum.photo);
     }
   }
 
-  showFilePicked(String path) {
+  showFilePicked(String path, ImageTypeEnum imageType) {
     setState(() {
       widget.file = File(path);
       widget.file != null
           ? widget.getFile!(widget.file)
           : widget.getFile!(File(path));
+      widget.imageTypePicked!(imageType);
     });
   }
 

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:extructura_app/src/enums/image_type_enum.dart';
 import 'package:extructura_app/src/models/api_Invoice_models/invoice_model.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -28,6 +29,7 @@ class HomePageController extends ControllerMVC implements IViewController {
   //IMAGE PICKER
   File? image;
   // ----------------
+  ImageTypeEnum? imageType;
 
   HomePageController._();
 
@@ -37,11 +39,18 @@ class HomePageController extends ControllerMVC implements IViewController {
   @override
   disposePage() {}
 
+  void setSelectedRadio(Object? radioOptionSelected) {
+    setState(() {
+      imageType = ImageTypeEnum.values
+          .firstWhere((element) => element.value == radioOptionSelected);
+    });
+  }
+
   Future<void> onAnalizeInvoice() async {
     await LoadingPopup(
       context: PageManager().navigatorKey.currentContext!,
-      onLoading:
-          DataManager().postSendImage(ImageModel(path: image!.path), true),
+      onLoading: DataManager().postSendImage(
+          ImageModel(path: image!.path), getIsPerfectImageValue()),
       loadingText: "Enviando imágen...",
       onResult: (data) => {},
       onError: (error) => onErrorFunction(
@@ -89,6 +98,10 @@ class HomePageController extends ControllerMVC implements IViewController {
         onRetry: () {},
       ),
     ).show();
+  }
+
+  bool getIsPerfectImageValue() {
+    return imageType == ImageTypeEnum.pdf;
   }
 
   onGetInvoiceResult(InvoiceModel? invoice) async {
