@@ -36,6 +36,7 @@ class TextInputComponent extends StatefulWidget {
   Function(String text)? onTextChange;
   List<TextInputFormatter> inputFormatters = [];
   bool isPasswordEnabled = false;
+  String? title;
 
   TextInputComponent({
     Key? key,
@@ -80,6 +81,7 @@ class TextInputComponent extends StatefulWidget {
       fontSize: KFontSizeMedium35,
     ),
     this.onTextChange,
+    this.title,
   }) : super(key: key);
   @override
   TextInputComponentState createState() => TextInputComponentState();
@@ -88,78 +90,95 @@ class TextInputComponent extends StatefulWidget {
 class TextInputComponentState extends State<TextInputComponent> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: widget.isValid
-            ? widget.backgroundColor
-            : widget.errorBackgroundColor,
-        borderRadius: widget.borderRadius,
-        boxShadow: widget.boxShadow,
-        border: Border.all(
-          color:
-              widget.isValid ? widget.borderColor! : widget.errorBorderColor!,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Visibility(
+          visible: widget.title != null,
+          child: Column(
+            children: [
+              Text(widget.title!),
+              const SizedBox(
+                height: 3,
+              )
+            ],
+          ),
         ),
-      ),
-      height: widget.height,
-      alignment: widget.alignment,
-      child: Padding(
-        padding: widget.innerPadding ?? EdgeInsets.zero,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            widget.leftIcon ?? const SizedBox.shrink(),
-            Expanded(
-              child: widget.isValid
-                  ? TextFormField(
-                      controller: widget.controller,
-                      cursorColor: KGrey,
-                      cursorHeight: 13,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        hintStyle: widget.placeholderStyle,
-                        hintText: widget.placeholder ?? '',
-                        isCollapsed: true,
-                      ),
-                      enabled: widget.isEnabled,
-                      focusNode: widget.focusNode,
-                      inputFormatters: [
-                        ...widget.inputFormatters,
-                        LengthLimitingTextInputFormatter(widget.maxLength),
-                        if (widget.inputFormatters.isEmpty &&
-                            widget.keyboardType == TextInputType.number)
-                          FilteringTextInputFormatter.digitsOnly,
-                      ],
-                      keyboardType: widget.keyboardType,
-                      obscureText:
-                          widget.isPassword && !widget.isPasswordEnabled,
-                      obscuringCharacter: "*",
-                      onChanged: (value) {
-                        if (widget.onTextChange != null) {
-                          widget.onTextChange!(value);
-                        }
-                      },
-                      onEditingComplete: widget.onEditComplete,
-                      onTap: widget.onPress,
-                      style: widget.textStyle,
-                      textInputAction:
-                          widget.textInputAction ?? TextInputAction.next,
-                    )
-                  : GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () {
-                        widget.isValid = true;
-                        setState(() {});
-                      },
-                      child: Text(
-                        widget.errorPlaceHolder,
-                        style: widget.errorTextStyle,
-                      ),
-                    ),
+        Container(
+          decoration: BoxDecoration(
+            color: widget.isValid
+                ? widget.backgroundColor
+                : widget.errorBackgroundColor,
+            borderRadius: widget.borderRadius,
+            boxShadow: widget.boxShadow,
+            border: Border.all(
+              color: widget.isValid
+                  ? widget.borderColor!
+                  : widget.errorBorderColor!,
             ),
-          ],
+          ),
+          height: widget.height,
+          alignment: widget.alignment,
+          child: Padding(
+            padding: widget.innerPadding ?? EdgeInsets.zero,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                widget.leftIcon ?? const SizedBox.shrink(),
+                Expanded(
+                  child: widget.isValid
+                      ? TextFormField(
+                          controller: widget.controller,
+                          cursorColor: KGrey,
+                          cursorHeight: 13,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            hintStyle: widget.placeholderStyle,
+                            hintText: widget.placeholder ?? '',
+                            isCollapsed: true,
+                          ),
+                          enabled: widget.isEnabled,
+                          focusNode: widget.focusNode,
+                          inputFormatters: [
+                            ...widget.inputFormatters,
+                            LengthLimitingTextInputFormatter(widget.maxLength),
+                            if (widget.inputFormatters.isEmpty &&
+                                widget.keyboardType == TextInputType.number)
+                              FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          keyboardType: widget.keyboardType,
+                          obscureText:
+                              widget.isPassword && !widget.isPasswordEnabled,
+                          obscuringCharacter: "*",
+                          onChanged: (value) {
+                            if (widget.onTextChange != null) {
+                              widget.onTextChange!(value);
+                            }
+                          },
+                          onEditingComplete: widget.onEditComplete,
+                          onTap: widget.onPress,
+                          style: widget.textStyle,
+                          textInputAction:
+                              widget.textInputAction ?? TextInputAction.next,
+                        )
+                      : GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () {
+                            widget.isValid = true;
+                            setState(() {});
+                          },
+                          child: Text(
+                            widget.errorPlaceHolder,
+                            style: widget.errorTextStyle,
+                          ),
+                        ),
+                ),
+              ],
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 }

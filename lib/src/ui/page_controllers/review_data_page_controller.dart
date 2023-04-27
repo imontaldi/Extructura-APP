@@ -15,13 +15,18 @@ class ReviewDataPageController extends ControllerMVC
 
   PageArgs? args;
 
-  late String? loadingText;
-
   ReviewDataPageController._();
+
+  Map<String, bool> tabs = {"Encabezado": true, "Detalle": false};
 
   @override
   void initPage({PageArgs? arguments}) {}
 
   @override
   disposePage() {}
+
+  void onPressTab() {
+    tabs.updateAll((name, value) => value = !value);
+    setState(() {});
+  }
 }
