@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:extructura_app/src/managers/page_manager/page_manager.dart';
 import 'package:extructura_app/src/ui/components/appbar/custom_navigation_bar_component.dart';
 import 'package:extructura_app/src/ui/components/buttons/rounded_button_component.dart';
@@ -123,11 +121,10 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
   Widget _detailBody() {
     return Column(
       children: [
-        TextInputComponent(
-          controller: TextEditingController(),
-          backgroundColor: KWhite,
-          title: "Cod.",
-        ),
+        _itemNumber(),
+        const SizedBox(height: 15),
+        ..._detailInputs(),
+
         // const SizedBox(height: 10),
         // TextInputComponent(controller: TextEditingController()),
         // const SizedBox(height: 10),
@@ -144,5 +141,84 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
         // TextInputComponent(controller: TextEditingController()),
       ],
     );
+  }
+
+  Widget _itemNumber() {
+    int index = _con.currentlyDisplayedItemIndex;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          "Producto ${index + 1}",
+          style: const TextStyle(
+            color: KGrey,
+            fontSize: KFontSizeLarge40,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Row(
+          children: [
+            Visibility(
+              visible: _con.currentlyDisplayedItemIndex > 0,
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _con.currentlyDisplayedItemIndex--;
+                    _con.changeCurrentlyDisplayedItem();
+                  });
+                },
+                child: Container(
+                  height: 20,
+                  width: 20,
+                  decoration: const BoxDecoration(
+                    color: KTransparent,
+                    image: DecorationImage(
+                      image: AssetImage("images/icon_page_arrow_left.png"),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 5),
+            Visibility(
+              visible: _con.currentlyDisplayedItemIndex <
+                  (_con.invoice?.items?.length ?? 0) - 1,
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _con.currentlyDisplayedItemIndex++;
+                    _con.changeCurrentlyDisplayedItem();
+                  });
+                },
+                child: Container(
+                  height: 20,
+                  width: 20,
+                  decoration: const BoxDecoration(
+                    color: KTransparent,
+                    image: DecorationImage(
+                      image: AssetImage("images/icon_page_arrow_right.png"),
+                    ),
+                  ),
+                ),
+              ),
+            )
+          ],
+        )
+      ],
+    );
+  }
+
+  List<Widget> _detailInputs() {
+    return [
+      TextInputComponent(
+        controller: _con.codTextController,
+        title: "Cod.",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.titleTextController,
+        title: "Producto",
+      ),
+    ];
   }
 }

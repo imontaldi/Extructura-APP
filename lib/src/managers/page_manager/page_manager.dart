@@ -100,18 +100,19 @@ class PageManager with PageManagerPopUp {
 
   goHomePage({PageArgs? args, Function(PageArgs? args)? actionBack}) {
     _goPage(PageNames.home.toString(),
-        actionBack: actionBack, makeRootPage: true);
+        makeRootPage: true, args: args, actionBack: actionBack);
   }
 
   goPdfViewPage({PageArgs? args, Function(PageArgs? args)? actionBack}) {
-    _goPage(PageNames.pdfView.toString(), actionBack: actionBack);
+    _goPage(PageNames.pdfView.toString(), args: args, actionBack: actionBack);
   }
 
   goReviewDataPage({PageArgs? args, Function(PageArgs? args)? actionBack}) {
-    _goPage(PageNames.reviewData.toString(), actionBack: actionBack);
+    _goPage(PageNames.reviewData.toString(),
+        args: args, actionBack: actionBack);
   }
 
   goTestPage({PageArgs? args, Function(PageArgs? args)? actionBack}) {
-    _goPage(PageNames.test.toString(), actionBack: actionBack);
+    _goPage(PageNames.test.toString(), args: args, actionBack: actionBack);
   }
 }

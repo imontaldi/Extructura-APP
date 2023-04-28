@@ -42,7 +42,7 @@ class TextInputComponent extends StatefulWidget {
     Key? key,
     required this.controller,
     this.alignment,
-    this.backgroundColor = KBackground,
+    this.backgroundColor = KWhite,
     this.errorBackgroundColor = KWhite,
     this.borderColor = KTransparent,
     this.borderRadius = const BorderRadius.all(Radius.circular(12)),
