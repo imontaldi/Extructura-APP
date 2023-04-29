@@ -1,52 +1,41 @@
+import 'package:collection/collection.dart';
 import 'package:extructura_app/src/enums/invoice_type_enum.dart';
-import 'package:extructura_app/src/interfaces/i_footer_model.dart';
-import 'package:extructura_app/src/interfaces/i_item_model.dart';
-import 'package:extructura_app/src/models/api_Invoice_models/a_footer_model.dart';
-import 'package:extructura_app/src/models/api_Invoice_models/a_item_model.dart';
-import 'package:extructura_app/src/models/api_Invoice_models/c_footer_model.dart';
-import 'package:extructura_app/src/models/api_Invoice_models/c_item_model.dart';
+import 'package:extructura_app/src/models/api_Invoice_models/footer_model.dart';
 import 'package:extructura_app/src/models/api_Invoice_models/header_model.dart';
+import 'package:extructura_app/src/models/api_Invoice_models/item_model.dart';
 
 class InvoiceModel {
-  InvoiceTypeEnum? type;
+  String? _typeCharacter;
   HeaderModel? header;
-  List<IItemModel>? items;
-  IFooterModel? footer;
+  List<ItemModel>? items;
+  FooterModel? footer;
 
   InvoiceModel({
-    this.type,
+    String? typeCharacter,
     this.header,
     this.items,
     this.footer,
-  });
+  }) : _typeCharacter = typeCharacter;
+
+  InvoiceTypeEnum? get type => InvoiceTypeEnum.values
+      .firstWhereOrNull((element) => element.value == _typeCharacter);
+  set orderType(InvoiceTypeEnum? value) => _typeCharacter = value?.value;
 
   InvoiceModel.fromJson(Map<String, dynamic> json) {
-    type = getInvoiceType(json["type"]);
+    _typeCharacter = json["type"];
     header = json["header"] != null
         ? HeaderModel.fromJson(
             json["header"],
           )
         : null;
-    items = type == InvoiceTypeEnum.A
-        ? json["items"] != null
-            ? List<AItemModel>.from(
-                json["items"].map((x) => AItemModel.fromJson(x)))
-            : []
-        : json["items"] != null
-            ? List<CItemModel>.from(
-                json["items"].map((x) => CItemModel.fromJson(x)))
-            : [];
-    footer = type == InvoiceTypeEnum.A
-        ? json["footer"] != null
-            ? AFooterModel.fromJson(
-                json["footer"],
-              )
-            : null
-        : json["footer"] != null
-            ? CFooterModel.fromJson(
-                json["footer"],
-              )
-            : null;
+    items = json["items"] != null
+        ? List<ItemModel>.from(json["items"].map((x) => ItemModel.fromJson(x)))
+        : [];
+    footer = json["footer"] != null
+        ? FooterModel.fromJson(
+            json["footer"],
+          )
+        : null;
   }
 
   InvoiceTypeEnum? getInvoiceType(String invoiceType) {

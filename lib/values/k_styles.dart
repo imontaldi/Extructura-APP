@@ -3,10 +3,10 @@ import 'package:extructura_app/values/k_colors.dart';
 import 'package:extructura_app/values/k_values.dart';
 
 const BoxShadow kTopContainerBoxShadow =
-    BoxShadow(color: KGrey_L2, blurRadius: 1.0, offset: Offset(0.0, 0.3));
+    BoxShadow(color: KGrey_L3, blurRadius: 1.0, offset: Offset(0.0, 0.3));
 
 const BoxShadow kTopContainerBoxShadowLarge =
-    BoxShadow(color: KGrey_L3, blurRadius: 3.0, offset: Offset(0.0, 3));
+    BoxShadow(color: KGrey_L4, blurRadius: 3.0, offset: Offset(0.0, 3));
 
 const BoxShadow kInputShadow = BoxShadow(
     color: Color(0x40666666),
@@ -33,7 +33,7 @@ labelStyle() => const TextStyle(
     );
 
 labelGreyLightStyle() => const TextStyle(
-      color: KGrey_L2,
+      color: KGrey_L3,
       fontWeight: FontWeight.normal,
       fontSize: KFontSizeXLarge45,
     );
@@ -45,7 +45,7 @@ labelErrorStyle() => const TextStyle(
     );
 
 labelLightGreyStyle() => const TextStyle(
-      color: KGrey_L1,
+      color: KGrey_L2,
       fontWeight: FontWeight.normal,
       fontSize: KFontSizeLarge40,
     );
@@ -94,7 +94,7 @@ labelRedRegularStyle() => const TextStyle(
     );
 
 labelPlaceholderStyle() => const TextStyle(
-      color: KGrey_L1,
+      color: KGrey_L2,
       fontWeight: FontWeight.normal,
       fontSize: KFontSizeSmall30,
     );

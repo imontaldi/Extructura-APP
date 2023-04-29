@@ -77,7 +77,7 @@ class ImageUploadComponentState extends State<ImageUploadComponent> {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: KGrey_L1,
+              color: KGrey_L2,
               spreadRadius: -1,
               blurRadius: 10,
               offset: Offset(0, 0),
@@ -326,7 +326,7 @@ class ImageUploadComponentState extends State<ImageUploadComponent> {
           "images/icon_camera.png",
           height: 20,
           width: 20,
-          color: KGrey_L1,
+          color: KGrey_L2,
           fit: BoxFit.contain,
         ),
         const SizedBox(
@@ -335,7 +335,7 @@ class ImageUploadComponentState extends State<ImageUploadComponent> {
         Text(
           widget.label ?? "Toque aquí para cargar una imágen de su factura",
           style: const TextStyle(
-            color: KGrey_L1,
+            color: KGrey_L2,
             fontWeight: FontWeight.normal,
             fontSize: KFontSizeSmall30,
           ),

@@ -105,7 +105,7 @@ class NavigationBarComponentState extends State<NavigationBarComponent> {
   _menu() {
     return Material(
       elevation: 4,
-      shadowColor: KGrey_L3.withOpacity(0.5),
+      shadowColor: KGrey_L4.withOpacity(0.5),
       child: Container(
         height: 55,
         alignment: Alignment.topCenter,

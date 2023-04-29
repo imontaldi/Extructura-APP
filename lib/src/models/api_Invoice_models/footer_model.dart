@@ -1,15 +1,10 @@
-import 'package:extructura_app/src/interfaces/i_footer_model.dart';
-
-class AFooterModel implements IFooterModel {
-  @override
+class FooterModel {
   String? currency;
-  @override
   String? otherTaxesAmount;
-  @override
   String? total;
-  @override
   String? exchangeRate;
   String? netAmountTaxed;
+  String? subtotal;
   String? vat27;
   String? vat21;
   String? vat10_5;
@@ -17,11 +12,12 @@ class AFooterModel implements IFooterModel {
   String? vat2_5;
   String? vat0;
 
-  AFooterModel(
+  FooterModel(
       {this.currency,
       this.otherTaxesAmount,
       this.total,
       this.netAmountTaxed,
+      this.subtotal,
       this.vat27,
       this.vat21,
       this.vat10_5,
@@ -30,11 +26,12 @@ class AFooterModel implements IFooterModel {
       this.vat0,
       this.exchangeRate});
 
-  AFooterModel.fromJson(Map<String, dynamic> json) {
+  FooterModel.fromJson(Map<String, dynamic> json) {
     currency = json["currency"];
     otherTaxesAmount = json["other_taxes_ammout"];
     total = json["total"];
     netAmountTaxed = json["net_amount_taxed"];
+    subtotal = json["subtotal"];
     vat27 = json["vat_27"];
     vat21 = json["vat_21"];
     vat10_5 = json["vat_10_5"];

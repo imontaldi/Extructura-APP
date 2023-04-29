@@ -97,7 +97,14 @@ class TextInputComponentState extends State<TextInputComponent> {
           visible: widget.title != null,
           child: Column(
             children: [
-              Text(widget.title!),
+              Text(
+                widget.title!,
+                style: const TextStyle(
+                  color: KGrey,
+                  fontSize: KFontSizeMedium35,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
               const SizedBox(
                 height: 3,
               )

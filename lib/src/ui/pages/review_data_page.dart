@@ -1,3 +1,4 @@
+import 'package:extructura_app/src/enums/invoice_type_enum.dart';
 import 'package:extructura_app/src/managers/page_manager/page_manager.dart';
 import 'package:extructura_app/src/ui/components/appbar/custom_navigation_bar_component.dart';
 import 'package:extructura_app/src/ui/components/buttons/rounded_button_component.dart';
@@ -115,35 +116,155 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
   }
 
   Widget _headerBody() {
-    return Container();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "Datos del Emisor",
+          style: TextStyle(
+            color: KGrey,
+            fontSize: KFontSizeLarge40,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const Divider(
+          thickness: 2,
+        ),
+        const SizedBox(height: 10),
+        ..._headerTransmitterSectionInputs(),
+        const SizedBox(height: 20),
+        const Text(
+          "Datos del Documento",
+          style: TextStyle(
+            color: KGrey,
+            fontSize: KFontSizeLarge40,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const Divider(
+          thickness: 2,
+        ),
+        const SizedBox(height: 10),
+        ..._headerDocInfoSectionInputs(),
+        const SizedBox(height: 20),
+        const Text(
+          "Datos del Receptor",
+          style: TextStyle(
+            color: KGrey,
+            fontSize: KFontSizeLarge40,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const Divider(
+          thickness: 2,
+        ),
+        const SizedBox(height: 10),
+        ..._headerReceiverSectionInputs(),
+      ],
+    );
+  }
+
+  List<Widget> _headerTransmitterSectionInputs() {
+    return [
+      TextInputComponent(
+        controller: _con.businessNameTextController,
+        title: "Razón Social",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.businessAddressTextController,
+        title: "Domicilio Comercial",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.vatConditionTextController,
+        title: "Condición Frente al IVA",
+      ),
+    ];
+  }
+
+  List<Widget> _headerDocInfoSectionInputs() {
+    return [
+      TextInputComponent(
+        controller: _con.documentTypeTextController,
+        title: "Tipo de Documento",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.checkoutAisleNumberTextController,
+        title: "Punto de Venta",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.documentNumberTextController,
+        title: "Comp. Nro",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.issueDateTextController,
+        title: "Fecha de Emisión",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.sellerCuitTextController,
+        title: "CUIT",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.grossIncomeTextController,
+        title: "Ingresos Brutos",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.businessOpeningDateTextController,
+        title: "Fecha de Inicio de Actividades",
+      ),
+    ];
+  }
+
+  List<Widget> _headerReceiverSectionInputs() {
+    return [
+      TextInputComponent(
+        controller: _con.clientCuitTextController,
+        title: "CUIT",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.clientNameTextController,
+        title: "Apellido y Nombre / Razón Social",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.clientVatConditionTextController,
+        title: "Condición frente al IVA",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.clientAddressTextController,
+        title: "Domicilio Comercial",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.saleMethodTextController,
+        title: "Condición de venta",
+      ),
+    ];
   }
 
   Widget _detailBody() {
     return Column(
       children: [
-        _itemNumber(),
-        const SizedBox(height: 15),
+        _itemNumberPagination(),
+        const Divider(
+          thickness: 2,
+        ),
+        const SizedBox(height: 10),
         ..._detailInputs(),
-
-        // const SizedBox(height: 10),
-        // TextInputComponent(controller: TextEditingController()),
-        // const SizedBox(height: 10),
-        // TextInputComponent(controller: TextEditingController()),
-        // const SizedBox(height: 10),
-        // TextInputComponent(controller: TextEditingController()),
-        // const SizedBox(height: 10),
-        // TextInputComponent(controller: TextEditingController()),
-        // const SizedBox(height: 10),
-        // TextInputComponent(controller: TextEditingController()),
-        // const SizedBox(height: 10),
-        // TextInputComponent(controller: TextEditingController()),
-        // const SizedBox(height: 10),
-        // TextInputComponent(controller: TextEditingController()),
       ],
     );
   }
 
-  Widget _itemNumber() {
+  Widget _itemNumberPagination() {
     int index = _con.currentlyDisplayedItemIndex;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -156,53 +277,55 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
             fontWeight: FontWeight.w500,
           ),
         ),
-        Row(
-          children: [
-            Visibility(
-              visible: _con.currentlyDisplayedItemIndex > 0,
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _con.currentlyDisplayedItemIndex--;
-                    _con.changeCurrentlyDisplayedItem();
-                  });
-                },
-                child: Container(
+        Visibility(
+          visible: (_con.invoice?.items?.length ?? 0) > 1,
+          child: Row(
+            children: [
+              GestureDetector(
+                onTap: _con.currentlyDisplayedItemIndex > 0
+                    ? () {
+                        setState(() {
+                          _con.currentlyDisplayedItemIndex--;
+                          _con.changeCurrentlyDisplayedItem();
+                        });
+                      }
+                    : () {},
+                child: SizedBox(
                   height: 20,
                   width: 20,
-                  decoration: const BoxDecoration(
-                    color: KTransparent,
-                    image: DecorationImage(
-                      image: AssetImage("images/icon_page_arrow_left.png"),
-                    ),
+                  child: Image.asset(
+                    "images/icon_page_arrow_left.png",
+                    color: _con.currentlyDisplayedItemIndex > 0
+                        ? KGrey_L1
+                        : KGrey_L4,
                   ),
                 ),
               ),
-            ),
-            const SizedBox(width: 5),
-            Visibility(
-              visible: _con.currentlyDisplayedItemIndex <
-                  (_con.invoice?.items?.length ?? 0) - 1,
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _con.currentlyDisplayedItemIndex++;
-                    _con.changeCurrentlyDisplayedItem();
-                  });
-                },
-                child: Container(
+              const SizedBox(width: 5),
+              GestureDetector(
+                onTap: _con.currentlyDisplayedItemIndex <
+                        (_con.invoice?.items?.length ?? 0) - 1
+                    ? () {
+                        setState(() {
+                          _con.currentlyDisplayedItemIndex++;
+                          _con.changeCurrentlyDisplayedItem();
+                        });
+                      }
+                    : () {},
+                child: SizedBox(
                   height: 20,
                   width: 20,
-                  decoration: const BoxDecoration(
-                    color: KTransparent,
-                    image: DecorationImage(
-                      image: AssetImage("images/icon_page_arrow_right.png"),
-                    ),
+                  child: Image.asset(
+                    "images/icon_page_arrow_right.png",
+                    color: _con.currentlyDisplayedItemIndex <
+                            (_con.invoice?.items?.length ?? 0) - 1
+                        ? KGrey_L1
+                        : KGrey_L4,
                   ),
                 ),
               ),
-            )
-          ],
+            ],
+          ),
         )
       ],
     );
@@ -212,12 +335,66 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
     return [
       TextInputComponent(
         controller: _con.codTextController,
-        title: "Cod.",
+        title: "Código",
       ),
       const SizedBox(height: 10),
       TextInputComponent(
         controller: _con.titleTextController,
-        title: "Producto",
+        title: "Producto / Servicio",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.amountTextController,
+        title: "Cantidad",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.measureTextController,
+        title: "U. medida",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.unitPriceTextController,
+        title: "Precio Unit.",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.discountPercTextController,
+        title: "% Bonif",
+      ),
+      Visibility(
+        visible: _con.invoice?.type == InvoiceTypeEnum.C,
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            TextInputComponent(
+              controller: _con.discountPercTextController,
+              title: "Imp. Bonif.",
+            ),
+          ],
+        ),
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.subtotalTextController,
+        title: "Subtotal",
+      ),
+      Visibility(
+        visible: _con.invoice?.type == InvoiceTypeEnum.A,
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            TextInputComponent(
+              controller: _con.ivaFeeTextController,
+              title: "Alícuota IVA",
+            ),
+            const SizedBox(height: 10),
+            TextInputComponent(
+              controller: _con.subtotalIncFeesTextController,
+              title: "Subtotal c/IVA",
+            ),
+          ],
+        ),
       ),
     ];
   }

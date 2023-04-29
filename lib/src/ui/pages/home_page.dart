@@ -144,7 +144,7 @@ class HomePageState extends StateMVC<HomePage> {
       },
       child: Container(
         height: 50,
-        color: _con.image != null ? KPrimary : KGrey_L2,
+        color: _con.image != null ? KPrimary : KGrey_L3,
         child: Center(
           child: Text(
             "Analizar factura",

@@ -30,10 +30,11 @@ const Color KBlack = Color(0xFF000000);
 
 const Color KSecondary = Color(0xFFEC407A);
 
-const Color KGrey_L4 = Color(0xFFF5F5F5);
-const Color KGrey_L3 = Color(0xFFE4E4E4);
-const Color KGrey_L2 = Color(0xFFC4C4C4);
-const Color KGrey_L1 = Color(0xFFACACAC);
+const Color KGrey_L5 = Color(0xFFF5F5F5);
+const Color KGrey_L4 = Color(0xFFE4E4E4);
+const Color KGrey_L3 = Color(0xFFC4C4C4);
+const Color KGrey_L2 = Color(0xFFACACAC);
+const Color KGrey_L1 = Color(0xFF8E8E8E);
 const Color KGrey = Color(0xFF666666);
 const Color KGrey_T1 = Color(0xFF707070);
 const Color KGrey_T2 = Color(0x4D666666);

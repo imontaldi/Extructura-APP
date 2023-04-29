@@ -1,24 +1,16 @@
-import 'package:extructura_app/src/interfaces/i_item_model.dart';
-
-class AItemModel implements IItemModel {
-  @override
+class ItemModel {
   String? amount;
-  @override
   String? cod;
-  @override
   String? discountPerc;
-  @override
   String? measure;
-  @override
   String? subtotal;
-  @override
   String? title;
-  @override
   String? unitPrice;
   String? ivaFee;
   String? subtotalIncFees;
+  String? discountedSubtotal;
 
-  AItemModel({
+  ItemModel({
     this.cod,
     this.title,
     this.amount,
@@ -28,9 +20,10 @@ class AItemModel implements IItemModel {
     this.subtotal,
     this.ivaFee,
     this.subtotalIncFees,
+    this.discountedSubtotal,
   });
 
-  AItemModel.fromJson(Map<String, dynamic> json) {
+  ItemModel.fromJson(Map<String, dynamic> json) {
     amount = json["amount"];
     cod = json["cod"];
     discountPerc = json["discount_perc"];
@@ -40,5 +33,6 @@ class AItemModel implements IItemModel {
     unitPrice = json["unit_price"];
     ivaFee = json["iva_fee"];
     subtotalIncFees = json["subtotal_inc_fees"];
+    discountedSubtotal = json["discounted_subtotal"];
   }
 }

@@ -60,7 +60,7 @@ class MyHomePageState extends State<MyApp> {
         fontFamily: 'Sans',
         scrollbarTheme: ScrollbarThemeData(
           trackColor: MaterialStateProperty.all(Colors.grey),
-          thumbColor: MaterialStateProperty.all(KGrey_L2),
+          thumbColor: MaterialStateProperty.all(KGrey_L3),
           trackBorderColor: MaterialStateProperty.all(Colors.grey),
           trackVisibility: MaterialStateProperty.all(true),
         ),

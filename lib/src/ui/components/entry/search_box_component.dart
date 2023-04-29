@@ -33,7 +33,7 @@ class SearchBoxState extends State<SearchBox> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: KGrey_L2, width: 1.5),
+        border: Border.all(color: KGrey_L3, width: 1.5),
       ),
       padding: const EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 0),
       child: Row(
@@ -51,7 +51,7 @@ class SearchBoxState extends State<SearchBox> {
                 textAlign: TextAlign.start,
                 maxLines: 1,
                 style: const TextStyle(
-                  color: KGrey_L2,
+                  color: KGrey_L3,
                   fontWeight: FontWeight.normal,
                   fontSize: KFontSizeMedium35,
                 ),
@@ -64,7 +64,7 @@ class SearchBoxState extends State<SearchBox> {
                     isDense: true,
                     hintText: widget.placeHolder,
                     hintStyle: const TextStyle(
-                      color: KGrey_L2,
+                      color: KGrey_L3,
                       fontWeight: FontWeight.normal,
                       fontSize: KFontSizeMedium35,
                     ),

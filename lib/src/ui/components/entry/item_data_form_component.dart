@@ -220,7 +220,7 @@ class ItemDataFormComponentState extends State<ItemDataFormComponent> {
         Visibility(
           visible: widget.hasDividerLine,
           child: Divider(
-            color: widget.isValid ? KGrey_L3 : KPrimary_L1,
+            color: widget.isValid ? KGrey_L4 : KPrimary_L1,
             thickness: 1.5,
           ),
         ),
@@ -311,7 +311,7 @@ class ItemDataFormComponentState extends State<ItemDataFormComponent> {
                         widget.placeholder.hasValue() ? widget.placeholder : '',
                     hintStyle: widget.placeholderStyle ??
                         const TextStyle(
-                            color: KGrey_L1, fontSize: KFontSizeMedium35),
+                            color: KGrey_L2, fontSize: KFontSizeMedium35),
                     border: InputBorder.none,
                     isCollapsed: true,
                   ),
@@ -371,7 +371,7 @@ class ItemDataFormComponentState extends State<ItemDataFormComponent> {
                         widget.placeholder.hasValue() ? widget.placeholder : '',
                     hintStyle: widget.placeholderStyle ??
                         const TextStyle(
-                            color: KGrey_L1, fontSize: KFontSizeMedium35),
+                            color: KGrey_L2, fontSize: KFontSizeMedium35),
                     border: InputBorder.none,
                     isCollapsed: true,
                   ),
@@ -397,7 +397,7 @@ class ItemDataFormComponentState extends State<ItemDataFormComponent> {
                 ? DateFormat('dd/MM/yyyy').format(widget.selectedDate!)
                 : "DD/MM/YYYY",
             style: TextStyle(
-                color: widget.selectedDate != null ? Colors.black : KGrey_L1),
+                color: widget.selectedDate != null ? Colors.black : KGrey_L2),
           ),
         ),
       ),
@@ -416,7 +416,7 @@ class ItemDataFormComponentState extends State<ItemDataFormComponent> {
             data: ThemeData.light().copyWith(
               primaryColor: KPrimary,
               colorScheme: ColorScheme.fromSwatch()
-                  .copyWith(secondary: KGrey_L1), //selection color
+                  .copyWith(secondary: KGrey_L2), //selection color
             ),
             child: child!,
           );
