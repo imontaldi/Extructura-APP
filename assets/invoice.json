@@ -1,0 +1,57 @@
+{
+    "type": "A",
+    "header": {
+        "business_name": "DON DANTESRL",
+        "business_address": "Av.Rodriguez Durañona 2222 - Salta, Salta",
+        "vat_condition": "IVA Responsable Inscripto",
+        "document_type": "FACTURA",
+        "checkout_aisle_number": "00003",
+        "document_number": "00005285",
+        "issue_date": "02/06/2022",
+        "seller_cuit": ": 30654303254",
+        "gross_income": "917-522580-5",
+        "business_opening_date": "18/08/19392",
+        "client_cuit": "30690650483",
+        "client_name": "AGENOR SA",
+        "client_vat_condition": "IVA Responsable Inscripto",
+        "client_address": "Calle Lateral Este 660 Dpto:A - Salta, Salta",
+        "sale_method": "— Contado"
+    },
+    "items": [
+        {
+            "cod": "001",
+            "title": "SERVICIO DE BASCULA MES DE MAYO DE 2,022",
+            "amount": "2,00",
+            "measure": "unidades",
+            "unit_price": "700,00",
+            "discount_perc": "0,00",
+            "subtotal": "1400,00",
+            "vat_fee": "21%",
+            "subtotal_inc_fees": "1694,00"
+        },
+        {
+            "cod": "002",
+            "title": "SERVICIO DE BASCULA MES DE MAYO DE 2,022",
+            "amount": "4,00",
+            "measure": "unidades",
+            "unit_price": "900,00",
+            "discount_perc": "0,00",
+            "subtotal": "3600,00",
+            "vat_fee": "21%",
+            "subtotal_inc_fees": "4356,00"
+        }
+    ],
+    "footer": {
+        "currency": "$",
+        "net_amount_taxed": "5000,00",
+        "vat_27": "0,00",
+        "vat_21": "1050,00",
+        "vat_10_5": "0,00",
+        "vat_5": "0,00",
+        "vat_2_5": "0,00",
+        "vat_0": "0,00",
+        "other_taxes_ammout": "0,00",
+        "total": "6050,00",
+        "exchange_rate": "1"
+    }
+}

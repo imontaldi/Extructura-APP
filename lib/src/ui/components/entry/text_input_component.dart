@@ -177,10 +177,13 @@ class TextInputComponentState extends State<TextInputComponent> {
                               widget.textInputAction ?? TextInputAction.next,
                         )
                       : GestureDetector(
-                          behavior: HitTestBehavior.opaque,
+                          behavior: HitTestBehavior.translucent,
                           onTap: () {
                             widget.isValid = true;
                             setState(() {});
+                            if (widget.onPress != null) {
+                              widget.onPress!();
+                            }
                           },
                           child: Text(
                             widget.errorPlaceHolder,

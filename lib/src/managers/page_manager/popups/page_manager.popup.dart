@@ -159,6 +159,9 @@ mixin PageManagerPopUp {
       DateTime? dateTime;
       try {
         dateTime = DateFormat('dd/MM/yy').parse(date);
+        if (!dateTime.isBefore(DateTime.now())) {
+          throw Exception("Date is after today");
+        }
       } catch (e) {
         dateTime = DateTime.now();
       }
@@ -169,8 +172,8 @@ mixin PageManagerPopUp {
           return CalendarPopup(
             minDate: null,
             maxDate: null,
-            enableRange: false,
             enableYearSelection: true,
+            enableRange: false,
             selectDate: dateTime,
             titleYearSelect: 'Seleccionar Fecha',
             subTitleYearSelect: 'Año',

@@ -319,7 +319,9 @@ class CalendarPopupState extends State<CalendarPopup> {
             : widget.enableRange
                 ? selectedStartDate ?? minDate
                 : selectedStartDate ?? DateTime.now(),
-        selectedDayPredicate: (day) => isSameDay(day, widget.selectDate),
+        selectedDayPredicate: (day) {
+          return false;
+        },
         onDaySelected: (selectedDay, focusedDay) {
           setState(() {
             if (!widget.enableRange) {
@@ -556,7 +558,9 @@ class CalendarPopupState extends State<CalendarPopup> {
             if (result != null) {
               focusDay = DateTime(
                 int.parse(result),
-                datetime.month,
+                datetime.month < DateTime.now().month
+                    ? datetime.month
+                    : DateTime.now().month,
                 1,
               );
               selectedStartDate = null;

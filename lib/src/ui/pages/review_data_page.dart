@@ -192,22 +192,9 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
         title: "Comp. Nro",
       ),
       const SizedBox(height: 10),
-      TextInputComponent(
-        controller: _con.issueDateTextController,
-        title: "Fecha de Emisión",
-        inputType: InputTypeEnum.date,
-        onPress: () async {
-          _con.issueDateTextController.text = dateFormat(
-              await _con.onPressCalendar(_con.issueDateTextController.text));
-          setState(() {});
-        },
-        isEnabled: true,
-        rightIcon: Image.asset(
-          "images/icon_calendar.png",
-          height: 20,
-          width: 20,
-          color: KGrey,
-        ),
+      _dateInput(
+        "Fecha de Emisión",
+        _con.issueDateTextController,
       ),
       const SizedBox(height: 10),
       TextInputComponent(
@@ -220,23 +207,8 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
         title: "Ingresos Brutos",
       ),
       const SizedBox(height: 10),
-      TextInputComponent(
-        controller: _con.businessOpeningDateTextController,
-        title: "Fecha de Inicio de Actividades",
-        inputType: InputTypeEnum.date,
-        onPress: () async {
-          _con.businessOpeningDateTextController.text = dateFormat(await _con
-              .onPressCalendar(_con.businessOpeningDateTextController.text));
-          setState(() {});
-        },
-        isEnabled: true,
-        rightIcon: Image.asset(
-          "images/icon_calendar.png",
-          height: 20,
-          width: 20,
-          color: KGrey,
-        ),
-      ),
+      _dateInput("Fecha de Inicio de Actividades",
+          _con.businessOpeningDateTextController),
     ];
   }
 
@@ -474,5 +446,27 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
         ),
       ),
     ];
+  }
+
+  Widget _dateInput(String title, TextEditingController controller) {
+    return TextInputComponent(
+      controller: controller,
+      title: title,
+      inputType: InputTypeEnum.date,
+      onPress: () async {
+        controller.text =
+            dateFormat(await _con.onPressCalendar(controller.text));
+        setState(() {});
+      },
+      isEnabled: true,
+      isValid: _con.isStringAValidDate(controller.text),
+      errorPlaceHolder: controller.text,
+      rightIcon: Image.asset(
+        "images/icon_calendar.png",
+        height: 20,
+        width: 20,
+        color: _con.isStringAValidDate(controller.text) ? KGrey : KRed,
+      ),
+    );
   }
 }

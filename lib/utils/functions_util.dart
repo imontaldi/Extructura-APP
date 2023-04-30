@@ -53,3 +53,12 @@ void showToast({
 String dateFormat(DateTime? date) {
   return date != null ? DateFormat("dd/MM/yyyy").format(date) : "";
 }
+
+bool isDateValid(String date) {
+  try {
+    DateFormat('dd/MM/yy').parse(date);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}

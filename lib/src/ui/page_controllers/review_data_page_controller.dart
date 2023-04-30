@@ -3,7 +3,9 @@ import 'dart:core';
 import 'package:extructura_app/src/managers/page_manager/page_manager.dart';
 import 'package:extructura_app/src/models/api_Invoice_models/invoice_model.dart';
 import 'package:extructura_app/src/models/api_Invoice_models/item_model.dart';
+import 'package:extructura_app/utils/functions_util.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:extructura_app/src/interfaces/i_view_controller.dart';
 import 'package:extructura_app/utils/page_args.dart';
@@ -259,5 +261,10 @@ class ReviewDataPageController extends ControllerMVC
   Future<DateTime?> onPressCalendar(String date) async {
     DateTime? newDate = await PageManager().openCalendarPopUp(date);
     return newDate;
+  }
+
+  bool isStringAValidDate(String textToValidate) {
+    return isDateValid(textToValidate) &&
+        DateFormat('dd/MM/yy').parse(textToValidate).isBefore(DateTime.now());
   }
 }
