@@ -153,4 +153,38 @@ mixin PageManagerPopUp {
       isCancellable: isCancellable ?? false,
     ).show();
   }
+
+  Future<DateTime?> openCalendarPopUp(String date) async {
+    Future showCalendarPopUp() {
+      DateTime? dateTime;
+      try {
+        dateTime = DateFormat('dd/MM/yy').parse(date);
+      } catch (e) {
+        dateTime = DateTime.now();
+      }
+      BuildContext context = PageManager().navigatorKey.currentContext!;
+      return showDialog(
+        context: context,
+        builder: (_) {
+          return CalendarPopup(
+            minDate: null,
+            maxDate: null,
+            enableRange: false,
+            enableYearSelection: true,
+            selectDate: dateTime,
+            titleYearSelect: 'Seleccionar Fecha',
+            subTitleYearSelect: 'Año',
+            titleCalendar: 'Seleccionar Fecha',
+            buttonName: 'Aceptar',
+          );
+        },
+      );
+    }
+
+    Map<String, DateTime>? result = await showCalendarPopUp();
+    if (result != null) {
+      return result['startDate'];
+    }
+    return null;
+  }
 }

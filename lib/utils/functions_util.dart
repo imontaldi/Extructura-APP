@@ -49,3 +49,7 @@ void showToast({
   ScaffoldMessenger.of(context).clearSnackBars();
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
+
+String dateFormat(DateTime? date) {
+  return date != null ? DateFormat("dd/MM/yyyy").format(date) : "";
+}

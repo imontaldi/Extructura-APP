@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:extructura_app/src/data_access/dummy_data_access.dart';
 import 'package:extructura_app/src/data_access/remote_data_access.dart';
@@ -72,6 +73,18 @@ class DataManager {
     await prefs.remove("token");
     await prefs.remove("currentProfile");
     await prefs.remove('notifications');
+  }
+
+  getCulture() {
+    String? prefCulture = prefs.getString('culture');
+    if (prefCulture != null) {
+      if (jsonDecode(prefs.getString('culture')!) == "Culture.es") {
+        return Culture.es;
+      } else {
+        return Culture.en;
+      }
+    }
+    return Culture.es;
   }
 
   // Requests

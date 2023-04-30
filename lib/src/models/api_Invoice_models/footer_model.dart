@@ -12,19 +12,20 @@ class FooterModel {
   String? vat2_5;
   String? vat0;
 
-  FooterModel(
-      {this.currency,
-      this.otherTaxesAmount,
-      this.total,
-      this.netAmountTaxed,
-      this.subtotal,
-      this.vat27,
-      this.vat21,
-      this.vat10_5,
-      this.vat5,
-      this.vat2_5,
-      this.vat0,
-      this.exchangeRate});
+  FooterModel({
+    this.currency,
+    this.otherTaxesAmount,
+    this.total,
+    this.netAmountTaxed,
+    this.subtotal,
+    this.vat27,
+    this.vat21,
+    this.vat10_5,
+    this.vat5,
+    this.vat2_5,
+    this.vat0,
+    this.exchangeRate,
+  });
 
   FooterModel.fromJson(Map<String, dynamic> json) {
     currency = json["currency"];

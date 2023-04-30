@@ -1,9 +1,11 @@
+import 'package:extructura_app/src/enums/input_type_enum.dart';
 import 'package:extructura_app/src/enums/invoice_type_enum.dart';
 import 'package:extructura_app/src/managers/page_manager/page_manager.dart';
 import 'package:extructura_app/src/ui/components/appbar/custom_navigation_bar_component.dart';
 import 'package:extructura_app/src/ui/components/buttons/rounded_button_component.dart';
 import 'package:extructura_app/src/ui/components/entry/text_input_component.dart';
 import 'package:extructura_app/src/ui/page_controllers/review_data_page_controller.dart';
+import 'package:extructura_app/utils/functions_util.dart';
 import 'package:extructura_app/values/k_colors.dart';
 import 'package:extructura_app/values/k_values.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +39,7 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
       child: Scaffold(
         backgroundColor: KBackground,
         appBar: simpleNavigationBar(
-          title: "Carga de imágen",
+          title: "Revisión de datos",
           hideInfoButton: true,
           hideNotificationButton: true,
           onBack: PageManager().goBack,
@@ -119,49 +121,39 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "Datos del Emisor",
-          style: TextStyle(
-            color: KGrey,
-            fontSize: KFontSizeLarge40,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const Divider(
-          thickness: 2,
-        ),
+        ..._sectionTitle("Datos del Emisor"),
         const SizedBox(height: 10),
         ..._headerTransmitterSectionInputs(),
         const SizedBox(height: 20),
-        const Text(
-          "Datos del Documento",
-          style: TextStyle(
-            color: KGrey,
-            fontSize: KFontSizeLarge40,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const Divider(
-          thickness: 2,
-        ),
+        ..._sectionTitle("Datos del Documento"),
         const SizedBox(height: 10),
         ..._headerDocInfoSectionInputs(),
         const SizedBox(height: 20),
-        const Text(
-          "Datos del Receptor",
-          style: TextStyle(
-            color: KGrey,
-            fontSize: KFontSizeLarge40,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const Divider(
-          thickness: 2,
-        ),
+        ..._sectionTitle("Datos del Receptor"),
         const SizedBox(height: 10),
         ..._headerReceiverSectionInputs(),
+        const SizedBox(height: 20),
+        ..._sectionTitle("Totales"),
+        const SizedBox(height: 10),
+        ..._headerFooterSectionInputs(),
       ],
     );
+  }
+
+  List<Widget> _sectionTitle(String title) {
+    return [
+      Text(
+        title,
+        style: const TextStyle(
+          color: KGrey,
+          fontSize: KFontSizeLarge40,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      const Divider(
+        thickness: 2,
+      ),
+    ];
   }
 
   List<Widget> _headerTransmitterSectionInputs() {
@@ -203,6 +195,19 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
       TextInputComponent(
         controller: _con.issueDateTextController,
         title: "Fecha de Emisión",
+        inputType: InputTypeEnum.date,
+        onPress: () async {
+          _con.issueDateTextController.text = dateFormat(
+              await _con.onPressCalendar(_con.issueDateTextController.text));
+          setState(() {});
+        },
+        isEnabled: true,
+        rightIcon: Image.asset(
+          "images/icon_calendar.png",
+          height: 20,
+          width: 20,
+          color: KGrey,
+        ),
       ),
       const SizedBox(height: 10),
       TextInputComponent(
@@ -218,6 +223,19 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
       TextInputComponent(
         controller: _con.businessOpeningDateTextController,
         title: "Fecha de Inicio de Actividades",
+        inputType: InputTypeEnum.date,
+        onPress: () async {
+          _con.businessOpeningDateTextController.text = dateFormat(await _con
+              .onPressCalendar(_con.businessOpeningDateTextController.text));
+          setState(() {});
+        },
+        isEnabled: true,
+        rightIcon: Image.asset(
+          "images/icon_calendar.png",
+          height: 20,
+          width: 20,
+          color: KGrey,
+        ),
       ),
     ];
   }
@@ -247,6 +265,65 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
       TextInputComponent(
         controller: _con.saleMethodTextController,
         title: "Condición de venta",
+      ),
+    ];
+  }
+
+  List<Widget> _headerFooterSectionInputs() {
+    return [
+      TextInputComponent(
+        controller: _con.currencyTextController,
+        title: "Moneda",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.exchangeRateTextController,
+        title: "Tipo de Cambio",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.netAmountTaxedTextController,
+        title: "Importe Neto Grabado",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.vat27TextController,
+        title: "IVA 27%",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.vat21TextController,
+        title: "IVA 21%",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.vat10_5TextController,
+        title: "IVA 10.5%",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.vat5TextController,
+        title: "IVA 5%",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.vat2_5TextController,
+        title: "IVA 2.5%",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.vat0TextController,
+        title: "IVA 0%",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.otherTaxesAmountTextController,
+        title: "Importe Otros Tributos",
+      ),
+      const SizedBox(height: 10),
+      TextInputComponent(
+        controller: _con.totalTextController,
+        title: "Total",
       ),
     ];
   }

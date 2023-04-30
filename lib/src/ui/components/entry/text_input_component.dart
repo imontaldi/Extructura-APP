@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:extructura_app/src/enums/input_type_enum.dart';
 import 'package:extructura_app/values/k_colors.dart';
 import 'package:extructura_app/values/k_values.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,8 @@ class TextInputComponent extends StatefulWidget {
   List<TextInputFormatter> inputFormatters = [];
   bool isPasswordEnabled = false;
   String? title;
+  InputTypeEnum inputType;
+  bool? readOnly;
 
   TextInputComponent({
     Key? key,
@@ -82,6 +85,8 @@ class TextInputComponent extends StatefulWidget {
     ),
     this.onTextChange,
     this.title,
+    this.inputType = InputTypeEnum.text,
+    this.readOnly,
   }) : super(key: key);
   @override
   TextInputComponentState createState() => TextInputComponentState();
@@ -154,6 +159,8 @@ class TextInputComponentState extends State<TextInputComponent> {
                                 widget.keyboardType == TextInputType.number)
                               FilteringTextInputFormatter.digitsOnly,
                           ],
+                          readOnly: widget.readOnly ??
+                              widget.inputType == InputTypeEnum.date,
                           keyboardType: widget.keyboardType,
                           obscureText:
                               widget.isPassword && !widget.isPasswordEnabled,
@@ -180,6 +187,10 @@ class TextInputComponentState extends State<TextInputComponent> {
                             style: widget.errorTextStyle,
                           ),
                         ),
+                ),
+                GestureDetector(
+                  onTap: widget.onPress,
+                  child: widget.rightIcon ?? const SizedBox.shrink(),
                 ),
               ],
             ),

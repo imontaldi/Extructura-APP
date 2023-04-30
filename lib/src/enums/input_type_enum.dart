@@ -1,0 +1,2 @@
+
+enum InputTypeEnum { text, date }

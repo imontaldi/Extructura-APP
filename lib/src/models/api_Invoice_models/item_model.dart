@@ -6,7 +6,7 @@ class ItemModel {
   String? subtotal;
   String? title;
   String? unitPrice;
-  String? ivaFee;
+  String? vatFee;
   String? subtotalIncFees;
   String? discountedSubtotal;
 
@@ -18,7 +18,7 @@ class ItemModel {
     this.unitPrice,
     this.discountPerc,
     this.subtotal,
-    this.ivaFee,
+    this.vatFee,
     this.subtotalIncFees,
     this.discountedSubtotal,
   });
@@ -31,7 +31,7 @@ class ItemModel {
     subtotal = json["subtotal"];
     title = json["title"];
     unitPrice = json["unit_price"];
-    ivaFee = json["iva_fee"];
+    vatFee = json["vat_fee"];
     subtotalIncFees = json["subtotal_inc_fees"];
     discountedSubtotal = json["discounted_subtotal"];
   }
