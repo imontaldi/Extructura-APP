@@ -117,22 +117,22 @@ class HomePageController extends ControllerMVC implements IViewController {
   //   ).show();
   // }
 
-  // bool getIsPerfectImageValue() {
-  //   return imageType == ImageTypeEnum.pdf;
-  // }
+  bool getIsPerfectImageValue() {
+    return imageType == ImageTypeEnum.pdf;
+  }
 
-  // onGetInvoiceResult(InvoiceModel? invoice) async {
-  //   await PageManager().openInvoiceProcessedSuccessfullyPopup(
-  //     onAccept: () =>
-  //         PageManager().goReviewDataPage(args: PageArgs(invoice: invoice)),
-  //     title: "¡Se analizó correctamente el contenido de su factura!",
-  //     subtitle:
-  //         "Por favor revisa que los datos mostrados a continuación sean correctos",
-  //     labelButtonAccept: "Continuar",
-  //     imageURL: "images/icon_checkbox.png",
-  //     imageHeight: 50,
-  //     imageWidth: 50,
-  //     isCancellable: false,
-  //   );
-  // }
+  onGetInvoiceResult(InvoiceModel? invoice) async {
+    await PageManager().openInvoiceProcessedSuccessfullyPopup(
+      onAccept: () =>
+          PageManager().goReviewDataPage(args: PageArgs(invoice: invoice)),
+      title: "¡Se analizó correctamente el contenido de su factura!",
+      subtitle:
+          "Por favor revisa que los datos mostrados a continuación sean correctos",
+      labelButtonAccept: "Continuar",
+      imageURL: "images/icon_checkbox.png",
+      imageHeight: 50,
+      imageWidth: 50,
+      isCancellable: false,
+    );
+  }
 }

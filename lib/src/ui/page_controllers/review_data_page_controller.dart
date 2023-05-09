@@ -40,15 +40,19 @@ class ReviewDataPageController extends ControllerMVC
       TextEditingController();
   late TextEditingController checkoutAisleNumberTextController =
       TextEditingController();
+  bool isCheckoutAisleNumberValid = true;
   late TextEditingController documentNumberTextController =
       TextEditingController();
+  bool isDocumentNumberValid = true;
   late TextEditingController issueDateTextController = TextEditingController();
   late TextEditingController sellerCuitTextController = TextEditingController();
+  bool isSellerCuitNumberValid = true;
   late TextEditingController grossIncomeTextController =
       TextEditingController();
   late TextEditingController businessOpeningDateTextController =
       TextEditingController();
   late TextEditingController clientCuitTextController = TextEditingController();
+  bool isClientCuitNumberValid = true;
   late TextEditingController clientNameTextController = TextEditingController();
   late TextEditingController clientVatConditionTextController =
       TextEditingController();
@@ -59,7 +63,6 @@ class ReviewDataPageController extends ControllerMVC
   late TextEditingController currencyTextController = TextEditingController();
   late TextEditingController otherTaxesAmountTextController =
       TextEditingController();
-  late TextEditingController totalTextController = TextEditingController();
   late TextEditingController exchangeRateTextController =
       TextEditingController();
   late TextEditingController netAmountTaxedTextController =
@@ -72,6 +75,8 @@ class ReviewDataPageController extends ControllerMVC
   late TextEditingController vat5TextController = TextEditingController();
   late TextEditingController vat2_5TextController = TextEditingController();
   late TextEditingController vat0TextController = TextEditingController();
+  late TextEditingController totalTextController = TextEditingController();
+  bool isTotalNumberValid = true;
 
   ///// Items /////
   late TextEditingController codTextController = TextEditingController();
@@ -100,20 +105,37 @@ class ReviewDataPageController extends ControllerMVC
         () => invoice?.header?.vatCondition = vatConditionTextController.text);
     documentTypeTextController.addListener(
         () => invoice?.header?.documentType = documentTypeTextController.text);
-    checkoutAisleNumberTextController.addListener(() => invoice
-        ?.header?.checkoutAisleNumber = checkoutAisleNumberTextController.text);
-    documentNumberTextController.addListener(() =>
-        invoice?.header?.documentNumber = documentNumberTextController.text);
+    checkoutAisleNumberTextController.addListener(() {
+      invoice?.header?.checkoutAisleNumber =
+          checkoutAisleNumberTextController.text;
+      isCheckoutAisleNumberValid = isInt(
+        checkoutAisleNumberTextController.text,
+      );
+      setState(() {});
+    });
+    documentNumberTextController.addListener(() {
+      invoice?.header?.documentNumber = documentNumberTextController.text;
+      isDocumentNumberValid = isInt(documentNumberTextController.text);
+      setState(() {});
+    });
     issueDateTextController.addListener(
         () => invoice?.header?.issueDate = issueDateTextController.text);
-    sellerCuitTextController.addListener(
-        () => invoice?.header?.sellerCuit = sellerCuitTextController.text);
+    sellerCuitTextController.addListener(() {
+      invoice?.header?.sellerCuit = sellerCuitTextController.text;
+      isSellerCuitNumberValid = isInt(sellerCuitTextController.text);
+      setState(() {});
+    });
     grossIncomeTextController.addListener(
         () => invoice?.header?.grossIncome = grossIncomeTextController.text);
     businessOpeningDateTextController.addListener(() => invoice
         ?.header?.businessOpeningDate = businessOpeningDateTextController.text);
-    clientCuitTextController.addListener(
-        () => invoice?.header?.clientCuit = clientCuitTextController.text);
+    clientCuitTextController.addListener(() {
+      invoice?.header?.clientCuit = clientCuitTextController.text;
+      isClientCuitNumberValid = isInt(
+        clientCuitTextController.text,
+      );
+      setState(() {});
+    });
     clientNameTextController.addListener(
         () => invoice?.header?.clientName = clientNameTextController.text);
     clientVatConditionTextController.addListener(() =>
@@ -127,8 +149,11 @@ class ReviewDataPageController extends ControllerMVC
         () => invoice?.footer?.currency = currencyTextController.text);
     otherTaxesAmountTextController.addListener(() => invoice
         ?.footer?.otherTaxesAmount = otherTaxesAmountTextController.text);
-    totalTextController
-        .addListener(() => invoice?.footer?.total = totalTextController.text);
+    totalTextController.addListener(() {
+      invoice?.footer?.total = totalTextController.text;
+      isTotalNumberValid = isDouble(totalTextController.text);
+      setState(() {});
+    });
     exchangeRateTextController.addListener(
         () => invoice?.footer?.exchangeRate = exchangeRateTextController.text);
     netAmountTaxedTextController.addListener(() =>
@@ -205,9 +230,6 @@ class ReviewDataPageController extends ControllerMVC
       saleMethodTextController.text = invoice?.header?.saleMethod ?? "";
 
       currencyTextController.text = invoice?.footer?.currency ?? "";
-      otherTaxesAmountTextController.text =
-          invoice?.footer?.otherTaxesAmount ?? "";
-      totalTextController.text = invoice?.footer?.total ?? "";
       exchangeRateTextController.text = invoice?.footer?.exchangeRate ?? "";
       netAmountTaxedTextController.text = invoice?.footer?.netAmountTaxed ?? "";
       subtotalFooterTextController.text = invoice?.footer?.subtotal ?? "";
@@ -217,6 +239,9 @@ class ReviewDataPageController extends ControllerMVC
       vat5TextController.text = invoice?.footer?.vat5 ?? "";
       vat2_5TextController.text = invoice?.footer?.vat2_5 ?? "";
       vat0TextController.text = invoice?.footer?.vat0 ?? "";
+      otherTaxesAmountTextController.text =
+          invoice?.footer?.otherTaxesAmount ?? "";
+      totalTextController.text = invoice?.footer?.total ?? "";
 
       ///// Items /////
 

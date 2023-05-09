@@ -62,3 +62,22 @@ bool isDateValid(String date) {
     return false;
   }
 }
+
+bool isDouble(String? text) {
+  const pattern = r"^(\d+(?:[\.\,]\d{1,2})?)$";
+  final regExp = RegExp(pattern);
+
+  if (!regExp.hasMatch(text ?? "")) {
+    return false;
+  }
+  return true;
+}
+
+bool isInt(String? text) {
+  int? output = text != null ? int.tryParse(text) : null;
+  return output != null;
+}
+
+String currencyFormat(String? price) {
+  return price != null ? NumberFormat("#,##0.0", "es-AR").format(price) : "";
+}

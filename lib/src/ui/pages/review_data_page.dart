@@ -184,11 +184,15 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
       const SizedBox(height: 10),
       TextInputComponent(
         controller: _con.checkoutAisleNumberTextController,
+        keyboardType: const TextInputType.numberWithOptions(decimal: false),
+        isValid: _con.isCheckoutAisleNumberValid,
         title: "Punto de Venta",
       ),
       const SizedBox(height: 10),
       TextInputComponent(
         controller: _con.documentNumberTextController,
+        keyboardType: const TextInputType.numberWithOptions(decimal: false),
+        isValid: _con.isDocumentNumberValid,
         title: "Comp. Nro",
       ),
       const SizedBox(height: 10),
@@ -199,6 +203,8 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
       const SizedBox(height: 10),
       TextInputComponent(
         controller: _con.sellerCuitTextController,
+        keyboardType: const TextInputType.numberWithOptions(decimal: false),
+        isValid: _con.isSellerCuitNumberValid,
         title: "CUIT",
       ),
       const SizedBox(height: 10),
@@ -216,6 +222,8 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
     return [
       TextInputComponent(
         controller: _con.clientCuitTextController,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        isValid: _con.isClientCuitNumberValid,
         title: "CUIT",
       ),
       const SizedBox(height: 10),
@@ -295,6 +303,8 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
       const SizedBox(height: 10),
       TextInputComponent(
         controller: _con.totalTextController,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        isValid: _con.isTotalNumberValid,
         title: "Total",
       ),
     ];

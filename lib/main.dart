@@ -40,8 +40,7 @@ class MyHomePageState extends State<MyApp> {
     _locale = Locale(getCode(DataManager().selectedCulture), '');
     return MaterialApp(
       supportedLocales: const [
-        Locale('es', ''),
-        Locale('en', ''),
+        Locale('es', 'es-AR'),
       ],
       navigatorKey: PageManager().navigatorKey,
       locale: _locale,

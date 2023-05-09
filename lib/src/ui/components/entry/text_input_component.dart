@@ -138,58 +138,44 @@ class TextInputComponentState extends State<TextInputComponent> {
               children: [
                 widget.leftIcon ?? const SizedBox.shrink(),
                 Expanded(
-                  child: widget.isValid
-                      ? TextFormField(
-                          controller: widget.controller,
-                          cursorColor: KGrey,
-                          cursorHeight: 13,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            hintStyle: widget.placeholderStyle,
-                            hintText: widget.placeholder ?? '',
-                            isCollapsed: true,
-                          ),
-                          enabled: widget.isEnabled,
-                          focusNode: widget.focusNode,
-                          inputFormatters: [
-                            ...widget.inputFormatters,
-                            LengthLimitingTextInputFormatter(widget.maxLength),
-                            if (widget.inputFormatters.isEmpty &&
-                                widget.keyboardType == TextInputType.number)
-                              FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          readOnly: widget.readOnly ??
-                              widget.inputType == InputTypeEnum.date,
-                          keyboardType: widget.keyboardType,
-                          obscureText:
-                              widget.isPassword && !widget.isPasswordEnabled,
-                          obscuringCharacter: "*",
-                          onChanged: (value) {
-                            if (widget.onTextChange != null) {
-                              widget.onTextChange!(value);
-                            }
-                          },
-                          onEditingComplete: widget.onEditComplete,
-                          onTap: widget.onPress,
-                          style: widget.textStyle,
-                          textInputAction:
-                              widget.textInputAction ?? TextInputAction.next,
-                        )
-                      : GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onTap: () {
-                            widget.isValid = true;
-                            setState(() {});
-                            if (widget.onPress != null) {
-                              widget.onPress!();
-                            }
-                          },
-                          child: Text(
-                            widget.errorPlaceHolder,
-                            style: widget.errorTextStyle,
-                          ),
-                        ),
+                  child: TextFormField(
+                    controller: widget.controller,
+                    cursorColor: KGrey,
+                    cursorHeight: 13,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      hintStyle: widget.placeholderStyle,
+                      hintText: widget.placeholder ?? '',
+                      isCollapsed: true,
+                    ),
+                    enabled: widget.isEnabled,
+                    focusNode: widget.focusNode,
+                    inputFormatters: [
+                      ...widget.inputFormatters,
+                      LengthLimitingTextInputFormatter(widget.maxLength),
+                      if (widget.inputFormatters.isEmpty &&
+                          widget.keyboardType == TextInputType.number)
+                        FilteringTextInputFormatter.digitsOnly,
+                    ],
+                    readOnly: widget.readOnly ??
+                        widget.inputType == InputTypeEnum.date,
+                    keyboardType: widget.keyboardType,
+                    obscureText: widget.isPassword && !widget.isPasswordEnabled,
+                    obscuringCharacter: "*",
+                    onChanged: (value) {
+                      if (widget.onTextChange != null) {
+                        widget.onTextChange!(value);
+                      }
+                    },
+                    onEditingComplete: widget.onEditComplete,
+                    onTap: widget.onPress,
+                    style: widget.isValid
+                        ? widget.textStyle
+                        : widget.errorTextStyle,
+                    textInputAction:
+                        widget.textInputAction ?? TextInputAction.next,
+                  ),
                 ),
                 GestureDetector(
                   onTap: widget.onPress,
