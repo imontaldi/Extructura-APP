@@ -251,9 +251,16 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
 
   List<Widget> _headerFooterSectionInputs() {
     return [
-      TextInputComponent(
-        controller: _con.currencyTextController,
+      // TextInputComponent(
+      //   controller: _con.currencyTextController,
+      //   title: "Moneda",
+      // ),
+      _dropDownNew(
+        isEnabled: true,
+        list: ["\$", "USD"],
         title: "Moneda",
+        currentValue: null,
+        function: (a) {},
       ),
       const SizedBox(height: 10),
       TextInputComponent(
@@ -263,41 +270,57 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
       const SizedBox(height: 10),
       TextInputComponent(
         controller: _con.netAmountTaxedTextController,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        isValid: _con.isNetAmountTaxedNumberValid,
         title: "Importe Neto Grabado",
       ),
       const SizedBox(height: 10),
       TextInputComponent(
         controller: _con.vat27TextController,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        isValid: _con.isvat27NumberValid,
         title: "IVA 27%",
       ),
       const SizedBox(height: 10),
       TextInputComponent(
         controller: _con.vat21TextController,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        isValid: _con.isvat21NumberValid,
         title: "IVA 21%",
       ),
       const SizedBox(height: 10),
       TextInputComponent(
         controller: _con.vat10_5TextController,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        isValid: _con.isvat10_5NumberValid,
         title: "IVA 10.5%",
       ),
       const SizedBox(height: 10),
       TextInputComponent(
         controller: _con.vat5TextController,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        isValid: _con.isvat5NumberValid,
         title: "IVA 5%",
       ),
       const SizedBox(height: 10),
       TextInputComponent(
         controller: _con.vat2_5TextController,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        isValid: _con.isvat2_5NumberValid,
         title: "IVA 2.5%",
       ),
       const SizedBox(height: 10),
       TextInputComponent(
         controller: _con.vat0TextController,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        isValid: _con.isvat0NumberValid,
         title: "IVA 0%",
       ),
       const SizedBox(height: 10),
       TextInputComponent(
         controller: _con.otherTaxesAmountTextController,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        isValid: _con.isOtherTaxesAmountNumberValid,
         title: "Importe Otros Tributos",
       ),
       const SizedBox(height: 10),
@@ -477,6 +500,65 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
         width: 20,
         color: _con.isStringAValidDate(controller.text) ? KGrey : KRed,
       ),
+    );
+  }
+
+  Widget _dropDownNew(
+      {bool isEnabled = true,
+      required List<String> list,
+      String? title,
+      String? currentValue,
+      required Function(String?) function}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title!,
+          style: const TextStyle(
+            color: KGrey,
+            fontSize: KFontSizeMedium35,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        const SizedBox(
+          height: 3,
+        ),
+        Container(
+          alignment: Alignment.center,
+          height: 38,
+          decoration: BoxDecoration(
+            color: KWhite,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: ButtonTheme(
+            alignedDropdown: true,
+            child: DropdownButton(
+              underline: const SizedBox.shrink(),
+              isExpanded: true,
+              dropdownColor: KWhite,
+              icon: const Icon(
+                Icons.keyboard_arrow_down,
+                size: 35,
+              ),
+              iconEnabledColor: KPrimary_L1,
+              iconDisabledColor: KDisableButton,
+              borderRadius: const BorderRadius.all(Radius.circular(12)),
+              items: list.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              value: currentValue,
+              onChanged: isEnabled
+                  ? (String? newValue) {
+                      function(newValue);
+                    }
+                  : null,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

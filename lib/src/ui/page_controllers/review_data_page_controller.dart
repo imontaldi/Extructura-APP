@@ -61,20 +61,28 @@ class ReviewDataPageController extends ControllerMVC
   late TextEditingController saleMethodTextController = TextEditingController();
 
   late TextEditingController currencyTextController = TextEditingController();
-  late TextEditingController otherTaxesAmountTextController =
-      TextEditingController();
   late TextEditingController exchangeRateTextController =
       TextEditingController();
   late TextEditingController netAmountTaxedTextController =
       TextEditingController();
+  bool isNetAmountTaxedNumberValid = true;
   late TextEditingController subtotalFooterTextController =
       TextEditingController();
   late TextEditingController vat27TextController = TextEditingController();
+  bool isvat27NumberValid = true;
   late TextEditingController vat21TextController = TextEditingController();
+  bool isvat21NumberValid = true;
   late TextEditingController vat10_5TextController = TextEditingController();
+  bool isvat10_5NumberValid = true;
   late TextEditingController vat5TextController = TextEditingController();
+  bool isvat5NumberValid = true;
   late TextEditingController vat2_5TextController = TextEditingController();
+  bool isvat2_5NumberValid = true;
   late TextEditingController vat0TextController = TextEditingController();
+  bool isvat0NumberValid = true;
+  late TextEditingController otherTaxesAmountTextController =
+      TextEditingController();
+  bool isOtherTaxesAmountNumberValid = true;
   late TextEditingController totalTextController = TextEditingController();
   bool isTotalNumberValid = true;
 
@@ -147,31 +155,57 @@ class ReviewDataPageController extends ControllerMVC
 
     currencyTextController.addListener(
         () => invoice?.footer?.currency = currencyTextController.text);
-    otherTaxesAmountTextController.addListener(() => invoice
-        ?.footer?.otherTaxesAmount = otherTaxesAmountTextController.text);
+    exchangeRateTextController.addListener(
+        () => invoice?.footer?.exchangeRate = exchangeRateTextController.text);
+    netAmountTaxedTextController.addListener(() {
+      invoice?.footer?.netAmountTaxed = netAmountTaxedTextController.text;
+      isNetAmountTaxedNumberValid = isDouble(netAmountTaxedTextController.text);
+      setState(() {});
+    });
+    subtotalFooterTextController.addListener(() {
+      invoice?.footer?.subtotal = subtotalFooterTextController.text;
+    });
+    vat27TextController.addListener(() {
+      invoice?.footer?.vat27 = vat27TextController.text;
+      isvat27NumberValid = isDouble(vat27TextController.text);
+      setState(() {});
+    });
+    vat21TextController.addListener(() {
+      invoice?.footer?.vat21 = vat21TextController.text;
+      isvat21NumberValid = isDouble(vat21TextController.text);
+      setState(() {});
+    });
+    vat10_5TextController.addListener(() {
+      invoice?.footer?.vat10_5 = vat10_5TextController.text;
+      isvat10_5NumberValid = isDouble(vat10_5TextController.text);
+      setState(() {});
+    });
+    vat5TextController.addListener(() {
+      invoice?.footer?.vat5 = vat5TextController.text;
+      isvat5NumberValid = isDouble(vat5TextController.text);
+      setState(() {});
+    });
+    vat2_5TextController.addListener(() {
+      invoice?.footer?.vat2_5 = vat2_5TextController.text;
+      isvat2_5NumberValid = isDouble(vat2_5TextController.text);
+      setState(() {});
+    });
+    vat0TextController.addListener(() {
+      invoice?.footer?.vat0 = vat0TextController.text;
+      isvat0NumberValid = isDouble(vat0TextController.text);
+      setState(() {});
+    });
+    otherTaxesAmountTextController.addListener(() {
+      invoice?.footer?.otherTaxesAmount = otherTaxesAmountTextController.text;
+      isOtherTaxesAmountNumberValid =
+          isDouble(otherTaxesAmountTextController.text);
+      setState(() {});
+    });
     totalTextController.addListener(() {
       invoice?.footer?.total = totalTextController.text;
       isTotalNumberValid = isDouble(totalTextController.text);
       setState(() {});
     });
-    exchangeRateTextController.addListener(
-        () => invoice?.footer?.exchangeRate = exchangeRateTextController.text);
-    netAmountTaxedTextController.addListener(() =>
-        invoice?.footer?.netAmountTaxed = netAmountTaxedTextController.text);
-    subtotalFooterTextController.addListener(
-        () => invoice?.footer?.subtotal = subtotalFooterTextController.text);
-    vat27TextController
-        .addListener(() => invoice?.footer?.vat27 = vat27TextController.text);
-    vat21TextController
-        .addListener(() => invoice?.footer?.vat21 = vat21TextController.text);
-    vat10_5TextController.addListener(
-        () => invoice?.footer?.vat10_5 = vat10_5TextController.text);
-    vat5TextController
-        .addListener(() => invoice?.footer?.vat5 = vat5TextController.text);
-    vat2_5TextController
-        .addListener(() => invoice?.footer?.vat2_5 = vat2_5TextController.text);
-    vat0TextController
-        .addListener(() => invoice?.footer?.vat0 = vat0TextController.text);
 
     ///// Items /////
     // Ambos
