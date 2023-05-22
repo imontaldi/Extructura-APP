@@ -4,8 +4,7 @@ import 'package:extructura_app/values/k_colors.dart';
 import 'package:extructura_app/values/k_values.dart';
 
 // ignore: must_be_immutable
-class PdfReaderNavigationBarComponent extends StatefulWidget
-    with PreferredSizeWidget {
+class PdfReaderNavigationBarComponent extends StatefulWidget {
   final String title;
   final Widget? titleContent;
   bool isContentBarExtended;
@@ -37,7 +36,6 @@ class PdfReaderNavigationBarComponent extends StatefulWidget
   final double barSize = 55;
   final double footerBarSize = 45;
 
-  @override
   Size get preferredSize => Size.fromHeight(
         ((isFooterBarExtended && isContentBarExtended)
             ? barSize + footerBarSize + contentExtendHeight + 5

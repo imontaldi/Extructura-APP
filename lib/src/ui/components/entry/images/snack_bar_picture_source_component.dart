@@ -18,14 +18,14 @@ class SnackBarPictureSourceComponent {
                   onTakePictureFromPDFButtonTap();
                   ScaffoldMessenger.of(context).removeCurrentSnackBar();
                 },
-                child: Card(
+                child: const Card(
                   color: Colors.white,
                   elevation: 2,
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const <Widget>[
+                      children: <Widget>[
                         Icon(Icons.file_copy, color: KPrimary),
                         SizedBox(height: 3),
                         Text(
@@ -51,14 +51,14 @@ class SnackBarPictureSourceComponent {
                   onTakePictureFromGaleryButtonTap();
                   ScaffoldMessenger.of(context).removeCurrentSnackBar();
                 },
-                child: Card(
+                child: const Card(
                   color: Colors.white,
                   elevation: 2,
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const <Widget>[
+                      children: <Widget>[
                         Icon(Icons.perm_media, color: KPrimary),
                         SizedBox(height: 3),
                         Text(
@@ -84,14 +84,14 @@ class SnackBarPictureSourceComponent {
                   await onTakePictureFromCameraButtonTap();
                   ScaffoldMessenger.of(context).removeCurrentSnackBar();
                 },
-                child: Card(
+                child: const Card(
                   color: Colors.white,
                   elevation: 2,
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const <Widget>[
+                      children: <Widget>[
                         Icon(Icons.camera_alt, color: KPrimary),
                         SizedBox(height: 3),
                         Text(

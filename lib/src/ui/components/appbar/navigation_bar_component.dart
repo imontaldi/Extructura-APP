@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:extructura_app/values/k_colors.dart';
 
 // ignore: must_be_immutable
-class NavigationBarComponent extends StatefulWidget with PreferredSizeWidget {
+class NavigationBarComponent extends StatefulWidget {
   final String title;
   final Widget? titleContent;
   bool isContentBarExtended;
@@ -35,7 +35,6 @@ class NavigationBarComponent extends StatefulWidget with PreferredSizeWidget {
   final double barSize = 55;
   final double footerBarSize = 45;
 
-  @override
   Size get preferredSize => Size.fromHeight(
         ((isFooterBarExtended && isContentBarExtended)
             ? barSize + footerBarSize + contentExtendHeight + 5
@@ -132,10 +131,10 @@ class NavigationBarComponentState extends State<NavigationBarComponent> {
                     children: [
                       _menuButton(),
                       const Spacer(),
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
+                        children: [
                           // End Buttons
                         ],
                       ),
