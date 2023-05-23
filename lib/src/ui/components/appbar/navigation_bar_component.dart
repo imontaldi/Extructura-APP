@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:extructura_app/values/k_colors.dart';
 
 // ignore: must_be_immutable
-class NavigationBarComponent extends StatefulWidget {
+class NavigationBarComponent extends StatefulWidget
+    implements PreferredSizeWidget {
   final String title;
   final Widget? titleContent;
   bool isContentBarExtended;
@@ -35,6 +36,7 @@ class NavigationBarComponent extends StatefulWidget {
   final double barSize = 55;
   final double footerBarSize = 45;
 
+  @override
   Size get preferredSize => Size.fromHeight(
         ((isFooterBarExtended && isContentBarExtended)
             ? barSize + footerBarSize + contentExtendHeight + 5

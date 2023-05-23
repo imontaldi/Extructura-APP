@@ -1,3 +1,5 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:extructura_app/src/enums/currency_type_enum.dart';
 import 'package:extructura_app/src/enums/input_type_enum.dart';
 import 'package:extructura_app/src/enums/invoice_type_enum.dart';
 import 'package:extructura_app/src/managers/page_manager/page_manager.dart';
@@ -251,20 +253,20 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
 
   List<Widget> _headerFooterSectionInputs() {
     return [
-      // TextInputComponent(
-      //   controller: _con.currencyTextController,
-      //   title: "Moneda",
-      // ),
       _dropDownNew(
-        isEnabled: true,
-        list: ["\$", "USD"],
         title: "Moneda",
-        currentValue: null,
-        function: (a) {},
+        isEnabled: true,
+        list: CurrencyTypeEnum.values.map((e) => e.code).toList(),
+        currentValue: _con.invoice?.footer?.currencyType?.code,
+        onValueChanged: (newValue) {
+          _con.changeCurrency(newValue);
+        },
       ),
       const SizedBox(height: 10),
       TextInputComponent(
         controller: _con.exchangeRateTextController,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        isValid: _con.isExchangeRateNumberValid,
         title: "Tipo de Cambio",
       ),
       const SizedBox(height: 10),
@@ -508,7 +510,7 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
       required List<String> list,
       String? title,
       String? currentValue,
-      required Function(String?) function}) {
+      required Function(String?) onValueChanged}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -532,17 +534,22 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
           ),
           child: ButtonTheme(
             alignedDropdown: true,
-            child: DropdownButton(
+            child: DropdownButton2(
               underline: const SizedBox.shrink(),
               isExpanded: true,
-              dropdownColor: KWhite,
-              icon: const Icon(
-                Icons.keyboard_arrow_down,
-                size: 35,
+              iconStyleData: const IconStyleData(
+                icon: Padding(
+                  padding: EdgeInsets.only(right: 10.0),
+                  child: Icon(
+                    Icons.keyboard_arrow_down,
+                    size: 25,
+                  ),
+                ),
               ),
-              iconEnabledColor: KPrimary_L1,
-              iconDisabledColor: KDisableButton,
-              borderRadius: const BorderRadius.all(Radius.circular(12)),
+              buttonStyleData: const ButtonStyleData(
+                  padding: EdgeInsets.zero,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(1)))),
               items: list.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
@@ -550,11 +557,22 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
                 );
               }).toList(),
               value: currentValue,
+              dropdownStyleData: DropdownStyleData(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                elevation: 1,
+              ),
               onChanged: isEnabled
                   ? (String? newValue) {
-                      function(newValue);
+                      onValueChanged(newValue);
                     }
                   : null,
+              style: const TextStyle(
+                color: KGrey,
+                fontWeight: FontWeight.w400,
+                fontSize: KFontSizeMedium35,
+              ),
             ),
           ),
         ),

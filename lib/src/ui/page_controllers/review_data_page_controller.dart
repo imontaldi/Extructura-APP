@@ -1,5 +1,7 @@
 import 'dart:core';
 
+import 'package:collection/collection.dart';
+import 'package:extructura_app/src/enums/currency_type_enum.dart';
 import 'package:extructura_app/src/managers/page_manager/page_manager.dart';
 import 'package:extructura_app/src/models/api_Invoice_models/invoice_model.dart';
 import 'package:extructura_app/src/models/api_Invoice_models/item_model.dart';
@@ -60,9 +62,10 @@ class ReviewDataPageController extends ControllerMVC
       TextEditingController();
   late TextEditingController saleMethodTextController = TextEditingController();
 
-  late TextEditingController currencyTextController = TextEditingController();
+  // late TextEditingController currencyTextController = TextEditingController();
   late TextEditingController exchangeRateTextController =
       TextEditingController();
+  bool isExchangeRateNumberValid = true;
   late TextEditingController netAmountTaxedTextController =
       TextEditingController();
   bool isNetAmountTaxedNumberValid = true;
@@ -153,10 +156,13 @@ class ReviewDataPageController extends ControllerMVC
     saleMethodTextController.addListener(
         () => invoice?.header?.saleMethod = saleMethodTextController.text);
 
-    currencyTextController.addListener(
-        () => invoice?.footer?.currency = currencyTextController.text);
-    exchangeRateTextController.addListener(
-        () => invoice?.footer?.exchangeRate = exchangeRateTextController.text);
+    // currencyTextController.addListener(
+    //     () => invoice?.footer?.currency = currencyTextController.text);
+    exchangeRateTextController.addListener(() {
+      invoice?.footer?.exchangeRate = exchangeRateTextController.text;
+      isExchangeRateNumberValid = isDouble(exchangeRateTextController.text);
+      setState(() {});
+    });
     netAmountTaxedTextController.addListener(() {
       invoice?.footer?.netAmountTaxed = netAmountTaxedTextController.text;
       isNetAmountTaxedNumberValid = isDouble(netAmountTaxedTextController.text);
@@ -263,7 +269,7 @@ class ReviewDataPageController extends ControllerMVC
       clientAddressTextController.text = invoice?.header?.clientAddress ?? "";
       saleMethodTextController.text = invoice?.header?.saleMethod ?? "";
 
-      currencyTextController.text = invoice?.footer?.currency ?? "";
+      // currencyTextController.text = invoice?.footer?.currency ?? "";
       exchangeRateTextController.text = invoice?.footer?.exchangeRate ?? "";
       netAmountTaxedTextController.text = invoice?.footer?.netAmountTaxed ?? "";
       subtotalFooterTextController.text = invoice?.footer?.subtotal ?? "";
@@ -325,5 +331,11 @@ class ReviewDataPageController extends ControllerMVC
   bool isStringAValidDate(String textToValidate) {
     return isDateValid(textToValidate) &&
         DateFormat('dd/MM/yy').parse(textToValidate).isBefore(DateTime.now());
+  }
+
+  void changeCurrency(String? currencySelected) {
+    invoice?.footer?.currencyType = CurrencyTypeEnum.values
+        .firstWhereOrNull((element) => element.code == currencySelected);
+    setState(() {});
   }
 }

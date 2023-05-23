@@ -5,7 +5,7 @@ import 'package:extructura_app/src/models/api_Invoice_models/header_model.dart';
 import 'package:extructura_app/src/models/api_Invoice_models/item_model.dart';
 
 class InvoiceModel {
-  String? _typeCharacter;
+  String? _invoiceTypeCharacter;
   HeaderModel? header;
   List<ItemModel>? items;
   FooterModel? footer;
@@ -15,14 +15,14 @@ class InvoiceModel {
     this.header,
     this.items,
     this.footer,
-  }) : _typeCharacter = typeCharacter;
+  }) : _invoiceTypeCharacter = typeCharacter;
 
   InvoiceTypeEnum? get type => InvoiceTypeEnum.values
-      .firstWhereOrNull((element) => element.value == _typeCharacter);
-  set orderType(InvoiceTypeEnum? value) => _typeCharacter = value?.value;
+      .firstWhereOrNull((element) => element.value == _invoiceTypeCharacter);
+  set orderType(InvoiceTypeEnum? value) => _invoiceTypeCharacter = value?.value;
 
   InvoiceModel.fromJson(Map<String, dynamic> json) {
-    _typeCharacter = json["type"];
+    _invoiceTypeCharacter = json["type"];
     header = json["header"] != null
         ? HeaderModel.fromJson(
             json["header"],

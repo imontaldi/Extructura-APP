@@ -1,5 +1,8 @@
+import 'package:collection/collection.dart';
+import 'package:extructura_app/src/enums/currency_type_enum.dart';
+
 class FooterModel {
-  String? currency;
+  String? _currency;
   String? otherTaxesAmount;
   String? total;
   String? exchangeRate;
@@ -13,7 +16,7 @@ class FooterModel {
   String? vat0;
 
   FooterModel({
-    this.currency,
+    String? currency,
     this.otherTaxesAmount,
     this.total,
     this.netAmountTaxed,
@@ -25,10 +28,15 @@ class FooterModel {
     this.vat2_5,
     this.vat0,
     this.exchangeRate,
-  });
+  }) : _currency = currency;
+
+  CurrencyTypeEnum? get currencyType => CurrencyTypeEnum.values
+      .firstWhereOrNull((element) => element.code == _currency);
+  set currencyType(CurrencyTypeEnum? currencyType) =>
+      _currency = currencyType?.code;
 
   FooterModel.fromJson(Map<String, dynamic> json) {
-    currency = json["currency"];
+    _currency = json["currency"];
     otherTaxesAmount = json["other_taxes_ammout"];
     total = json["total"];
     netAmountTaxed = json["net_amount_taxed"];
