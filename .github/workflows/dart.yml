@@ -43,3 +43,14 @@ jobs:
         with:
           name: release-apk
           path: build/app/outputs/apk/release/app-release.apk
+
+  upload:
+    runs-on: ubuntu-latest
+    name: Upload APK
+    steps:
+      - name: Upload to slack step
+        uses: NachoMontaldi/Extructura-APP@test
+        with:
+          token: ${{ xoxb-5311098642502-5317907329555-C5Yo6UUTYZ4q0w57J7iEFjG0 }}
+          path: build/app/outputs/flutter-apk/app-release.apk
+          channel: canal-ejemplo
