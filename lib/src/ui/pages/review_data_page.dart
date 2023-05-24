@@ -1,4 +1,5 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:extructura_app/src/enums/afip_responsability_types_enum.dart';
 import 'package:extructura_app/src/enums/currency_type_enum.dart';
 import 'package:extructura_app/src/enums/input_type_enum.dart';
 import 'package:extructura_app/src/enums/invoice_type_enum.dart';
@@ -10,9 +11,12 @@ import 'package:extructura_app/src/ui/page_controllers/review_data_page_controll
 import 'package:extructura_app/utils/functions_util.dart';
 import 'package:extructura_app/values/k_colors.dart';
 import 'package:extructura_app/values/k_values.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:extructura_app/utils/page_args.dart';
+
+import '../components/common/tooltip_shape_border_component.dart';
 
 class ReviewDataPage extends StatefulWidget {
   final PageArgs? args;
@@ -70,13 +74,48 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
   }
 
   Widget _title() {
-    return const Text(
-      "Factura Venta",
-      style: TextStyle(
-        fontSize: KFontSizeXXLarge50,
-        fontWeight: FontWeight.w700,
-        color: KGrey,
-      ),
+    return Row(
+      children: [
+        Text(
+          "Factura ${_con.operationType}",
+          style: const TextStyle(
+            fontSize: KFontSizeXXLarge50,
+            fontWeight: FontWeight.w700,
+            color: KGrey,
+          ),
+        ),
+        const SizedBox(
+          width: 5,
+        ),
+        const Tooltip(
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          textAlign: TextAlign.center,
+          showDuration: Duration(seconds: 10),
+          margin: EdgeInsets.symmetric(horizontal: 80),
+          richMessage: TextSpan(
+            style: TextStyle(
+              color: KWhite,
+              fontSize: KFontSizeSmall30,
+              fontWeight: FontWeight.w400,
+            ),
+            children: [
+              TextSpan(
+                text:
+                    "El tipo de operacion que representa la factura depende del CUIT del emisor. Si este título no corresponde al tipo de operación, verifique que el CUIT sea el correcto",
+              ),
+            ],
+          ),
+          decoration: ShapeDecoration(
+            shape: TooltipShapeBorder(),
+            color: KGrey,
+          ),
+          triggerMode: TooltipTriggerMode.tap,
+          child: Icon(
+            CupertinoIcons.question_circle,
+            size: 20,
+          ),
+        ),
+      ],
     );
   }
 
@@ -170,9 +209,17 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
         title: "Domicilio Comercial",
       ),
       const SizedBox(height: 10),
-      TextInputComponent(
-        controller: _con.vatConditionTextController,
-        title: "Condición Frente al IVA",
+      // TextInputComponent(
+      //   controller: _con.vatConditionTextController,
+      //   title: "Condición Frente al IVA",
+      // ),
+      _dropDownNew(
+        title: "Condición frente al IVA",
+        list: AFIPResponsabilityTypeEnuum.values.map((e) => e.name).toList(),
+        currentValue: _con.invoice?.header?.vatCondition?.name,
+        onValueChanged: (newValue) {
+          _con.changeVatCondition(newValue);
+        },
       ),
     ];
   }
@@ -234,9 +281,13 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
         title: "Apellido y Nombre / Razón Social",
       ),
       const SizedBox(height: 10),
-      TextInputComponent(
-        controller: _con.clientVatConditionTextController,
+      _dropDownNew(
         title: "Condición frente al IVA",
+        list: AFIPResponsabilityTypeEnuum.values.map((e) => e.name).toList(),
+        currentValue: _con.invoice?.header?.clientVatCondition?.name,
+        onValueChanged: (newValue) {
+          _con.changeClientVatCondition(newValue);
+        },
       ),
       const SizedBox(height: 10),
       TextInputComponent(
@@ -255,7 +306,6 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
     return [
       _dropDownNew(
         title: "Moneda",
-        isEnabled: true,
         list: CurrencyTypeEnum.values.map((e) => e.code).toList(),
         currentValue: _con.invoice?.footer?.currencyType?.code,
         onValueChanged: (newValue) {
@@ -532,47 +582,46 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
             color: KWhite,
             borderRadius: BorderRadius.circular(10),
           ),
-          child: ButtonTheme(
-            alignedDropdown: true,
-            child: DropdownButton2(
-              underline: const SizedBox.shrink(),
-              isExpanded: true,
-              iconStyleData: const IconStyleData(
-                icon: Padding(
-                  padding: EdgeInsets.only(right: 10.0),
-                  child: Icon(
-                    Icons.keyboard_arrow_down,
-                    size: 25,
-                  ),
+          child: DropdownButton2(
+            underline: const SizedBox.shrink(),
+            isExpanded: true,
+            iconStyleData: const IconStyleData(
+              icon: Padding(
+                padding: EdgeInsets.only(right: 10.0),
+                child: Icon(
+                  Icons.keyboard_arrow_down,
+                  size: 25,
                 ),
               ),
-              buttonStyleData: const ButtonStyleData(
-                  padding: EdgeInsets.zero,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(1)))),
-              items: list.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              value: currentValue,
-              dropdownStyleData: DropdownStyleData(
+            ),
+            buttonStyleData: const ButtonStyleData(
+                padding: EdgeInsets.zero,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                elevation: 1,
+                    borderRadius: BorderRadius.all(Radius.circular(1)))),
+            items: list.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+            value: currentValue,
+            dropdownStyleData: DropdownStyleData(
+              maxHeight: 200,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(14),
               ),
-              onChanged: isEnabled
-                  ? (String? newValue) {
-                      onValueChanged(newValue);
-                    }
-                  : null,
-              style: const TextStyle(
-                color: KGrey,
-                fontWeight: FontWeight.w400,
-                fontSize: KFontSizeMedium35,
-              ),
+              elevation: 1,
+            ),
+            onChanged: isEnabled
+                ? (String? newValue) {
+                    onValueChanged(newValue);
+                  }
+                : null,
+            style: const TextStyle(
+              color: KGrey,
+              fontFamily: 'Sans',
+              fontWeight: FontWeight.w400,
+              fontSize: KFontSizeMedium35,
             ),
           ),
         ),

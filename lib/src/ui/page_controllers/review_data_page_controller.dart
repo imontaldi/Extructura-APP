@@ -1,6 +1,7 @@
 import 'dart:core';
 
 import 'package:collection/collection.dart';
+import 'package:extructura_app/src/enums/afip_responsability_types_enum.dart';
 import 'package:extructura_app/src/enums/currency_type_enum.dart';
 import 'package:extructura_app/src/managers/page_manager/page_manager.dart';
 import 'package:extructura_app/src/models/api_Invoice_models/invoice_model.dart';
@@ -31,6 +32,7 @@ class ReviewDataPageController extends ControllerMVC
   InvoiceModel? invoice;
   ItemModel? item;
   int currentlyDisplayedItemIndex = 0;
+  late String operationType;
   ///// Encabezado y Pié /////
   late TextEditingController businessNameTextController =
       TextEditingController();
@@ -112,8 +114,8 @@ class ReviewDataPageController extends ControllerMVC
         () => invoice?.header?.businessName = businessNameTextController.text);
     businessAddressTextController.addListener(() =>
         invoice?.header?.businessAddress = businessNameTextController.text);
-    vatConditionTextController.addListener(
-        () => invoice?.header?.vatCondition = vatConditionTextController.text);
+    // vatConditionTextController.addListener(
+    //     () => invoice?.header?.vatCondition = vatConditionTextController.text);
     documentTypeTextController.addListener(
         () => invoice?.header?.documentType = documentTypeTextController.text);
     checkoutAisleNumberTextController.addListener(() {
@@ -134,6 +136,8 @@ class ReviewDataPageController extends ControllerMVC
     sellerCuitTextController.addListener(() {
       invoice?.header?.sellerCuit = sellerCuitTextController.text;
       isSellerCuitNumberValid = isInt(sellerCuitTextController.text);
+      invoice?.setOperationType(sellerCuitTextController.text);
+      operationType = invoice?.operationType?.name ?? "Compra";
       setState(() {});
     });
     grossIncomeTextController.addListener(
@@ -149,8 +153,8 @@ class ReviewDataPageController extends ControllerMVC
     });
     clientNameTextController.addListener(
         () => invoice?.header?.clientName = clientNameTextController.text);
-    clientVatConditionTextController.addListener(() =>
-        invoice?.header?.vatCondition = clientVatConditionTextController.text);
+    // clientVatConditionTextController.addListener(() =>
+    //     invoice?.header?.vatCondition = clientVatConditionTextController.text);
     clientAddressTextController.addListener(() =>
         invoice?.header?.clientAddress = clientAddressTextController.text);
     saleMethodTextController.addListener(
@@ -248,11 +252,12 @@ class ReviewDataPageController extends ControllerMVC
 
     if (args != null && args!.invoice != null) {
       invoice = args!.invoice!;
+      operationType = invoice?.operationType?.name ?? "Compra";
       ///// Encabezado y Pié /////
       businessNameTextController.text = invoice?.header?.businessName ?? "";
       businessAddressTextController.text =
           invoice?.header?.businessAddress ?? "";
-      vatConditionTextController.text = invoice?.header?.vatCondition ?? "";
+      // vatConditionTextController.text = invoice?.header?.vatCondition ?? "";
       documentTypeTextController.text = invoice?.header?.documentType ?? "";
       checkoutAisleNumberTextController.text =
           invoice?.header?.checkoutAisleNumber ?? "";
@@ -264,8 +269,8 @@ class ReviewDataPageController extends ControllerMVC
           invoice?.header?.businessOpeningDate ?? "";
       clientCuitTextController.text = invoice?.header?.clientCuit ?? "";
       clientNameTextController.text = invoice?.header?.clientName ?? "";
-      clientVatConditionTextController.text =
-          invoice?.header?.clientVatCondition ?? "";
+      // clientVatConditionTextController.text =
+      //     invoice?.header?.clientVatCondition ?? "";
       clientAddressTextController.text = invoice?.header?.clientAddress ?? "";
       saleMethodTextController.text = invoice?.header?.saleMethod ?? "";
 
@@ -336,6 +341,19 @@ class ReviewDataPageController extends ControllerMVC
   void changeCurrency(String? currencySelected) {
     invoice?.footer?.currencyType = CurrencyTypeEnum.values
         .firstWhereOrNull((element) => element.code == currencySelected);
+    setState(() {});
+  }
+
+  void changeVatCondition(String? vatConditionSelected) {
+    invoice?.header?.vatCondition = AFIPResponsabilityTypeEnuum.values
+        .firstWhereOrNull((element) => element.name == vatConditionSelected);
+    setState(() {});
+  }
+
+  void changeClientVatCondition(String? clientVatConditionSelected) {
+    invoice?.header?.clientVatCondition = AFIPResponsabilityTypeEnuum.values
+        .firstWhereOrNull(
+            (element) => element.name == clientVatConditionSelected);
     setState(() {});
   }
 }

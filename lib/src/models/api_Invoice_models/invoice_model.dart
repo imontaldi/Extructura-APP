@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:extructura_app/src/enums/invoice_type_enum.dart';
+import 'package:extructura_app/src/enums/operation_type_enum.dart';
 import 'package:extructura_app/src/models/api_Invoice_models/footer_model.dart';
 import 'package:extructura_app/src/models/api_Invoice_models/header_model.dart';
 import 'package:extructura_app/src/models/api_Invoice_models/item_model.dart';
@@ -9,6 +10,9 @@ class InvoiceModel {
   HeaderModel? header;
   List<ItemModel>? items;
   FooterModel? footer;
+
+  //Uso interno
+  int? _operationType;
 
   InvoiceModel({
     String? typeCharacter,
@@ -20,6 +24,10 @@ class InvoiceModel {
   InvoiceTypeEnum? get type => InvoiceTypeEnum.values
       .firstWhereOrNull((element) => element.value == _invoiceTypeCharacter);
   set orderType(InvoiceTypeEnum? value) => _invoiceTypeCharacter = value?.value;
+
+  OperationTypeEnum? get operationType => OperationTypeEnum.values
+      .firstWhereOrNull((element) => element.id == _operationType);
+  set operationType(OperationTypeEnum? value) => _operationType = value?.id;
 
   InvoiceModel.fromJson(Map<String, dynamic> json) {
     _invoiceTypeCharacter = json["type"];
@@ -36,6 +44,7 @@ class InvoiceModel {
             json["footer"],
           )
         : null;
+    setOperationType(header?.sellerCuit);
   }
 
   InvoiceTypeEnum? getInvoiceType(String invoiceType) {
@@ -49,5 +58,12 @@ class InvoiceModel {
       default:
         return InvoiceTypeEnum.A;
     }
+  }
+
+  void setOperationType(String? sellerCuit) {
+    //Si se usan cuentas por usuario se puede personalizar este campo
+    sellerCuit == "30654303254" //Cuit de DON DANTE SRL
+        ? _operationType = 1
+        : _operationType = 2;
   }
 }
