@@ -16,7 +16,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
       - uses: actions/checkout@v3
 
       # Note: This workflow uses the latest stable version of the Dart SDK.
@@ -24,6 +23,9 @@ jobs:
       # https://github.com/dart-lang/setup-dart/blob/main/README.md
       # - uses: dart-lang/setup-dart@v1
       - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Install Flutter
         uses: subosito/flutter-action@v2
@@ -45,7 +47,6 @@ jobs:
 
       - name: Post to a Slack channel
         uses: NachoMontaldi/Extructura-APP@test
-        # id: slack
         with:
           # Slack channel id, channel name, or user id to post message.
           # See also: https://api.slack.com/methods/chat.postMessage#channels
