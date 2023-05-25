@@ -53,3 +53,4 @@ jobs:
           file_path: build/app/outputs/flutter-apk/app-release.apk
           initial_comment: 'Apk Generada!'
           file_name: 'Extructura-APP-25-05-2023-v1.apk'
+          file_type: 'apk'
