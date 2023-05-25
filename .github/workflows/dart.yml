@@ -52,4 +52,4 @@ jobs:
           channel_id: C059QBG2U9F
           file_path: build/app/outputs/flutter-apk/app-release.apk
           initial_comment: 'Apk Generada!'
-          title: "Extructura-APP-25-05-2023-v1"
+          file_name: 'Extructura-APP-25-05-2023-v1.apk'
