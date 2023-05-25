@@ -45,14 +45,14 @@ jobs:
           name: release-apk
           path: build/app/outputs/apk/release/app-release.apk
 
-      # - name: Post to a Slack channel
-      #   uses: NachoMontaldi/Extructura-APP@test
-      #   with:
-      #     # Slack channel id, channel name, or user id to post message.
-      #     # See also: https://api.slack.com/methods/chat.postMessage#channels
-      #     # You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
-      #     channel-id: 'C059QBG2U9F' # ID del canal en donde se va a mandar el mensaje
-      #     # For posting a simple plain text message
-      #     slack-message: "GitHub build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
-      #   env:
-      #     SLACK_BOT_TOKEN: xoxb-5311098642502-5317907329555-C5Yo6UUTYZ4q0w57J7iEFjG0
+      - name: Post to a Slack channel
+        uses: NachoMontaldi/Extructura-APP@main
+        with:
+          # Slack channel id, channel name, or user id to post message.
+          # See also: https://api.slack.com/methods/chat.postMessage#channels
+          # You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
+          channel-id: 'C059QBG2U9F' # ID del canal en donde se va a mandar el mensaje
+          # For posting a simple plain text message
+          slack-message: "GitHub build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+        env:
+          SLACK_BOT_TOKEN: xoxb-5311098642502-5317907329555-C5Yo6UUTYZ4q0w57J7iEFjG0
