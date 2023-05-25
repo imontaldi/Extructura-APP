@@ -45,37 +45,11 @@ jobs:
           name: release-apk
           path: build/app/outputs/apk/release/app-release.apk
 
-      - name: Upload to Slack
-        uses: adrey/slack-file-upload-action@master
+
+      - uses: MeilCli/slack-upload-file@v3
         with:
-          token: xoxb-5311098642502-5317907329555-C5Yo6UUTYZ4q0w57J7iEFjG0
-          path: build/app/outputs/flutter-apk/app-release.apk
-          channel: canal-ejemplo
-          filename: "Nuevo Nombre"
+          slack_token:  xoxb-5311098642502-5317907329555-C5Yo6UUTYZ4q0w57J7iEFjG0
+          channel_id: C059QBG2U9F
+          file_path: build/app/outputs/flutter-apk/app-release.apk
           initial_comment: 'Apk Generada!'
-          title: "title"
-
-
-      # - uses: MeilCli/slack-upload-file@v3
-      #   with:
-      #     slack_token:  xoxb-5311098642502-5317907329555-C5Yo6UUTYZ4q0w57J7iEFjG0
-      #     channel_id: C059QBG2U9F
-      #     file_path: build/app/outputs/flutter-apk/app-release.apk
-      #     initial_comment: 'Apk Generada!'
-     
-      
-      
-
-      # - name: Post to a Slack channel
-      #   uses: slackapi/slack-github-action@v1.24.0
-      #   with:
-      #     # Slack channel id, channel name, or user id to post message.
-      #     # See also: https://api.slack.com/methods/chat.postMessage#channels
-      #     # You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
-      #     channel-id: 'C059QBG2U9F' # ID del canal en donde se va a mandar el mensaje
-      #     # For posting a simple plain text message
-      #     slack-message: "GitHub build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
-      #   env:
-      #     SLACK_BOT_TOKEN: xoxb-5311098642502-5317907329555-C5Yo6UUTYZ4q0w57J7iEFjG0
-
-      #
+          title: "Extructura-APP-25-05-2023-v1"
