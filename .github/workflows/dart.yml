@@ -37,18 +37,20 @@ jobs:
         id: date
         run: echo "date=$(date +'%Y-%m-%d-T%H-%M')" >>$GITHUB_OUTPUT
 
-      # - name: Test with environment variables
-      #   run: 
+      #  - name: Test with environment variables
+      #    run: echo $TAG_NAME
+      #    env:
+      #      TAG_NAME: Extructura-APP-${{ steps.date.outputs.date }}
         
 
       - name: Modify k_apk_date.dart
         uses: jaywcjlove/github-action-modify-file-content@main
         with:
-          path: lib\values\k_apk_date.dart
-          body: "const kAPKDate = {{echo $TAG_NAME}};"
+          path: lib/values/k_apk_date.dart
+          body: const kAPKDate = "$TAG_NAME";
           overwrite: 'true'
         env:
-          TAG_NAME: Extructura-APP_${{ steps.date.outputs.date }}
+          TAG_NAME: Extructura-APP-${{ steps.date.outputs.date }}
           
 
       # - name: Install Flutter
