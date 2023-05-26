@@ -47,7 +47,7 @@ jobs:
         uses: jaywcjlove/github-action-modify-file-content@main
         with:
           path: lib/values/k_apk_date.dart
-          body: const kAPKDate = "$TAG_NAME";
+          body: const kAPKDate = $TAG_NAME;
           overwrite: 'true'
         env:
           TAG_NAME: Extructura-APP-${{ steps.date.outputs.date }}
