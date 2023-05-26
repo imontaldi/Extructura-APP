@@ -57,7 +57,7 @@ jobs:
         with:
           slack_token:  xoxb-5311098642502-5317907329555-C5Yo6UUTYZ4q0w57J7iEFjG0
           channel_id: C059QBG2U9F
-          file_path: build/app/outputs/flutter-apk/Extructura-APP-26-05-2023-v1.apk
+          file_path: Extructura-APP-26-05-2023-v1.apk
           initial_comment: 'Apk Generada!'
           # file_name: 'Extructura-APP-25-05-2023-v1.apk'
           # file_type: 'apk'
