@@ -49,7 +49,7 @@ jobs:
         uses: jaywcjlove/github-action-modify-file-content@main
         with:
           path: lib/values/k_apk_date.dart
-          body: "const kAPKDate = \"{{date:YYYY-MM-DD_HH:mm}};\""
+          body: "const kAPKDate = \"{{date:YYYY-MM-DD_HH:mm}}\";"
           overwrite: 'true'
         
           
