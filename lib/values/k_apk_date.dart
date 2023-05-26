@@ -1,1 +1,1 @@
-const kAPKDate = $TAG_NAME;
+const kAPKDate = 2023-05-26_15:51;
