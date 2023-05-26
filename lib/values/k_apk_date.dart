@@ -1,1 +1,1 @@
-const kAPKDate = "26/05/2023 v1";
+const kAPKDate = "$TAG_NAME";
