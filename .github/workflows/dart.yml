@@ -10,7 +10,7 @@ on:
     branches: [ "test" ]
   pull_request:
     branches: [ "test" ]
-    
+
 jobs:
   build:
     permissions: write-all
@@ -67,7 +67,7 @@ jobs:
           # file_path: "Extructura-APP_$(date +'%Y-%m-%d_%H-%M').apk"
           content: 'file content'
           file_type: 'text'
-          file_name: $TAG_NAME
+          file_name: echo $TAG_NAME
           initial_comment: 'Apk Generada!'
         env:
           TAG_NAME: Extructura-APP-${{ steps.date.outputs.date }}
