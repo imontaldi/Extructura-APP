@@ -12,5 +12,3 @@ const double KFontSize4XLarge100 = 36;
 
 const double KDefaultLat = -24.7892;
 const double KDefaultLng = -65.4103;
-
-const KAPKDate = "26/05/2023 v1";
