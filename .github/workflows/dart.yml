@@ -36,6 +36,8 @@ jobs:
       - name: Get current date
         id: date
         run: echo "date=$(date +'%Y-%m-%d-T%H-%M')" >>$GITHUB_OUTPUT
+        env:
+          TAG_NAME: Extructura-APP-${{ steps.date.outputs.date }}
 
       #  - name: Test with environment variables
       #    run: echo $TAG_NAME
@@ -47,10 +49,9 @@ jobs:
         uses: jaywcjlove/github-action-modify-file-content@main
         with:
           path: lib/values/k_apk_date.dart
-          body: const kAPKDate = $TAG_NAME;
+          body: const kAPKDate = {{date:YYYY-MM-DD_HH:mm}};
           overwrite: 'true'
-        env:
-          TAG_NAME: Extructura-APP-${{ steps.date.outputs.date }}
+        
           
 
       # - name: Install Flutter
@@ -78,4 +79,3 @@ jobs:
       #     channel_id: C059QBG2U9F
       #     file_path: Extructura-APP-26-05-2023-v1.apk
       #     initial_comment: 'Apk Generada!'
-      
