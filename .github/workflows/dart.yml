@@ -29,6 +29,8 @@ jobs:
           body: "const kAPKDate = \"{{date:YYYY-MM-DD}}\";"
           overwrite: 'true'
 
+      - uses: actions/checkout@v3
+
   build:
     permissions: write-all
     runs-on: ubuntu-latest
