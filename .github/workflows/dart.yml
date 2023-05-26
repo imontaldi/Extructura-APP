@@ -27,35 +27,36 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.10.1'
-          channel: 'stable'
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d-T%H-%M')"
+      - name: Test with environment variables
+        run: echo $TAG_NAME
+        env:
+          TAG_NAME: Extructura-APP-${{ steps.date.outputs.date }}
 
-      - name: Install dependencies
-        run: flutter pub get
-
-      - name: Build APK
-        run: flutter build apk
-
-      # Uploads apk to github artifacts
-      # - name: Upload APK
-      #   uses: actions/upload-artifact@v3
+      # - name: Install Flutter
+      #   uses: subosito/flutter-action@v2
       #   with:
-      #     name: release-apk
-      #     path: build/app/outputs/apk/release/app-release.apk
-    
-      - name: Copy-Rename APK
-        uses: canastro/copy-file-action@master
-        with:
-          source: "build/app/outputs/flutter-apk/app-release.apk"
-          target: "Extructura-APP-26-05-2023-v1.apk"
+      #     flutter-version: '3.10.1'
+      #     channel: 'stable'
 
-      - name: Upload APK to Slack
-        uses: MeilCli/slack-upload-file@v3
-        with:
-          slack_token:  xoxb-5311098642502-5317907329555-C5Yo6UUTYZ4q0w57J7iEFjG0
-          channel_id: C059QBG2U9F
-          file_path: Extructura-APP-26-05-2023-v1.apk
-          initial_comment: 'Apk Generada!'
+      # - name: Install dependencies
+      #   run: flutter pub get
+
+      # - name: Build APK
+      #   run: flutter build apk
+    
+      # - name: Copy-Rename APK
+      #   uses: canastro/copy-file-action@master
+      #   with:
+      #     source: "build/app/outputs/flutter-apk/app-release.apk"
+      #     target: "Extructura-APP-26-05-2023-v1.apk"
+
+      # - name: Upload APK to Slack
+      #   uses: MeilCli/slack-upload-file@v3
+      #   with:
+      #     slack_token:  xoxb-5311098642502-5317907329555-C5Yo6UUTYZ4q0w57J7iEFjG0
+      #     channel_id: C059QBG2U9F
+      #     file_path: Extructura-APP-26-05-2023-v1.apk
+      #     initial_comment: 'Apk Generada!'
