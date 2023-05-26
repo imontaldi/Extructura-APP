@@ -34,7 +34,8 @@ jobs:
 
       - name: Get current date
         id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d-T%H-%M')"
+        run: echo "date=$(date +'%Y-%m-%d-T%H-%M')" >>$GITHUB_OUTPUT
+        # run: echo "::set-output name=date::$(date +'%Y-%m-%d-T%H-%M')"
       - name: Test with environment variables
         run: echo $TAG_NAME
         env:
