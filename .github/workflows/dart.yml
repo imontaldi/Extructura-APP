@@ -66,5 +66,5 @@ jobs:
           # file_path: "Extructura-APP_$(date +'%Y-%m-%d_%H-%M').apk"
           content: 'file content'
           file_type: 'text'
-          file_name: "Extructura-APP_$(date +'%Y-%m-%d_%H-%M').apk"
+          file_name: "Extructura-APP_{{date:YYYY-MM-DD_HH-mm}}.apk"
           initial_comment: 'Apk Generada!'
