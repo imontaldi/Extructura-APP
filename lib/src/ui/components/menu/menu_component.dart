@@ -272,6 +272,10 @@ class MenuComponentState extends State<MenuComponent> {
     return Column(
       key: const Key('menuFooter'),
       children: <Widget>[
+        // Borrar despues
+        const Text(KAPKDate),
+        const SizedBox(height: 20),
+        // ---------------------
         const Divider(
           height: 0,
           color: Color(0XFFC7C7C7),

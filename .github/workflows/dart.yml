@@ -59,5 +59,3 @@ jobs:
           channel_id: C059QBG2U9F
           file_path: Extructura-APP-26-05-2023-v1.apk
           initial_comment: 'Apk Generada!'
-          # file_name: 'Extructura-APP-25-05-2023-v1.apk'
-          # file_type: 'apk'
