@@ -1,1 +1,1 @@
-const kAPKDate = "2023-05-26_17-03";
+const kAPKDate = "2023-05-26";
