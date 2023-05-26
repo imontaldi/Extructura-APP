@@ -37,37 +37,32 @@ jobs:
        
       - uses: actions/checkout@v3
 
-      # - name: Install Flutter
-      #   uses: subosito/flutter-action@v2
-      #   with:
-      #     flutter-version: '3.10.1'
-      #     channel: 'stable'
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.10.1'
+          channel: 'stable'
 
-      # - name: Install dependencies
-      #   run: flutter pub get
+      - name: Install dependencies
+        run: flutter pub get
 
-      # - name: Build APK
-      #   run: flutter build apk        
+      - name: Build APK
+        run: flutter build apk        
     
-      # - name: Copy-Rename APK
-      #   uses: canastro/copy-file-action@master
-      #   with:
-      #     source: "build/app/outputs/flutter-apk/app-release.apk"
-      #     target: "$TAG_NAME.apk"
-
       - name: Get current date
         id: date
         run: echo "date=$(date +'%Y-%m-%d-T%H-%M')" >>$GITHUB_OUTPUT
+
+      - name: Copy-Rename APK
+        uses: canastro/copy-file-action@master
+        with:
+          source: "build/app/outputs/flutter-apk/app-release.apk"
+          target: "Extructura-APP_${{ steps.date.outputs.date }}.apk"
 
       - name: Upload APK to Slack
         uses: MeilCli/slack-upload-file@v3
         with:
           slack_token:  xoxb-5311098642502-5317907329555-C5Yo6UUTYZ4q0w57J7iEFjG0
           channel_id: C059QBG2U9F
-          # file_path: "Extructura-APP_$(date +'%Y-%m-%d_%H-%M').apk"
-          content: 'file content'
-          file_type: 'text'
-          file_name: echo $TAG_NAME
+          file_path: "Extructura-APP_${{ steps.date.outputs.date }}.apk"
           initial_comment: 'Apk Generada!'
-        env:
-          TAG_NAME: Extructura-APP-${{ steps.date.outputs.date }}
