@@ -1,1 +1,1 @@
-const kAPKDate = "$TAG_NAME";
+const kAPKDate = $TAG_NAME;
