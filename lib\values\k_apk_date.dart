@@ -1,1 +1,0 @@
-const kAPKDate = {{echo $TAG_NAME}};
