@@ -43,6 +43,9 @@ jobs:
           body: "const kAPKDate = \"{{date:YYYY-MM-DD_HH-mm}}\";"
           overwrite: 'true'
 
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
