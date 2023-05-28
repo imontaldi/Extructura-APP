@@ -7,9 +7,9 @@ name: Dart
 
 on:
   push:
-    branches: [ "test" ]
+    branches: [ "qa" ]
   pull_request:
-    branches: [ "test" ]
+    branches: [ "qa" ]
 
 jobs:
   version-name-change:
