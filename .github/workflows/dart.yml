@@ -73,8 +73,8 @@ jobs:
       - name: Upload APK to Slack
         uses: MeilCli/slack-upload-file@v3
         with:
-          slack_token:  xoxb-5311098642502-5317907329555-C5Yo6UUTYZ4q0w57J7iEFjG0
-          channel_id: C059QBG2U9F
+          slack_token: ${{ secrets.SLACK_TOKEN }}
+          channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
           file_path: "Extructura-APP_${{ steps.date.outputs.date }}.apk"
           initial_comment: 'Apk Generada!'
 
