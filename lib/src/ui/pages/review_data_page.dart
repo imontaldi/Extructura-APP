@@ -209,10 +209,6 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
         title: "Domicilio Comercial",
       ),
       const SizedBox(height: 10),
-      // TextInputComponent(
-      //   controller: _con.vatConditionTextController,
-      //   title: "Condición Frente al IVA",
-      // ),
       _dropDownNew(
         title: "Condición frente al IVA",
         list: AFIPResponsabilityTypeEnuum.values.map((e) => e.name).toList(),
@@ -319,54 +315,68 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
         isValid: _con.isExchangeRateNumberValid,
         title: "Tipo de Cambio",
       ),
-      const SizedBox(height: 10),
-      TextInputComponent(
-        controller: _con.netAmountTaxedTextController,
-        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        isValid: _con.isNetAmountTaxedNumberValid,
-        title: "Importe Neto Grabado",
-      ),
-      const SizedBox(height: 10),
-      TextInputComponent(
-        controller: _con.vat27TextController,
-        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        isValid: _con.isvat27NumberValid,
-        title: "IVA 27%",
-      ),
-      const SizedBox(height: 10),
-      TextInputComponent(
-        controller: _con.vat21TextController,
-        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        isValid: _con.isvat21NumberValid,
-        title: "IVA 21%",
-      ),
-      const SizedBox(height: 10),
-      TextInputComponent(
-        controller: _con.vat10_5TextController,
-        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        isValid: _con.isvat10_5NumberValid,
-        title: "IVA 10.5%",
-      ),
-      const SizedBox(height: 10),
-      TextInputComponent(
-        controller: _con.vat5TextController,
-        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        isValid: _con.isvat5NumberValid,
-        title: "IVA 5%",
-      ),
-      const SizedBox(height: 10),
-      TextInputComponent(
-        controller: _con.vat2_5TextController,
-        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        isValid: _con.isvat2_5NumberValid,
-        title: "IVA 2.5%",
-      ),
-      const SizedBox(height: 10),
-      TextInputComponent(
-        controller: _con.vat0TextController,
-        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        isValid: _con.isvat0NumberValid,
-        title: "IVA 0%",
+      Visibility(
+        visible: _con.invoice?.type == InvoiceTypeEnum.A,
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            TextInputComponent(
+              controller: _con.netAmountTaxedTextController,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+              isValid: _con.isNetAmountTaxedNumberValid,
+              title: "Importe Neto Grabado",
+            ),
+            const SizedBox(height: 10),
+            TextInputComponent(
+              controller: _con.vat27TextController,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+              isValid: _con.isvat27NumberValid,
+              title: "IVA 27%",
+            ),
+            const SizedBox(height: 10),
+            TextInputComponent(
+              controller: _con.vat21TextController,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+              isValid: _con.isvat21NumberValid,
+              title: "IVA 21%",
+            ),
+            const SizedBox(height: 10),
+            TextInputComponent(
+              controller: _con.vat10_5TextController,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+              isValid: _con.isvat10_5NumberValid,
+              title: "IVA 10.5%",
+            ),
+            const SizedBox(height: 10),
+            TextInputComponent(
+              controller: _con.vat5TextController,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+              isValid: _con.isvat5NumberValid,
+              title: "IVA 5%",
+            ),
+            const SizedBox(height: 10),
+            TextInputComponent(
+              controller: _con.vat2_5TextController,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+              isValid: _con.isvat2_5NumberValid,
+              title: "IVA 2.5%",
+            ),
+            const SizedBox(height: 10),
+            TextInputComponent(
+              controller: _con.vat0TextController,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+              isValid: _con.isvat0NumberValid,
+              title: "IVA 0%",
+            ),
+          ],
+        ),
       ),
       const SizedBox(height: 10),
       TextInputComponent(
@@ -479,6 +489,8 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
       const SizedBox(height: 10),
       TextInputComponent(
         controller: _con.amountTextController,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        isValid: _con.isAmountNumberValid,
         title: "Cantidad",
       ),
       const SizedBox(height: 10),
@@ -489,11 +501,15 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
       const SizedBox(height: 10),
       TextInputComponent(
         controller: _con.unitPriceTextController,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        isValid: _con.isUnitPriceNumberValid,
         title: "Precio Unit.",
       ),
       const SizedBox(height: 10),
       TextInputComponent(
         controller: _con.discountPercTextController,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        isValid: _con.isDiscountPercNumberValid,
         title: "% Bonif",
       ),
       Visibility(
@@ -502,7 +518,10 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
           children: [
             const SizedBox(height: 10),
             TextInputComponent(
-              controller: _con.discountPercTextController,
+              controller: _con.discountedSubtotalTextController,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+              isValid: _con.isDiscountedSubtotalPercNumberValid,
               title: "Imp. Bonif.",
             ),
           ],
@@ -511,6 +530,8 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
       const SizedBox(height: 10),
       TextInputComponent(
         controller: _con.subtotalTextController,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        isValid: _con.isSubtotalPercNumberValid,
         title: "Subtotal",
       ),
       Visibility(
@@ -525,6 +546,9 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
             const SizedBox(height: 10),
             TextInputComponent(
               controller: _con.subtotalIncFeesTextController,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+              isValid: _con.isSubtotalIncFeesNumberValid,
               title: "Subtotal c/IVA",
             ),
           ],
