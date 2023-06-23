@@ -15,12 +15,19 @@ jobs:
         - name: Get Head Ref branch name (i.e The current pull request branch)
           run: |
             echo "${{ steps.branch-name.outputs.head_ref_branch }}"
-        
-        - name: Modify head_branch.txt
+          
+        - name: Modify k_apk_date.dart
           uses: jaywcjlove/github-action-modify-file-content@main
           with:
-            path: lib/head_branch.txt
-            body: "${{ steps.branch-name.outputs.head_ref_branch }}"
+            path: lib/values/k_apk_date.dart
+            body: "const kAPKDate = \"{{date:YYYY-MM-DD}}\";"
             overwrite: 'true'
+        
+        # - name: Modify head_branch.txt
+        #   uses: jaywcjlove/github-action-modify-file-content@main
+        #   with:
+        #     path: lib/head_branch.txt
+        #     body: "${{ steps.branch-name.outputs.head_ref_branch }}"
+        #     overwrite: 'true'
 
           
