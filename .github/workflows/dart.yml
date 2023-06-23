@@ -8,8 +8,6 @@ name: Dart
 on:
   push:
     branches: [ "qa" ]
-  pull_request:
-    branches: [ "qa" ]
 
 jobs:
   version-name-change:
