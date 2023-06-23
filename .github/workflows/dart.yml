@@ -10,24 +10,24 @@ on:
     branches: [ "qa" ]
 
 jobs:
-  version-name-change:
-    permissions: write-all
-    runs-on: ubuntu-latest
+  # version-name-change:
+  #   permissions: write-all
+  #   runs-on: ubuntu-latest
 
-    steps: 
-      - name: Set Timezone
-        uses: szenius/set-timezone@v1.2
-        with:
-          timezoneLinux: "America/Buenos_Aires"       
+  #   steps: 
+  #     - name: Set Timezone
+  #       uses: szenius/set-timezone@v1.2
+  #       with:
+  #         timezoneLinux: "America/Buenos_Aires"       
 
-      - name: Modify k_apk_date.dart
-        uses: jaywcjlove/github-action-modify-file-content@main
-        with:
-          path: lib/values/k_apk_date.dart
-          body: "const kAPKDate = \"{{date:YYYY-MM-DD}}\";"
-          overwrite: 'true'
+  #     - name: Modify k_apk_date.dart
+  #       uses: jaywcjlove/github-action-modify-file-content@main
+  #       with:
+  #         path: lib/values/k_apk_date.dart
+  #         body: "const kAPKDate = \"{{date:YYYY-MM-DD}}\";"
+  #         overwrite: 'true'
 
-      - uses: actions/checkout@v3
+  #     - uses: actions/checkout@v3
 
   build:
     needs: version-name-change
@@ -39,7 +39,7 @@ jobs:
       # You can specify other versions if desired, see documentation here:
       # https://github.com/dart-lang/setup-dart/blob/main/README.md
       # - uses: dart-lang/setup-dart@v1
-      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+      # - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
 
       - uses: actions/checkout@v3
         with:
@@ -53,7 +53,7 @@ jobs:
 
       - name: Solucion StackOverflow 2
         run: | 
-          echo "Branch name: ${{ github.event.pull_request.base.ref }}"
+          echo "Branch name: ${{ github.pull_request }}"
         
 
 
