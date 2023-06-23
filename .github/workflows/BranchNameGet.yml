@@ -20,7 +20,7 @@ jobs:
       - name: Modify head_branch.txt
         uses: jaywcjlove/github-action-modify-file-content@main
         with:
-          path: lib/head_branch.txt
+          path: head_branch.txt
           body: "${{ steps.branch-name.outputs.head_ref_branch }}"
           overwrite: 'true'
 
