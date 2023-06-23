@@ -23,6 +23,7 @@ class QueryCriteria {
     return base64.encode(utf8.encode(json));
   }
 
+  // Ejemplo de commit
   Map<String, dynamic> toJson() => {
         "sort": sort != null
             ? List<dynamic>.from(sort!.map((x) => x.toJson()).toList())
