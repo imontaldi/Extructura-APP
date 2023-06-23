@@ -53,7 +53,7 @@ jobs:
 
       - name: Solucion StackOverflow 2
         run: | 
-          echo "Branch name: ${{ github.head_ref }}"
+          echo "Branch name: ${{ github.event.pull_request.base.ref }}"
         
 
 
