@@ -1,11 +1,11 @@
-name: Branch Name Get
+name: Get Branch Name 
 
 on:
   pull_request: 
     branches: [ "development" ]
 
 jobs:
-  which_branch:
+  set_head_branch_name:
     permissions: write-all
     runs-on: ubuntu-latest
     steps: 
@@ -25,4 +25,4 @@ jobs:
           body: "${{ steps.branch-name.outputs.head_ref_branch }}"
           overwrite: 'true'
 
-          
+ 
