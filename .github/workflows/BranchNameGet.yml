@@ -16,10 +16,10 @@ jobs:
           run: |
             echo "${{ steps.branch-name.outputs.head_ref_branch }}"
         
-        - name: Modify k_apk_date.dart
+        - name: Modify head_branch.txt
           uses: jaywcjlove/github-action-modify-file-content@main
           with:
-            path: head_branch.txt
+            path: ./head_branch.txt
             body: "${{ steps.branch-name.outputs.head_ref_branch }}"
             overwrite: 'true'
 
