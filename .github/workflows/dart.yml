@@ -29,24 +29,39 @@ jobs:
 
   #     - uses: actions/checkout@v3
 
-  which_branch:
-    runs-on: ubuntu-latest
-    steps:
-      # extract branch name
-      - name: Extract branch name
-        if: github.event_name != 'pull_request'
-        shell: bash
-        run: echo "name=$GITHUB_REF#refs/heads/" >>$GITHUB_ENV 
-        id: extract_branch
+    which_branch:
+      runs-on: ubuntu-latest
+      steps: 
+        - name: Get branch names
+          id: branch-name
+          uses: tj-actions/branch-names@v7
 
-      # extract branch name on pull request
-      - name: Print branch name
-        if: github.event_name == 'pull_request'
-        run: echo "name=$$GITHUB_HEAD_REF" >>$GITHUB_ENV
+        - name: Current branch name
+          run: |
+            echo "${{ steps.branch-name.outputs.current_branch }}"
+          # Outputs: "main" the branch that triggered the push event.
 
-      # print branch name
-      - name: Get branch name
-        run: echo 'The branch name is' $BRANCH_NAME
+        - name: Running on the default branch.
+          if: steps.branch-name.outputs.is_default == 'true'
+          run: |
+            echo "Running on default: ${{ steps.branch-name.outputs.current_branch }}"
+          # Outputs: "Running on default: main".
+        
+        - name: Running on the default branch (i.e non tag based branch).
+          if: steps.branch-name.outputs.is_tag == 'false' && steps.branch-name.outputs.is_default == 'true'
+          run: |
+            echo "Running on branch: ${{ steps.branch-name.outputs.current_branch }}"
+          # Outputs: "Running on branch: main".
+        
+        - name: Get Ref brach name
+          run: |
+            echo "${{ steps.branch-name.outputs.ref_branch }}"
+          #  Outputs: "main"
+        
+        - name: Default branch name
+          run: |
+            echo "${{ steps.branch-name.outputs.default_branch }}"
+          # Outputs: "main" the default branch.
 
   # build:
   #   # needs: version-name-change
