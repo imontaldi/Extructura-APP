@@ -27,8 +27,11 @@ jobs:
     which_branch:
       runs-on: ubuntu-latest
       steps: 
-        - name: Get branch names
-          id: branch-name
+        - name: Get branch names.
+          id: branch-names
           uses: tj-actions/branch-names@v7
+        - uses: actions/checkout@v3
+          with:
+            ref: ${{ steps.branch-names.outputs.head_ref_branch }}
 
         
