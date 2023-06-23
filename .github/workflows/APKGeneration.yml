@@ -30,16 +30,5 @@ jobs:
         - name: Get branch names
           id: branch-name
           uses: tj-actions/branch-names@v7
-        
-        - name: Get Head Ref branch name (i.e The current pull request branch)
-          run: |
-            echo "${{ steps.branch-name.outputs.head_ref_branch }}"
-        
-        - name: Modify k_apk_date.dart
-          uses: jaywcjlove/github-action-modify-file-content@main
-          with:
-            path: head_branch.txt
-            body: "${{ steps.branch-name.outputs.head_ref_branch }}"
-            overwrite: 'true'
 
         

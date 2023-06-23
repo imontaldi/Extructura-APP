@@ -1,8 +1,3 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
 name: Branch Name Get
 
 on:
@@ -17,119 +12,15 @@ jobs:
           id: branch-name
           uses: tj-actions/branch-names@v7
         
-        - name: Current branch name
-          run: |
-            echo "${{ steps.branch-name.outputs.current_branch }}"
-          # Outputs: "feature/test" current PR branch.
-
-        - name: Running on a non tag based branch and a PR branch.
-          if: steps.branch-name.outputs.is_default == 'false'
-          run: |
-            echo "Running on branch: ${{ steps.branch-name.outputs.current_branch }}"
-          # Outputs: "Running on branch: feature/test".
-        
-        - name: Running on a pull request (i.e non tag based branch).
-          if: steps.branch-name.outputs.is_tag == 'false' && steps.branch-name.outputs.is_default == 'false'
-          run: |
-            echo "Running on branch: ${{ steps.branch-name.outputs.current_branch }}"
-          # Outputs: "Running on branch: feature/test".
-        
-        - name: Get Ref branch name
-          run: |
-            echo "${{ steps.branch-name.outputs.ref_branch }}"
-          #  Outputs: "1/merge"
-
         - name: Get Head Ref branch name (i.e The current pull request branch)
           run: |
             echo "${{ steps.branch-name.outputs.head_ref_branch }}"
-          # Outputs: "feature/test" current PR branch.
-
-        - name: Get Base Ref branch name (i.e The target of a pull request.)
-          run: |
-            echo "${{ steps.branch-name.outputs.base_ref_branch }}"
-          # Outputs: "main".
         
-        - name: Default branch name
-          run: |
-            echo "${{ steps.branch-name.outputs.default_branch }}"
-          # Outputs: "main" the default branch.
-
-
-
-
-  # build:
-  #   # needs: version-name-change
-  #   permissions: write-all
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #     # Note: This workflow uses the latest stable version of the Dart SDK.
-  #     # You can specify other versions if desired, see documentation here:
-  #     # https://github.com/dart-lang/setup-dart/blob/main/README.md
-  #     # - uses: dart-lang/setup-dart@v1
-  #     # - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
-
-  #     - uses: actions/checkout@v3
-  #       with:
-  #         fetch-depth: 0
-  #         ref: qa
-        
-    
-  #     - name: Solucion StackOverflow
-  #       run: | 
-  #         echo "Branch name: ${{ github.event.head_commit.message }}"
-
-  #     - name: Solucion StackOverflow 2
-  #       run: | 
-  #         echo "Branch name: ${{ github.pull_request }}"
-
-  #     - name: Get branch names
-  #       id: branch-name
-  #       uses: tj-actions/branch-names@v7
-
-  #     - name: Get Head Ref branch name (i.e The current pull request branch)
-  #       run: |
-  #         echo "${{ steps.branch-name.outputs.head_ref_branch }}"
-  #       # Outputs: "feature/test" current PR branch.
-        
-
-
-    
-
-
-      # - name: Install Flutter
-      #   uses: subosito/flutter-action@v2
-      #   with:
-      #     flutter-version: '3.10.1'
-      #     channel: 'stable'
-          
-      # - name: Install dependencies
-      #   run: flutter pub get
-
-      # - name: Build APK
-      #   run: flutter build apk
-
-      # - name: Set Timezone
-      #   uses: szenius/set-timezone@v1.2
-      #   with:
-      #     timezoneLinux: "America/Buenos_Aires"   
-
-      # - name: Get current date
-      #   id: date
-      #   run: echo "date=$(date +'%Y-%m-%d')" >>$GITHUB_OUTPUT      
-
-      # - name: Copy-Rename APK
-      #   uses: canastro/copy-file-action@master
-      #   with:
-      #     source: "build/app/outputs/flutter-apk/app-release.apk"
-      #     target: "Extructura-APP_${{ steps.date.outputs.date }}.apk"
-
-      # - name: Upload APK to Slack
-      #   uses: MeilCli/slack-upload-file@v3
-      #   with:
-      #     slack_token: ${{ secrets.SLACK_TOKEN }}
-      #     channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
-      #     file_path: "Extructura-APP_${{ steps.date.outputs.date }}.apk"
-      #     initial_comment: 'Apk Generada!'
+        - name: Modify k_apk_date.dart
+          uses: jaywcjlove/github-action-modify-file-content@main
+          with:
+            path: head_branch.txt
+            body: "${{ steps.branch-name.outputs.head_ref_branch }}"
+            overwrite: 'true'
 
           
