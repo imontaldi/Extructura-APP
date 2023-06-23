@@ -1,0 +1,85 @@
+# # if: ${{ github.event_name == 'pull_request' }}
+# # This workflow uses actions that are not certified by GitHub.
+# # They are provided by a third-party and are governed by
+# # separate terms of service, privacy policy, and support
+# # documentation.
+
+# name: Dart
+
+# on:
+#   push:
+#     branches: [ "qa" ]
+#   pull_request:
+#     branches: [ "qa" ]
+
+# jobs:
+#   version-name-change:
+#     permissions: write-all
+#     runs-on: ubuntu-latest
+
+#     steps: 
+#       - name: Set Timezone
+#         uses: szenius/set-timezone@v1.2
+#         with:
+#           timezoneLinux: "America/Buenos_Aires"       
+
+#       - name: Modify k_apk_date.dart
+#         uses: jaywcjlove/github-action-modify-file-content@main
+#         with:
+#           path: lib/values/k_apk_date.dart
+#           body: "const kAPKDate = \"{{date:YYYY-MM-DD}}\";"
+#           overwrite: 'true'
+
+#       - uses: actions/checkout@v3
+
+#   build:
+#     needs: version-name-change
+#     permissions: write-all
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       # Note: This workflow uses the latest stable version of the Dart SDK.
+#       # You can specify other versions if desired, see documentation here:
+#       # https://github.com/dart-lang/setup-dart/blob/main/README.md
+#       # - uses: dart-lang/setup-dart@v1
+#       - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+
+#       - uses: actions/checkout@v3
+#         with:
+#           fetch-depth: 0
+#           ref: qa
+
+#       - name: Install Flutter
+#         uses: subosito/flutter-action@v2
+#         with:
+#           flutter-version: '3.10.2'
+#           channel: 'stable'
+          
+#       - name: Install dependencies
+#         run: flutter pub get
+
+#       - name: Build APK
+#         run: flutter build apk
+
+#       - name: Set Timezone
+#         uses: szenius/set-timezone@v1.2
+#         with:
+#           timezoneLinux: "America/Buenos_Aires"   
+
+#       - name: Get current date
+#         id: date
+#         run: echo "date=$(date +'%Y-%m-%d')" >>$GITHUB_OUTPUT      
+
+#       - name: Copy-Rename APK
+#         uses: canastro/copy-file-action@master
+#         with:
+#           source: "build/app/outputs/flutter-apk/app-release.apk"
+#           target: "HTG-Staff_${{ steps.date.outputs.date }}.apk"
+
+#       - name: Upload APK to Slack
+#         uses: MeilCli/slack-upload-file@v3
+#         with:
+#           slack_token: ${{ secrets.SLACK_TOKEN }}
+#           channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
+#           file_path: "HTG-Staff_${{ steps.date.outputs.date }}.apk"
+#           initial_comment: 'Apk Generada!'
