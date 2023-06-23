@@ -1,0 +1,26 @@
+name: Branch Name Get
+
+on:
+  pull_request: 
+    branches: [ "qa" ]
+
+jobs:
+  which_branch:
+      runs-on: ubuntu-latest
+      steps: 
+        - name: Get branch names
+          id: branch-name
+          uses: tj-actions/branch-names@v7
+        
+        - name: Get Head Ref branch name (i.e The current pull request branch)
+          run: |
+            echo "${{ steps.branch-name.outputs.head_ref_branch }}"
+        
+        - name: Modify head_branch.txt
+          uses: jaywcjlove/github-action-modify-file-content@main
+          with:
+            path: lib/head_branch.txt
+            body: "${{ steps.branch-name.outputs.head_ref_branch }}"
+            overwrite: 'true'
+
+          

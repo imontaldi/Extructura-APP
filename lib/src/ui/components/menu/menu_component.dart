@@ -1,3 +1,4 @@
+import 'package:extructura_app/values/k_apk_date.dart';
 import 'package:flutter/material.dart';
 import 'package:extructura_app/src/enums/page_names.dart';
 import 'package:extructura_app/src/managers/page_manager/page_manager.dart';
@@ -272,6 +273,10 @@ class MenuComponentState extends State<MenuComponent> {
     return Column(
       key: const Key('menuFooter'),
       children: <Widget>[
+        // Borrar despues
+        const Text(kAPKDate),
+        const SizedBox(height: 20),
+        // ---------------------
         const Divider(
           height: 0,
           color: Color(0XFFC7C7C7),
