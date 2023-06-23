@@ -51,9 +51,9 @@ jobs:
         run: | 
           echo "Branch name: ${{ github.event.head_commit.message }}"
 
-      - name: Running on any event
-        run: |
-          echo "Branch: ${{ github.head_ref }}"
+      - name: Solucion StackOverflow 2
+        run: | 
+          echo "Branch name: ${{ github.head_ref }}"
         
 
 
