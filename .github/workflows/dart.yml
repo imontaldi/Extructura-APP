@@ -36,52 +36,52 @@ jobs:
       - name: Extract branch name
         if: github.event_name != 'pull_request'
         shell: bash
-        run: echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_REF#refs/heads/})"
+        run: echo "name=$BRANCH_NAME" >>$GITHUB_REF#refs/heads/ 
         id: extract_branch
 
       # extract branch name on pull request
       - name: Print branch name
         if: github.event_name == 'pull_request'
-        run: echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_HEAD_REF})"
+        run: echo "name=$BRANCH_NAME" >>$GITHUB_HEAD_REF  
 
       # print branch name
       - name: Get branch name
         run: echo 'The branch name is' $BRANCH_NAME
 
-  build:
-    # needs: version-name-change
-    permissions: write-all
-    runs-on: ubuntu-latest
+  # build:
+  #   # needs: version-name-change
+  #   permissions: write-all
+  #   runs-on: ubuntu-latest
 
-    steps:
-      # Note: This workflow uses the latest stable version of the Dart SDK.
-      # You can specify other versions if desired, see documentation here:
-      # https://github.com/dart-lang/setup-dart/blob/main/README.md
-      # - uses: dart-lang/setup-dart@v1
-      # - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+  #   steps:
+  #     # Note: This workflow uses the latest stable version of the Dart SDK.
+  #     # You can specify other versions if desired, see documentation here:
+  #     # https://github.com/dart-lang/setup-dart/blob/main/README.md
+  #     # - uses: dart-lang/setup-dart@v1
+  #     # - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
 
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          ref: qa
+  #     - uses: actions/checkout@v3
+  #       with:
+  #         fetch-depth: 0
+  #         ref: qa
         
     
-      - name: Solucion StackOverflow
-        run: | 
-          echo "Branch name: ${{ github.event.head_commit.message }}"
+  #     - name: Solucion StackOverflow
+  #       run: | 
+  #         echo "Branch name: ${{ github.event.head_commit.message }}"
 
-      - name: Solucion StackOverflow 2
-        run: | 
-          echo "Branch name: ${{ github.pull_request }}"
+  #     - name: Solucion StackOverflow 2
+  #       run: | 
+  #         echo "Branch name: ${{ github.pull_request }}"
 
-      - name: Get branch names
-        id: branch-name
-        uses: tj-actions/branch-names@v7
+  #     - name: Get branch names
+  #       id: branch-name
+  #       uses: tj-actions/branch-names@v7
 
-      - name: Get Head Ref branch name (i.e The current pull request branch)
-        run: |
-          echo "${{ steps.branch-name.outputs.head_ref_branch }}"
-        # Outputs: "feature/test" current PR branch.
+  #     - name: Get Head Ref branch name (i.e The current pull request branch)
+  #       run: |
+  #         echo "${{ steps.branch-name.outputs.head_ref_branch }}"
+  #       # Outputs: "feature/test" current PR branch.
         
 
 
