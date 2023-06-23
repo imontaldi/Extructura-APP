@@ -54,6 +54,15 @@ jobs:
       - name: Solucion StackOverflow 2
         run: | 
           echo "Branch name: ${{ github.pull_request }}"
+
+      - name: Get branch names
+        id: branch-name
+        uses: tj-actions/branch-names@v7
+
+      - name: Get Head Ref branch name (i.e The current pull request branch)
+        run: |
+          echo "${{ steps.branch-name.outputs.head_ref_branch }}"
+        # Outputs: "feature/test" current PR branch.
         
 
 
