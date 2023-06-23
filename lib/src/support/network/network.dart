@@ -233,7 +233,5 @@ class Network {
     } catch (e) {
       return HttpCodesEnum.e500_InternalServerError;
     }
-
-    //return HttpCodesEnum.e500_InternalServerError;
   }
 }
