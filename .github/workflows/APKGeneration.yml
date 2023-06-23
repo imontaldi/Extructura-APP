@@ -2,7 +2,7 @@ name: APK Generation
 
 on:
   push:
-    branches: [ "qa" ]
+    branches: [ "development" ]
 
 jobs:
   # version-name-change:

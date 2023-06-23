@@ -2,7 +2,7 @@ name: Branch Name Get
 
 on:
   pull_request: 
-    branches: [ "qa" ]
+    branches: [ "development" ]
 
 jobs:
   which_branch:
