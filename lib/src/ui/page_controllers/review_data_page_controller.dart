@@ -49,12 +49,14 @@ class ReviewDataPageController extends ControllerMVC
       TextEditingController();
   bool isDocumentNumberValid = true;
   late TextEditingController issueDateTextController = TextEditingController();
+  bool isIssueDateValid = true;
   late TextEditingController sellerCuitTextController = TextEditingController();
   bool isSellerCuitNumberValid = true;
   late TextEditingController grossIncomeTextController =
       TextEditingController();
   late TextEditingController businessOpeningDateTextController =
       TextEditingController();
+  bool isBusinessOpeningDateValid = true;
   late TextEditingController clientCuitTextController = TextEditingController();
   bool isClientCuitNumberValid = true;
   late TextEditingController clientNameTextController = TextEditingController();
@@ -137,8 +139,11 @@ class ReviewDataPageController extends ControllerMVC
       isDocumentNumberValid = isInt(documentNumberTextController.text);
       setState(() {});
     });
-    issueDateTextController.addListener(
-        () => invoice?.header?.issueDate = issueDateTextController.text);
+    issueDateTextController.addListener(() {
+      invoice?.header?.issueDate = issueDateTextController.text;
+      isIssueDateValid = isStringAValidDate(issueDateTextController.text);
+      setState(() {});
+    });
     sellerCuitTextController.addListener(() {
       invoice?.header?.sellerCuit = sellerCuitTextController.text;
       isSellerCuitNumberValid = isInt(sellerCuitTextController.text);
@@ -148,8 +153,13 @@ class ReviewDataPageController extends ControllerMVC
     });
     grossIncomeTextController.addListener(
         () => invoice?.header?.grossIncome = grossIncomeTextController.text);
-    businessOpeningDateTextController.addListener(() => invoice
-        ?.header?.businessOpeningDate = businessOpeningDateTextController.text);
+    businessOpeningDateTextController.addListener(() {
+      invoice?.header?.businessOpeningDate =
+          businessOpeningDateTextController.text;
+      isBusinessOpeningDateValid =
+          isStringAValidDate(businessOpeningDateTextController.text);
+      setState(() {});
+    });
     clientCuitTextController.addListener(() {
       invoice?.header?.clientCuit = clientCuitTextController.text;
       isClientCuitNumberValid = isInt(
@@ -381,5 +391,94 @@ class ReviewDataPageController extends ControllerMVC
         .firstWhereOrNull(
             (element) => element.name == clientVatConditionSelected);
     setState(() {});
+  }
+
+  bool formValid() {
+    return isCheckoutAisleNumberValid &&
+        isDocumentNumberValid &&
+        isSellerCuitNumberValid &&
+        isClientCuitNumberValid &&
+        isExchangeRateNumberValid &&
+        isNetAmountTaxedNumberValid &&
+        isvat27NumberValid &&
+        isvat21NumberValid &&
+        isvat10_5NumberValid &&
+        isvat5NumberValid &&
+        isvat2_5NumberValid &&
+        isvat0NumberValid &&
+        isOtherTaxesAmountNumberValid &&
+        isTotalNumberValid &&
+        isAmountNumberValid &&
+        isUnitPriceNumberValid &&
+        isDiscountPercNumberValid &&
+        isSubtotalPercNumberValid &&
+        isSubtotalIncFeesNumberValid &&
+        isDiscountedSubtotalPercNumberValid &&
+        isIssueDateValid &&
+        isBusinessOpeningDateValid;
+  }
+
+  void generateCsvFiles() {}
+
+  void buildCsvBody() {
+    List<List<dynamic>> headerData = [];
+    List<dynamic> row = [];
+    row = [
+      "Razón Social",
+      "Domicilio Comercial",
+      "Condición frente al IVA",
+      "Tipo de Documento",
+      "Punto de Venta",
+      "Comp. Nro",
+      "Fecha de Emisión",
+      "CUIT",
+      "Ingresos Brutos",
+      "Fecha de Inicio de Actividades",
+      "CUIT",
+      "Apellido y Nombre / Razón Social",
+      "Condición frente al IVA",
+      "Domicilio Comercial",
+      "Condición de venta",
+      "Moneda",
+      "Tipo de Cambio",
+      "Importe Neto Grabado",
+      "IVA 27%",
+      "IVA 21%",
+      "IVA 10.5%",
+      "IVA 5%",
+      "IVA 2.5%",
+      "IVA 0%",
+      "Importe Otros Tributos",
+      "Total",
+    ];
+    headerData.add(row);
+    row = [
+      invoice?.header?.businessName,
+      invoice?.header?.businessAddress,
+      invoice?.header?.vatCondition?.name,
+      invoice?.header?.documentType,
+      invoice?.header?.checkoutAisleNumber,
+      invoice?.header?.documentNumber,
+      invoice?.header?.issueDate,
+      invoice?.header?.sellerCuit,
+      invoice?.header?.grossIncome,
+      invoice?.header?.businessOpeningDate,
+      invoice?.header?.clientCuit,
+      invoice?.header?.clientName,
+      invoice?.header?.clientVatCondition?.name,
+      invoice?.header?.clientAddress,
+      invoice?.header?.saleMethod,
+      invoice?.footer?.currencyType?.code,
+      exchangeRateTextController,
+      netAmountTaxedTextController,
+      vat27TextController,
+      vat21TextController,
+      vat10_5TextController,
+      vat5TextController,
+      vat2_5TextController,
+      vat0TextController,
+      otherTaxesAmountTextController,
+      totalTextController,
+    ];
   }
 }
