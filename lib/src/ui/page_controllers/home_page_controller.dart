@@ -1,11 +1,9 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:extructura_app/src/enums/image_type_enum.dart';
 import 'package:extructura_app/src/managers/data_manager.dart';
 import 'package:extructura_app/src/models/api_Invoice_models/invoice_model.dart';
 import 'package:extructura_app/src/models/image_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:extructura_app/src/interfaces/i_view_controller.dart';
 import 'package:extructura_app/src/managers/page_manager/page_manager.dart';

@@ -9,6 +9,7 @@ import 'package:extructura_app/src/ui/components/buttons/rounded_button_componen
 import 'package:extructura_app/src/ui/components/entry/text_input_component.dart';
 import 'package:extructura_app/src/ui/page_controllers/review_data_page_controller.dart';
 import 'package:extructura_app/utils/functions_util.dart';
+import 'package:extructura_app/utils/scroll_behaviour.dart';
 import 'package:extructura_app/values/k_colors.dart';
 import 'package:extructura_app/values/k_values.dart';
 import 'package:flutter/cupertino.dart';
@@ -50,24 +51,38 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
           hideNotificationButton: true,
           onBack: PageManager().goBack,
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _title(),
-                const SizedBox(
-                  height: 15,
+        body: Stack(
+          children: [
+            ScrollConfiguration(
+              behavior: CustomScrollBehaviour(),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _title(),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      _tabs(),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      _body(),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                    ],
+                  ),
                 ),
-                _tabs(),
-                const SizedBox(
-                  height: 15,
-                ),
-                _body(),
-              ],
+              ),
             ),
-          ),
+            Positioned(
+              bottom: 0,
+              child: _footer(),
+            ),
+          ],
         ),
       ),
     );
@@ -244,6 +259,7 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
       _dateInput(
         "Fecha de Emisión",
         _con.issueDateTextController,
+        _con.isIssueDateValid,
       ),
       const SizedBox(height: 10),
       TextInputComponent(
@@ -258,8 +274,11 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
         title: "Ingresos Brutos",
       ),
       const SizedBox(height: 10),
-      _dateInput("Fecha de Inicio de Actividades",
-          _con.businessOpeningDateTextController),
+      _dateInput(
+        "Fecha de Inicio de Actividades",
+        _con.businessOpeningDateTextController,
+        _con.isBusinessOpeningDateValid,
+      ),
     ];
   }
 
@@ -557,7 +576,8 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
     ];
   }
 
-  Widget _dateInput(String title, TextEditingController controller) {
+  Widget _dateInput(
+      String title, TextEditingController controller, bool isValid) {
     return TextInputComponent(
       controller: controller,
       title: title,
@@ -568,7 +588,7 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
         setState(() {});
       },
       isEnabled: true,
-      isValid: _con.isStringAValidDate(controller.text),
+      isValid: isValid,
       errorPlaceHolder: controller.text,
       rightIcon: Image.asset(
         "images/icon_calendar.png",
@@ -650,6 +670,29 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _footer() {
+    return InkWell(
+      onTap: () {
+        _con.generateCsvFiles();
+      },
+      child: Container(
+        height: 50,
+        width: MediaQuery.of(context).size.width,
+        color: _con.formValid() ? KPrimary : KGrey_L3,
+        child: const Center(
+          child: Text(
+            "Generar CSVs",
+            style: TextStyle(
+              color: KWhite,
+              fontSize: KFontSizeLarge40,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
