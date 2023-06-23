@@ -31,7 +31,7 @@ jobs:
         uses: jaywcjlove/github-action-modify-file-content@main
         with:
           path: lib/values/k_apk_date.dart
-          body: "const kAPKDate = \"{{date:YYYY-MM-DD}}\"_${{needs.get_head_branch_name.outputs.head_branch}};"
+          body: "const kAPKDate = \"{{date:YYYY-MM-DD}}_${{needs.get_head_branch_name.outputs.head_branch}}\";"
           overwrite: 'true'
 
       - uses: actions/checkout@v3
