@@ -48,39 +48,73 @@ jobs:
           fetch-depth: 0
           ref: qa
 
-      - name: Install Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.10.1'
-          channel: 'stable'
+      - name: Get branch name
+        id: branch-name
+        uses: tj-actions/branch-names@v7
+
+      - name: Running on the default branch.
+        if: steps.branch-name.outputs.is_default == 'true'
+        run: |
+          echo "Running on default: ${{ steps.branch-name.outputs.current_branch }}" 
+        # Outputs: "Running on default: main"
+      
+      - name: Running on a pull request branch.
+        if: steps.branch-name.outputs.is_default == 'false'
+        run: |
+          echo "Running on pr: ${{ steps.branch-name.outputs.current_branch }}"
+        # Outputs: "Running on pr: feature/test"
+      
+      - name: Running on a pull request branch.
+        if: steps.branch-name.outputs.is_default == 'false'
+        run: |
+          echo "Base branch: ${{ steps.branch-name.outputs.base_ref_branch }}"
+        # Outputs: "Base branch: main"
+        
+      - name: Running on any event
+        run: |
+          echo "Default branch: ${{ steps.branch-name.outputs.default_branch }}"
+        # Outputs: "Default branch: main"
+
+      - name: Solucion StackOverflow
+        run: | 
+          echo "Branch name: ${{ github.event.head_commit.message }}"
+
+      
+
+
+      # - name: Install Flutter
+      #   uses: subosito/flutter-action@v2
+      #   with:
+      #     flutter-version: '3.10.1'
+      #     channel: 'stable'
           
-      - name: Install dependencies
-        run: flutter pub get
+      # - name: Install dependencies
+      #   run: flutter pub get
 
-      - name: Build APK
-        run: flutter build apk
+      # - name: Build APK
+      #   run: flutter build apk
 
-      - name: Set Timezone
-        uses: szenius/set-timezone@v1.2
-        with:
-          timezoneLinux: "America/Buenos_Aires"   
+      # - name: Set Timezone
+      #   uses: szenius/set-timezone@v1.2
+      #   with:
+      #     timezoneLinux: "America/Buenos_Aires"   
 
-      - name: Get current date
-        id: date
-        run: echo "date=$(date +'%Y-%m-%d')" >>$GITHUB_OUTPUT      
+      # - name: Get current date
+      #   id: date
+      #   run: echo "date=$(date +'%Y-%m-%d')" >>$GITHUB_OUTPUT      
 
-      - name: Copy-Rename APK
-        uses: canastro/copy-file-action@master
-        with:
-          source: "build/app/outputs/flutter-apk/app-release.apk"
-          target: "Extructura-APP_${{ steps.date.outputs.date }}.apk"
+      # - name: Copy-Rename APK
+      #   uses: canastro/copy-file-action@master
+      #   with:
+      #     source: "build/app/outputs/flutter-apk/app-release.apk"
+      #     target: "Extructura-APP_${{ steps.date.outputs.date }}.apk"
 
-      - name: Upload APK to Slack
-        uses: MeilCli/slack-upload-file@v3
-        with:
-          slack_token: ${{ secrets.SLACK_TOKEN }}
-          channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
-          file_path: "Extructura-APP_${{ steps.date.outputs.date }}.apk"
-          initial_comment: 'Apk Generada!'
+      # - name: Upload APK to Slack
+      #   uses: MeilCli/slack-upload-file@v3
+      #   with:
+      #     slack_token: ${{ secrets.SLACK_TOKEN }}
+      #     channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
+      #     file_path: "Extructura-APP_${{ steps.date.outputs.date }}.apk"
+      #     initial_comment: 'Apk Generada!'
 
           
