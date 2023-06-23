@@ -114,10 +114,7 @@ class PdfViewPageState extends StateMVC<PdfViewPage> {
       if (Platform.isIOS) {
         directory = await getApplicationDocumentsDirectory();
       } else {
-        // directory = Directory('/storage/emulated/0/Download');
-        // if (!await directory.exists()) {
         directory = await getExternalStorageDirectory();
-        // }
       }
     } catch (err) {
       debugPrint("No se pudo encontrar la carpeta de descargas");

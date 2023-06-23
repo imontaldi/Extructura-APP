@@ -95,16 +95,22 @@ class ReviewDataPageController extends ControllerMVC
   late TextEditingController codTextController = TextEditingController();
   late TextEditingController titleTextController = TextEditingController();
   late TextEditingController amountTextController = TextEditingController();
+  bool isAmountNumberValid = true;
   late TextEditingController measureTextController = TextEditingController();
   late TextEditingController unitPriceTextController = TextEditingController();
+  bool isUnitPriceNumberValid = true;
   late TextEditingController discountPercTextController =
       TextEditingController();
+  bool isDiscountPercNumberValid = true;
   late TextEditingController subtotalTextController = TextEditingController();
+  bool isSubtotalPercNumberValid = true;
   late TextEditingController ivaFeeTextController = TextEditingController();
   late TextEditingController subtotalIncFeesTextController =
       TextEditingController();
+  bool isSubtotalIncFeesNumberValid = true;
   late TextEditingController discountedSubtotalTextController =
       TextEditingController();
+  bool isDiscountedSubtotalPercNumberValid = true;
 
   @override
   void initPage({PageArgs? arguments}) {
@@ -223,32 +229,52 @@ class ReviewDataPageController extends ControllerMVC
         ?.items?[currentlyDisplayedItemIndex].cod = codTextController.text);
     titleTextController.addListener(() => invoice
         ?.items?[currentlyDisplayedItemIndex].title = titleTextController.text);
-    amountTextController.addListener(() => invoice
-        ?.items?[currentlyDisplayedItemIndex]
-        .amount = amountTextController.text);
+    amountTextController.addListener(() {
+      invoice?.items?[currentlyDisplayedItemIndex].amount =
+          amountTextController.text;
+      isAmountNumberValid = isDouble(amountTextController.text);
+      setState(() {});
+    });
     measureTextController.addListener(() => invoice
         ?.items?[currentlyDisplayedItemIndex]
         .measure = measureTextController.text);
-    unitPriceTextController.addListener(() => invoice
-        ?.items?[currentlyDisplayedItemIndex]
-        .unitPrice = unitPriceTextController.text);
-    discountPercTextController.addListener(() => invoice
-        ?.items?[currentlyDisplayedItemIndex]
-        .discountPerc = discountPercTextController.text);
-    subtotalTextController.addListener(() => invoice
-        ?.items?[currentlyDisplayedItemIndex]
-        .subtotal = subtotalTextController.text);
+    unitPriceTextController.addListener(() {
+      invoice?.items?[currentlyDisplayedItemIndex].unitPrice =
+          unitPriceTextController.text;
+      isUnitPriceNumberValid = isDouble(unitPriceTextController.text);
+      setState(() {});
+    });
+    discountPercTextController.addListener(() {
+      invoice?.items?[currentlyDisplayedItemIndex].discountPerc =
+          discountPercTextController.text;
+      isDiscountPercNumberValid = isDouble(discountPercTextController.text);
+      setState(() {});
+    });
+    subtotalTextController.addListener(() {
+      invoice?.items?[currentlyDisplayedItemIndex].subtotal =
+          subtotalTextController.text;
+      isSubtotalPercNumberValid = isDouble(subtotalTextController.text);
+      setState(() {});
+    });
     // A
     ivaFeeTextController.addListener(() => invoice
         ?.items?[currentlyDisplayedItemIndex]
         .vatFee = ivaFeeTextController.text);
-    subtotalIncFeesTextController.addListener(() => invoice
-        ?.items?[currentlyDisplayedItemIndex]
-        .subtotalIncFees = subtotalIncFeesTextController.text);
+    subtotalIncFeesTextController.addListener(() {
+      invoice?.items?[currentlyDisplayedItemIndex].subtotalIncFees =
+          subtotalIncFeesTextController.text;
+      isSubtotalIncFeesNumberValid =
+          isDouble(subtotalIncFeesTextController.text);
+      setState(() {});
+    });
     // C
-    discountedSubtotalTextController.addListener(() => invoice
-        ?.items?[currentlyDisplayedItemIndex]
-        .discountedSubtotal = discountedSubtotalTextController.text);
+    discountedSubtotalTextController.addListener(() {
+      invoice?.items?[currentlyDisplayedItemIndex].discountedSubtotal =
+          discountedSubtotalTextController.text;
+      isDiscountedSubtotalPercNumberValid =
+          isDouble(discountedSubtotalTextController.text);
+      setState(() {});
+    });
 
     if (args != null && args!.invoice != null) {
       invoice = args!.invoice!;
