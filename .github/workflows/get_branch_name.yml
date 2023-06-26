@@ -28,7 +28,7 @@ jobs:
       - name: Modify head_branch.txt
         uses: jaywcjlove/github-action-modify-file-content@main
         with:
-          branch: "${{ steps.sanitize-branch-name.outputs.replaced }}"
+          branch: "${{ steps.branch-name.outputs.head_ref_branch }}"
           path: head_branch.txt
           body: "${{ steps.sanitize-branch-name.outputs.replaced }}"
           overwrite: 'true'
