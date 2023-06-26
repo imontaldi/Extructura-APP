@@ -12,23 +12,23 @@ jobs:
       - name: Get branch names
         id: branch-name
         uses: tj-actions/branch-names@v7
-
-      - name: Check PR title
-        env:
-          TITLE: ${{ steps.branch-name.outputs.head_ref_branch }}
-        run: |
-          echo $TITLE
       
       - name: Get Head Ref branch name (i.e The current pull request branch)
         run: |
-          echo $TITLE
+          echo "${{ steps.branch-name.outputs.head_ref_branch }}"
+
+      - name: Sanitize Branch Name
+        id: sanitize-branch-name
+        uses: frabert/replace-string-action@v2
+        with:
+          pattern: 'Hello, (\w+)!'
+          string: 'Hello, world!'
+          replace-with: 'I greet you, $1!'
       
       - name: Modify head_branch.txt
         uses: jaywcjlove/github-action-modify-file-content@main
         with:
-          branch: "${{ steps.branch-name.outputs.head_ref_branch }}"
+          branch: "${{ steps.sanitize-branch-name.outputs.replace-with }}"
           path: head_branch.txt
-          body: $TITLE
+          body: "${{ steps.sanitize-branch-name.outputs.replace-with }}"
           overwrite: 'true'
-
- 
