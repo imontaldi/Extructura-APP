@@ -1,88 +1,88 @@
-# name: APK Generation
+name: APK Generation
 
-# on:
-#   push:
-#     branches: [ "development" ]
+on:
+  push:
+    branches: [ "development" ]
 
-# jobs:
-#   get_head_branch_name:
-#     runs-on: ubuntu-latest
-#     outputs:
-#       head_branch: ${{ steps.head_branch.outputs.content }}
-#     steps: 
-#       - name: Read head_branch.txt
-#         id: head_branch
-#         uses: jaywcjlove/github-action-read-file@main
-#         with:
-#           path: head_branch.txt
+jobs:
+  get_head_branch_name:
+    runs-on: ubuntu-latest
+    outputs:
+      head_branch: ${{ steps.head_branch.outputs.content }}
+    steps: 
+      - name: Read head_branch.txt
+        id: head_branch
+        uses: jaywcjlove/github-action-read-file@main
+        with:
+          path: head_branch.txt
 
-#   version-name-change:
-#     needs: get_head_branch_name
-#     permissions: write-all
-#     runs-on: ubuntu-latest
+  version-name-change:
+    needs: get_head_branch_name
+    permissions: write-all
+    runs-on: ubuntu-latest
 
-#     steps: 
-#       - name: Set Timezone
-#         uses: szenius/set-timezone@v1.2
-#         with:
-#           timezoneLinux: "America/Buenos_Aires"       
+    steps: 
+      - name: Set Timezone
+        uses: szenius/set-timezone@v1.2
+        with:
+          timezoneLinux: "America/Buenos_Aires"       
 
-#       - name: Modify k_apk_date.dart
-#         uses: jaywcjlove/github-action-modify-file-content@main
-#         with:
-#           path: lib/values/k_apk_date.dart
-#           body: "const kAPKDate = \"{{date:YYYY-MM-DD}}_${{needs.get_head_branch_name.outputs.head_branch}}\";"
-#           overwrite: 'true'
+      - name: Modify k_apk_date.dart
+        uses: jaywcjlove/github-action-modify-file-content@main
+        with:
+          path: lib/values/k_apk_date.dart
+          body: "const kAPKDate = \"{{date:YYYY-MM-DD}}_${{needs.get_head_branch_name.outputs.head_branch}}\";"
+          overwrite: 'true'
 
-#       - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-#   build:
-#     needs: [get_head_branch_name, version-name-change] 
-#     permissions: write-all
-#     runs-on: ubuntu-latest
+  build:
+    needs: [get_head_branch_name, version-name-change] 
+    permissions: write-all
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+    steps:
+      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
 
-#       - uses: actions/checkout@v3
-#         with:
-#           fetch-depth: 0
-#           ref: development
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: development
 
-#       - name: Install Flutter
-#         uses: subosito/flutter-action@v2
-#         with:
-#           flutter-version: '3.10.2'
-#           channel: 'stable'
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.10.2'
+          channel: 'stable'
           
-#       - name: Install dependencies
-#         run: flutter pub get
+      - name: Install dependencies
+        run: flutter pub get
 
-#       - name: Build APK
-#         run: flutter build apk
+      - name: Build APK
+        run: flutter build apk
 
-#       - name: Set Timezone
-#         uses: szenius/set-timezone@v1.2
-#         with:
-#           timezoneLinux: "America/Buenos_Aires"   
+      - name: Set Timezone
+        uses: szenius/set-timezone@v1.2
+        with:
+          timezoneLinux: "America/Buenos_Aires"   
 
-#       - name: Get current date
-#         id: date
-#         run: echo "date=$(date +'%Y-%m-%d')" >>$GITHUB_OUTPUT      
+      - name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >>$GITHUB_OUTPUT      
 
-#       - name: Copy-Rename APK
-#         uses: canastro/copy-file-action@master
-#         with:
-#           source: "build/app/outputs/flutter-apk/app-release.apk"
-#           target: "Extructura_APP_${{ steps.date.outputs.date }}_${{needs.get_head_branch_name.outputs.head_branch}}.apk"
+      - name: Copy-Rename APK
+        uses: canastro/copy-file-action@master
+        with:
+          source: "build/app/outputs/flutter-apk/app-release.apk"
+          target: "Extructura_APP_${{ steps.date.outputs.date }}_${{needs.get_head_branch_name.outputs.head_branch}}.apk"
 
-#       - name: Upload APK to Slack
-#         uses: MeilCli/slack-upload-file@v3
-#         with:
-#           slack_token: ${{ secrets.SLACK_TOKEN }}
-#           channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
-#           file_path: "Extructura_APP_${{ steps.date.outputs.date }}_${{needs.get_head_branch_name.outputs.head_branch}}.apk"
-#           initial_comment: 'Apk Generada!'
+      - name: Upload APK to Slack
+        uses: MeilCli/slack-upload-file@v3
+        with:
+          slack_token: ${{ secrets.SLACK_TOKEN }}
+          channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
+          file_path: "Extructura_APP_${{ steps.date.outputs.date }}_${{needs.get_head_branch_name.outputs.head_branch}}.apk"
+          initial_comment: 'Apk Generada!'
 
 
           
