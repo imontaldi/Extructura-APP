@@ -1,1 +1,1 @@
-const kAPKDate = "2023-06-26_feature/HTG-1";
+const kAPKDate = "2023-06-26_feature_EXT-3";
