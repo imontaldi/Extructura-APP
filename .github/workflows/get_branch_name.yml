@@ -21,9 +21,9 @@ jobs:
         id: sanitize-branch-name
         uses: frabert/replace-string-action@v2
         with:
-          pattern: 'Hello, (\w+)!'
-          string: 'Hello, world!'
-          replace-with: 'I greet you, $1!'
+          string: '${{ steps.branch-name.outputs.head_ref_branch }}'
+          pattern: '(?:\.(?![^.]+$)|[^\w\d\n.])+'
+          replace-with: '_'
       
       - name: Modify head_branch.txt
         uses: jaywcjlove/github-action-modify-file-content@main
