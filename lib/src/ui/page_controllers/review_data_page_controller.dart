@@ -1,17 +1,27 @@
 import 'dart:core';
+import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:csv/csv.dart';
 import 'package:extructura_app/src/enums/afip_responsability_types_enum.dart';
 import 'package:extructura_app/src/enums/currency_type_enum.dart';
 import 'package:extructura_app/src/managers/page_manager/page_manager.dart';
 import 'package:extructura_app/src/models/api_Invoice_models/invoice_model.dart';
 import 'package:extructura_app/src/models/api_Invoice_models/item_model.dart';
+import 'package:extructura_app/src/ui/popups/loading_popup.dart';
 import 'package:extructura_app/utils/functions_util.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:extructura_app/src/interfaces/i_view_controller.dart';
 import 'package:extructura_app/utils/page_args.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
+
+import '../../enums/permission_status_enum.dart';
+
+import 'package:permission_handler/permission_handler.dart'
+    as permission_handler;
 
 class ReviewDataPageController extends ControllerMVC
     implements IViewController {
@@ -418,10 +428,18 @@ class ReviewDataPageController extends ControllerMVC
         isBusinessOpeningDateValid;
   }
 
-  void generateCsvFiles() {}
+  void generateCsvFiles() async {
+    List<List<dynamic>> data = buildCsvBody();
+    await LoadingPopup(
+      context: PageManager().navigatorKey.currentContext!,
+      onLoading: saveCsv(data),
+      onResult: (data) {},
+      onError: (error) => showErrorPopUp(error.toString()),
+    ).show();
+  }
 
-  void buildCsvBody() {
-    List<List<dynamic>> headerData = [];
+  List<List<dynamic>> buildCsvBody() {
+    List<List<dynamic>> data = [];
     List<dynamic> row = [];
     row = [
       "Razón Social",
@@ -451,7 +469,7 @@ class ReviewDataPageController extends ControllerMVC
       "Importe Otros Tributos",
       "Total",
     ];
-    headerData.add(row);
+    data.add(row);
     row = [
       invoice?.header?.businessName,
       invoice?.header?.businessAddress,
@@ -469,16 +487,90 @@ class ReviewDataPageController extends ControllerMVC
       invoice?.header?.clientAddress,
       invoice?.header?.saleMethod,
       invoice?.footer?.currencyType?.code,
-      exchangeRateTextController,
-      netAmountTaxedTextController,
-      vat27TextController,
-      vat21TextController,
-      vat10_5TextController,
-      vat5TextController,
-      vat2_5TextController,
-      vat0TextController,
-      otherTaxesAmountTextController,
-      totalTextController,
+      invoice?.footer?.exchangeRate,
+      invoice?.footer?.netAmountTaxed,
+      invoice?.footer?.vat27,
+      invoice?.footer?.vat21,
+      invoice?.footer?.vat10_5,
+      invoice?.footer?.vat5,
+      invoice?.footer?.vat2_5,
+      invoice?.footer?.vat0,
+      invoice?.footer?.otherTaxesAmount,
+      invoice?.footer?.total,
     ];
+    data.add(row);
+    return data;
+  }
+
+  saveCsv(List<List<dynamic>> data) async {
+    PermissionStatusEnum? permission = await checkStoragePermission();
+    switch (permission) {
+      case PermissionStatusEnum.granted:
+        String path =
+            "${invoice?.header?.documentType}_${invoice?.header?.documentNumber}_encabezado.csv";
+
+        String? downloadsDirectory = await getDownloadPath();
+        String filePath = downloadsDirectory! + path;
+        File f = File(filePath);
+        // convert rows to String and write as csv file
+        String csv = const ListToCsvConverter().convert(data);
+        f.writeAsString(csv);
+
+        //Open file
+        path = f.path;
+        if (path.isEmpty) {
+          throw "Archivo no encontrado";
+        }
+        OpenResult result = await OpenFile.open(path, type: "text/csv");
+        switch (result.type) {
+          case ResultType.done:
+            return result;
+          case ResultType.noAppToOpen:
+            throw "El archivo se ha descargado correctamente en el dispositivo pero no tienes una aplicación para abrir este archivo";
+          case ResultType.permissionDenied:
+            throw "La aplicación no recibió los permisos necesarios para abrir el archivo";
+          default:
+            break;
+        }
+        break;
+      case PermissionStatusEnum.permanentlyDenied:
+        PageManager().openPermanentlyDeniedWarningPopUp(
+            "El permiso de la cámara se denegó permanentemente, si desea puede modificarlo en las configuraciones de la aplicación");
+        break;
+      case PermissionStatusEnum.denied:
+      default:
+    }
+  }
+
+  checkStoragePermission() async {
+    Map<permission_handler.Permission, permission_handler.PermissionStatus>
+        statuses = await [
+      permission_handler.Permission.storage,
+    ].request();
+
+    return PermissionStatusEnum.values.firstWhereOrNull((element) =>
+        element.name == statuses[permission_handler.Permission.storage]!.name);
+  }
+
+  Future<String?> getDownloadPath() async {
+    Directory? directory;
+    try {
+      if (Platform.isIOS) {
+        directory = await getApplicationDocumentsDirectory();
+      } else {
+        directory = Directory('/storage/emulated/0/Download/');
+
+        if (!await directory.exists()) {
+          directory = await getExternalStorageDirectory();
+        }
+      }
+    } catch (err) {
+      debugPrint("No se pudo encontrar la carpeta de descargas");
+    }
+    return directory?.path;
+  }
+
+  void showErrorPopUp(String error) {
+    PageManager().openDefaultErrorAlert(error);
   }
 }

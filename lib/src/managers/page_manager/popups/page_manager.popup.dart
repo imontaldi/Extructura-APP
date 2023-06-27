@@ -65,8 +65,9 @@ mixin PageManagerPopUp {
       backgroundOpacity: 0.8,
       image: Image.asset(
         'images/icon_alert.png',
-        height: 50,
-        width: 50,
+        color: KPrimary,
+        height: 35,
+        width: 35,
       ),
       title: 'Error',
       titleStyle: const TextStyle(
@@ -189,5 +190,31 @@ mixin PageManagerPopUp {
       return result['startDate'];
     }
     return null;
+  }
+
+  Future<void> openPermanentlyDeniedWarningPopUp(String subtitle1) async {
+    await InformationAlertPopup(
+      context: PageManager().navigatorKey.currentContext!,
+      backgroundOpacity: 0.8,
+      image: Image.asset(
+        'images/common/icon_alert.png',
+        color: KPrimary,
+        height: 35,
+        width: 35,
+      ),
+      title: 'Error',
+      titleStyle: const TextStyle(
+        color: KGrey,
+        fontWeight: FontWeight.w800,
+        fontSize: KFontSizeLarge40,
+      ),
+      subtitle1: subtitle1,
+      subtitle1Style: const TextStyle(color: KGrey, fontSize: KFontSizeLarge40),
+      labelButtonAccept: "Configuración",
+      labelButtonCancel: 'Cancelar',
+      onAccept: () => permission_handler.openAppSettings(),
+      onCancel: null,
+      isCancellable: true,
+    ).show();
   }
 }
