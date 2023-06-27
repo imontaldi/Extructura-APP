@@ -12,10 +12,6 @@ jobs:
       - name: Get branch names
         id: branch-name
         uses: tj-actions/branch-names@v7
-      
-      - name: Get Head Ref branch name (i.e The current pull request branch)
-        run: |
-          echo "${{ steps.branch-name.outputs.head_ref_branch }}"
 
       - name: Sanitize Branch Name
         id: sanitize-branch-name
