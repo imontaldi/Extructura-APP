@@ -2,22 +2,10 @@ name: APK Generation
 
 on:
   push:
-    branches: [ "development" ]
+    branches: [ "apk" ]
 
 jobs:
-  get_head_branch_name:
-    runs-on: ubuntu-latest
-    outputs:
-      head_branch: ${{ steps.head_branch.outputs.content }}
-    steps: 
-      - name: Read head_branch.txt
-        id: head_branch
-        uses: jaywcjlove/github-action-read-file@main
-        with:
-          path: head_branch.txt
-
   version-name-change:
-    needs: get_head_branch_name
     permissions: write-all
     runs-on: ubuntu-latest
 
@@ -31,13 +19,13 @@ jobs:
         uses: jaywcjlove/github-action-modify-file-content@main
         with:
           path: lib/values/k_apk_date.dart
-          body: "const kAPKDate = \"{{date:YYYY-MM-DD}}_${{needs.get_head_branch_name.outputs.head_branch}}\";"
+          body: "const kAPKDate='{{date:YY-MM-DD}}';"
           overwrite: 'true'
 
       - uses: actions/checkout@v3
 
   build:
-    needs: [get_head_branch_name, version-name-change] 
+    needs: version-name-change
     permissions: write-all
     runs-on: ubuntu-latest
 
@@ -52,14 +40,16 @@ jobs:
       - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.10.2'
+          flutter-version: '3.10.5'
           channel: 'stable'
           
       - name: Install dependencies
         run: flutter pub get
+        # working-directory: ./cob_salta
 
       - name: Build APK
         run: flutter build apk
+        # working-directory: ./cob_salta
 
       - name: Set Timezone
         uses: szenius/set-timezone@v1.2
@@ -74,17 +64,30 @@ jobs:
         uses: canastro/copy-file-action@master
         with:
           source: "build/app/outputs/flutter-apk/app-release.apk"
-          target: "Extructura_APP_${{ steps.date.outputs.date }}_${{needs.get_head_branch_name.outputs.head_branch}}.apk"
+          target: "Extructura_App_${{ steps.date.outputs.date }}.apk"
 
-      - name: Upload APK to Slack
+  release:
+    needs: build
+    permissions: write-all
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          prerelease: true
+          name: Extructura_App_${{ steps.date.outputs.date }}
+          files: Extructura_App_${{ steps.date.outputs.date }}.apk
+
+
+      - name: Send release link to Slack
         uses: MeilCli/slack-upload-file@v3
         with:
           slack_token: ${{ secrets.SLACK_TOKEN }}
           channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
-          file_path: "Extructura_APP_${{ steps.date.outputs.date }}_${{needs.get_head_branch_name.outputs.head_branch}}.apk"
-          initial_comment: 'Apk Generada!'
-
-
-          
-
-        
+          # file_path: "COB-Salta-App_${{ steps.date.outputs.date }}.apk"
+          initial_comment: 'Apk Generada!\nRelease: ${{ steps.create.outputs.url }}\nAPK: ${{ fromJSON(steps.create.outputs.assets)[0].browser_download_url }}'
