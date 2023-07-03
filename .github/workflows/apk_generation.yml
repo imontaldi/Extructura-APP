@@ -80,9 +80,9 @@ jobs:
         id: create
         with:
           prerelease: true
-          tag_name: Extructura_App_${{ steps.date.outputs.date }}
-          name: Extructura_App_${{ steps.date.outputs.date }}
-          files: Extructura_App_${{ steps.date.outputs.date }}.apk
+          tag_name: Extructura_App_${{ needs.build.outputs.date }}
+          name: Extructura_App_${{ needs.build.outputs.date }}
+          files: Extructura_App_${{ needs.build.outputs.date }}.apk
 
 
       - name: Send release link to Slack
@@ -91,4 +91,4 @@ jobs:
           slack_token: ${{ secrets.SLACK_TOKEN }}
           channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
           # file_path: "COB-Salta-App_${{ steps.date.outputs.date }}.apk"
-          initial_comment: 'Apk Generada!\nRelease: ${{ steps.create.outputs.url }}\nAPK: ${{ fromJSON(steps.create.outputs.assets)[0].browser_download_url }}'
+          initial_comment: 'Apk Generada! Release: ${{ steps.create.outputs.url }} APK: ${{ fromJSON(steps.create.outputs.assets)[0].browser_download_url }}'
