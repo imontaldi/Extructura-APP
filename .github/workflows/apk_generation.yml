@@ -2,14 +2,14 @@ name: APK Generation
 
 on:
   push:
-    branches: [ "apk" ]
+    branches: [ "development" ]
 
 jobs:
   version-name-change:
     permissions: write-all
     runs-on: ubuntu-latest
 
-    steps: 
+    steps:
       - name: Set Timezone
         uses: szenius/set-timezone@v1.2
         with:
