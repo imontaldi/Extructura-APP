@@ -30,26 +30,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+      # - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
 
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
           ref: development
 
-      - name: Install Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.10.5'
-          channel: 'stable'
+      # - name: Install Flutter
+      #   uses: subosito/flutter-action@v2
+      #   with:
+      #     flutter-version: '3.10.5'
+      #     channel: 'stable'
           
-      - name: Install dependencies
-        run: flutter pub get
-        # working-directory: ./cob_salta
+      # - name: Install dependencies
+      #   run: flutter pub get
+        # # working-directory: ./cob_salta
 
-      - name: Build APK
-        run: flutter build apk
-        # working-directory: ./cob_salta
+      # - name: Build APK
+      #   run: flutter build apk
+        # # working-directory: ./cob_salta
 
       - name: Set Timezone
         uses: szenius/set-timezone@v1.2
@@ -60,11 +60,11 @@ jobs:
         id: date
         run: echo "date=$(date +'%Y-%m-%d')" >>$GITHUB_OUTPUT      
 
-      - name: Copy-Rename APK
-        uses: canastro/copy-file-action@master
-        with:
-          source: "build/app/outputs/flutter-apk/app-release.apk"
-          target: "Extructura_App_${{ steps.date.outputs.date }}.apk"
+      # - name: Copy-Rename APK
+      #   uses: canastro/copy-file-action@master
+      #   with:
+      #     source: "build/app/outputs/flutter-apk/app-release.apk"
+      #     target: "Extructura_App_${{ steps.date.outputs.date }}.apk"
 
   release:
     needs: build
@@ -82,7 +82,7 @@ jobs:
           prerelease: true
           tag_name: Extructura_App_${{ needs.build.outputs.date }}
           name: Extructura_App_${{ needs.build.outputs.date }}
-          files: Extructura_App_${{ needs.build.outputs.date }}.apk
+          files: head_branch.txt
 
 
       - name: Send release link to Slack
