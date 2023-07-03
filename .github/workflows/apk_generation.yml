@@ -77,7 +77,6 @@ jobs:
 
       - name: Create release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
         with:
           prerelease: true
           name: Extructura_App_${{ steps.date.outputs.date }}
