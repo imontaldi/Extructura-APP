@@ -28,8 +28,6 @@ jobs:
     needs: version-name-change
     permissions: write-all
     runs-on: ubuntu-latest
-    outputs:
-      date: ${{ steps.date.outputs.date }}
 
     steps:
       - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
@@ -68,12 +66,6 @@ jobs:
           source: "build/app/outputs/flutter-apk/app-release.apk"
           target: "Extructura_App_${{ steps.date.outputs.date }}.apk"
 
-  release:
-    needs: build
-    permissions: write-all
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -82,9 +74,9 @@ jobs:
         id: create
         with:
           prerelease: true
-          tag_name: Extructura_App_${{ needs.build.outputs.date }}
-          name: Extructura_App_${{ needs.build.outputs.date }}
-          files: Extructura_App_${{ needs.build.outputs.date }}.apk
+          tag_name: Extructura_App_${{ steps.date.outputs.date }}
+          name: Extructura_App_${{ steps.date.outputs.date }}
+          files: Extructura_App_${{ steps.date.outputs.date }}.apk
 
       - name: Send release link to Slack
         uses: slackapi/slack-github-action@v1.24.0
