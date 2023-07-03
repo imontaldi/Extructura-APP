@@ -28,6 +28,8 @@ jobs:
     needs: version-name-change
     permissions: write-all
     runs-on: ubuntu-latest
+    outputs:
+      date: ${{ steps.date.outputs.date }}
 
     steps:
       # - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
@@ -82,13 +84,12 @@ jobs:
           prerelease: true
           tag_name: Extructura_App_${{ needs.build.outputs.date }}
           name: Extructura_App_${{ needs.build.outputs.date }}
-          files: head_branch.txt
-
+          files: Extructura_App_${{ needs.build.outputs.date }}.apk
 
       - name: Send release link to Slack
-        uses: MeilCli/slack-upload-file@v3
+        uses: slackapi/slack-github-action@v1.24.0
         with:
-          slack_token: ${{ secrets.SLACK_TOKEN }}
-          channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
-          # file_path: "COB-Salta-App_${{ steps.date.outputs.date }}.apk"
-          initial_comment: 'Apk Generada! Release: ${{ steps.create.outputs.url }} APK: ${{ fromJSON(steps.create.outputs.assets)[0].browser_download_url }}'
+          channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
+          slack-message: "Apk Generada!\nRelease: ${{ steps.create.outputs.url }}\nAPK: ${{ fromJSON(steps.create.outputs.assets)[0].browser_download_url }}"
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
