@@ -79,6 +79,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           prerelease: true
+          tag_name: Extructura_App_${{ steps.date.outputs.date }}
           name: Extructura_App_${{ steps.date.outputs.date }}
           files: Extructura_App_${{ steps.date.outputs.date }}.apk
 
