@@ -15,7 +15,6 @@ import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:extructura_app/src/interfaces/i_view_controller.dart';
 import 'package:extructura_app/utils/page_args.dart';
-import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../enums/permission_status_enum.dart';
@@ -355,6 +354,24 @@ class ReviewDataPageController extends ControllerMVC
   @override
   disposePage() {}
 
+  Future<bool> onBack() async {
+    await PageManager().openInformationPopup(
+        onAccept: () {
+          PageManager().goBack();
+          return false;
+        },
+        onCancel: () {},
+        labelButtonAccept: "Aceptar",
+        labelButtonCancel: "Cancelar",
+        imageHeight: 60,
+        imageWidth: 60,
+        isCancellable: false,
+        imageURL: "images/icon_warning.png",
+        title:
+            "Al regresar perderas los datos escaneados y sus correcciones ¿Estas seguro que deseas regresar?");
+    return false;
+  }
+
   void onPressTab() {
     tabs.updateAll((name, value) => value = !value);
     setState(() {});
@@ -429,16 +446,17 @@ class ReviewDataPageController extends ControllerMVC
   }
 
   void generateCsvFiles() async {
-    List<List<dynamic>> data = buildCsvBody();
+    List<List<dynamic>> headerBody = buildHeaderCsvBody();
+    List<List<dynamic>> detailBody = buildDetailCsvBody();
     await LoadingPopup(
       context: PageManager().navigatorKey.currentContext!,
-      onLoading: saveCsv(data),
+      onLoading: saveCsvs(headerBody, detailBody),
       onResult: (data) {},
       onError: (error) => showErrorPopUp(error.toString()),
     ).show();
   }
 
-  List<List<dynamic>> buildCsvBody() {
+  List<List<dynamic>> buildHeaderCsvBody() {
     List<List<dynamic>> data = [];
     List<dynamic> row = [];
     row = [
@@ -502,37 +520,109 @@ class ReviewDataPageController extends ControllerMVC
     return data;
   }
 
-  saveCsv(List<List<dynamic>> data) async {
+  List<List<dynamic>> buildDetailCsvBody() {
+    List<List<dynamic>> data = [];
+    List<dynamic> row = [];
+    row = [
+      "Código",
+      "Producto/Servicio",
+      "Cantidad",
+      "Unidad Medida",
+      "Precio Unitario",
+      "% Bonif",
+      "Subtotal",
+      "Alícuota IVA",
+      "Subtotal c/IVA",
+    ];
+    data.add(row);
+    for (var element in invoice!.items!) {
+      row = [
+        element.cod,
+        element.title,
+        element.amount,
+        element.measure,
+        element.unitPrice,
+        element.discountPerc,
+        element.subtotal,
+        element.vatFee,
+        element.subtotalIncFees
+      ];
+      data.add(row);
+    }
+
+    return data;
+  }
+
+  saveCsvs(
+      List<List<dynamic>> headerBody, List<List<dynamic>> detailBody) async {
     PermissionStatusEnum? permission = await checkStoragePermission();
     switch (permission) {
       case PermissionStatusEnum.granted:
-        String path =
-            "${invoice?.header?.documentType}_${invoice?.header?.documentNumber}_encabezado.csv";
+        try {
+          String? downloadsDirectory = await getDownloadPath();
 
-        String? downloadsDirectory = await getDownloadPath();
-        String filePath = downloadsDirectory! + path;
-        File f = File(filePath);
-        // convert rows to String and write as csv file
-        String csv = const ListToCsvConverter().convert(data);
-        f.writeAsString(csv);
+          //Encabezado
+          String headerPath =
+              "${invoice?.header?.documentType}_${invoice?.header?.documentNumber}_encabezado.csv";
 
-        //Open file
-        path = f.path;
-        if (path.isEmpty) {
-          throw "Archivo no encontrado";
+          String headerFilePath = downloadsDirectory! + headerPath;
+          File headerFile = File(headerFilePath);
+          // convert rows to String and write as csv file
+          String csv = const ListToCsvConverter().convert(headerBody);
+          headerFile.writeAsString(csv);
+
+          //Detalle
+          String detailPath =
+              "${invoice?.header?.documentType}_${invoice?.header?.documentNumber}_detalle.csv";
+          String detailFilePath = downloadsDirectory + detailPath;
+          File detailFile = File(detailFilePath);
+          // convert rows to String and write as csv file
+          csv = const ListToCsvConverter().convert(detailBody);
+          detailFile.writeAsString(csv);
+
+          await PageManager().openInformationPopup(
+            onAccept: () {
+              //TODO: intentar abrir carpeta descargas del dispositivo
+
+              PageManager().goHomePage();
+            },
+            title:
+                "¡Se generaron correctamente los archivos con el contenido de su factura!",
+            subtitle:
+                "Los archivos generados se encuentran ubicados en la carpeta  de descargas del dispositivo (\"$downloadsDirectory\" )",
+            labelButtonAccept: "Continuar",
+            imageURL: "images/icon_checkbox.png",
+            imageHeight: 50,
+            imageWidth: 50,
+            isCancellable: false,
+          );
+
+          //Open file - Descartado porque son dos archivos
+          //En cambio mustro el popup con la carpeta que los va a contener
+
+          // headerPath = headerFile.path;
+          // if (headerPath.isEmpty) {
+          //   throw "Archivo no encontrado";
+          // }
+          // OpenResult result = await OpenFile.open(headerPath, type: "text/csv");
+          // switch (result.type) {
+          //   case ResultType.done:
+          //     return result;
+          //   case ResultType.noAppToOpen:
+          //     throw "El archivo se ha descargado correctamente en el dispositivo pero no tienes una aplicación para abrir este archivo";
+          //   case ResultType.permissionDenied:
+          //     throw "La aplicación no recibió los permisos necesarios para abrir el archivo";
+          //   default:
+          //     break;
+          // }
+
+          break;
+        } catch (e) {
+          PageManager().openDefaultErrorAlert(
+              "Ocurrió un error en el proceso generación de archivos con los datos de la factura. Intente nuevamente más tarde");
+          break;
         }
-        OpenResult result = await OpenFile.open(path, type: "text/csv");
-        switch (result.type) {
-          case ResultType.done:
-            return result;
-          case ResultType.noAppToOpen:
-            throw "El archivo se ha descargado correctamente en el dispositivo pero no tienes una aplicación para abrir este archivo";
-          case ResultType.permissionDenied:
-            throw "La aplicación no recibió los permisos necesarios para abrir el archivo";
-          default:
-            break;
-        }
-        break;
+
       case PermissionStatusEnum.permanentlyDenied:
         PageManager().openPermanentlyDeniedWarningPopUp(
             "El permiso de la cámara se denegó permanentemente, si desea puede modificarlo en las configuraciones de la aplicación");

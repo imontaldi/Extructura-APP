@@ -3,7 +3,6 @@ import 'package:extructura_app/src/enums/afip_responsability_types_enum.dart';
 import 'package:extructura_app/src/enums/currency_type_enum.dart';
 import 'package:extructura_app/src/enums/input_type_enum.dart';
 import 'package:extructura_app/src/enums/invoice_type_enum.dart';
-import 'package:extructura_app/src/managers/page_manager/page_manager.dart';
 import 'package:extructura_app/src/ui/components/appbar/custom_navigation_bar_component.dart';
 import 'package:extructura_app/src/ui/components/buttons/rounded_button_component.dart';
 import 'package:extructura_app/src/ui/components/entry/text_input_component.dart';
@@ -42,47 +41,50 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: KBackground,
-        appBar: simpleNavigationBar(
-          title: "Revisión de datos",
-          hideInfoButton: true,
-          hideNotificationButton: true,
-          onBack: PageManager().goBack,
-        ),
-        body: Stack(
-          children: [
-            ScrollConfiguration(
-              behavior: CustomScrollBehaviour(),
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _title(),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      _tabs(),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      _body(),
-                      const SizedBox(
-                        height: 50,
-                      ),
-                    ],
+    return WillPopScope(
+      onWillPop: () => _con.onBack(),
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: KBackground,
+          appBar: simpleNavigationBar(
+            title: "Revisión de datos",
+            hideInfoButton: true,
+            hideNotificationButton: true,
+            onBack: () => _con.onBack(),
+          ),
+          body: Stack(
+            children: [
+              ScrollConfiguration(
+                behavior: CustomScrollBehaviour(),
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _title(),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        _tabs(),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        _body(),
+                        const SizedBox(
+                          height: 50,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            Positioned(
-              bottom: 0,
-              child: _footer(),
-            ),
-          ],
+              Positioned(
+                bottom: 0,
+                child: _footer(),
+              ),
+            ],
+          ),
         ),
       ),
     );

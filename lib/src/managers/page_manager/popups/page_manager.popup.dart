@@ -64,7 +64,7 @@ mixin PageManagerPopUp {
       context: PageManager().navigatorKey.currentContext!,
       backgroundOpacity: 0.8,
       image: Image.asset(
-        'images/icon_alert.png',
+        'images/icon_warning.png',
         color: KPrimary,
         height: 35,
         width: 35,
@@ -97,6 +97,8 @@ mixin PageManagerPopUp {
     Function? onAccept,
     Function? onCancel,
     bool? isCancellable = true,
+    String? subtitle = "",
+    TextStyle? subtitleStyle,
   }) async {
     BuildContext context = PageManager().navigatorKey.currentContext!;
     return await InformationAlertPopup(
@@ -106,10 +108,13 @@ mixin PageManagerPopUp {
               imageURL,
               height: imageHeight,
               width: imageWidth,
+              color: KPrimary,
             )
           : null,
       title: title,
       titleStyle: titleStyle,
+      subtitle1: subtitle,
+      subtitle1Style: subtitleStyle,
       labelButtonAccept: labelButtonAccept,
       labelButtonCancel: labelButtonCancel,
       onAccept: onAccept,
