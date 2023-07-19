@@ -17,6 +17,7 @@ import 'package:extructura_app/src/interfaces/i_view_controller.dart';
 import 'package:extructura_app/utils/page_args.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../enums/invoice_type_enum.dart';
 import '../../enums/permission_status_enum.dart';
 
 import 'package:permission_handler/permission_handler.dart'
@@ -459,63 +460,110 @@ class ReviewDataPageController extends ControllerMVC
   List<List<dynamic>> buildHeaderCsvBody() {
     List<List<dynamic>> data = [];
     List<dynamic> row = [];
-    row = [
-      "Razón Social",
-      "Domicilio Comercial",
-      "Condición frente al IVA",
-      "Tipo de Documento",
-      "Punto de Venta",
-      "Comp. Nro",
-      "Fecha de Emisión",
-      "CUIT",
-      "Ingresos Brutos",
-      "Fecha de Inicio de Actividades",
-      "CUIT",
-      "Apellido y Nombre / Razón Social",
-      "Condición frente al IVA",
-      "Domicilio Comercial",
-      "Condición de venta",
-      "Moneda",
-      "Tipo de Cambio",
-      "Importe Neto Grabado",
-      "IVA 27%",
-      "IVA 21%",
-      "IVA 10.5%",
-      "IVA 5%",
-      "IVA 2.5%",
-      "IVA 0%",
-      "Importe Otros Tributos",
-      "Total",
-    ];
+
+    row = invoice?.type == InvoiceTypeEnum.A
+        ? [
+            "Razón Social",
+            "Domicilio Comercial",
+            "Condición frente al IVA",
+            "Tipo de Documento",
+            "Punto de Venta",
+            "Comp. Nro",
+            "Fecha de Emisión",
+            "CUIT",
+            "Ingresos Brutos",
+            "Fecha de Inicio de Actividades",
+            "CUIT",
+            "Apellido y Nombre / Razón Social",
+            "Condición frente al IVA",
+            "Domicilio Comercial",
+            "Condición de venta",
+            "Moneda",
+            "Tipo de Cambio",
+            "Importe Neto Grabado",
+            "IVA 27%",
+            "IVA 21%",
+            "IVA 10.5%",
+            "IVA 5%",
+            "IVA 2.5%",
+            "IVA 0%",
+            "Importe Otros Tributos",
+            "Total",
+          ]
+        : [
+            "Razón Social",
+            "Domicilio Comercial",
+            "Condición frente al IVA",
+            "Tipo de Documento",
+            "Punto de Venta",
+            "Comp. Nro",
+            "Fecha de Emisión",
+            "CUIT",
+            "Ingresos Brutos",
+            "Fecha de Inicio de Actividades",
+            "CUIT",
+            "Apellido y Nombre / Razón Social",
+            "Condición frente al IVA",
+            "Domicilio Comercial",
+            "Condición de venta",
+            "Moneda",
+            "Tipo de Cambio",
+            "Subtotal",
+            "Importe Otros Tributos",
+            "Total",
+          ];
     data.add(row);
-    row = [
-      invoice?.header?.businessName,
-      invoice?.header?.businessAddress,
-      invoice?.header?.vatCondition?.name,
-      invoice?.header?.documentType,
-      invoice?.header?.checkoutAisleNumber,
-      invoice?.header?.documentNumber,
-      invoice?.header?.issueDate,
-      invoice?.header?.sellerCuit,
-      invoice?.header?.grossIncome,
-      invoice?.header?.businessOpeningDate,
-      invoice?.header?.clientCuit,
-      invoice?.header?.clientName,
-      invoice?.header?.clientVatCondition?.name,
-      invoice?.header?.clientAddress,
-      invoice?.header?.saleMethod,
-      invoice?.footer?.currencyType?.code,
-      invoice?.footer?.exchangeRate,
-      invoice?.footer?.netAmountTaxed,
-      invoice?.footer?.vat27,
-      invoice?.footer?.vat21,
-      invoice?.footer?.vat10_5,
-      invoice?.footer?.vat5,
-      invoice?.footer?.vat2_5,
-      invoice?.footer?.vat0,
-      invoice?.footer?.otherTaxesAmount,
-      invoice?.footer?.total,
-    ];
+    row = invoice?.type == InvoiceTypeEnum.A
+        ? [
+            invoice?.header?.businessName,
+            invoice?.header?.businessAddress,
+            invoice?.header?.vatCondition?.name,
+            invoice?.header?.documentType,
+            invoice?.header?.checkoutAisleNumber,
+            invoice?.header?.documentNumber,
+            invoice?.header?.issueDate,
+            invoice?.header?.sellerCuit,
+            invoice?.header?.grossIncome,
+            invoice?.header?.businessOpeningDate,
+            invoice?.header?.clientCuit,
+            invoice?.header?.clientName,
+            invoice?.header?.clientVatCondition?.name,
+            invoice?.header?.clientAddress,
+            invoice?.header?.saleMethod,
+            invoice?.footer?.currencyType?.code,
+            invoice?.footer?.exchangeRate,
+            invoice?.footer?.netAmountTaxed,
+            invoice?.footer?.vat27,
+            invoice?.footer?.vat21,
+            invoice?.footer?.vat10_5,
+            invoice?.footer?.vat5,
+            invoice?.footer?.vat2_5,
+            invoice?.footer?.vat0,
+            invoice?.footer?.otherTaxesAmount,
+            invoice?.footer?.total,
+          ]
+        : [
+            invoice?.header?.businessName,
+            invoice?.header?.businessAddress,
+            invoice?.header?.vatCondition?.name,
+            invoice?.header?.documentType,
+            invoice?.header?.checkoutAisleNumber,
+            invoice?.header?.documentNumber,
+            invoice?.header?.issueDate,
+            invoice?.header?.sellerCuit,
+            invoice?.header?.grossIncome,
+            invoice?.header?.businessOpeningDate,
+            invoice?.header?.clientCuit,
+            invoice?.header?.clientName,
+            invoice?.header?.clientVatCondition?.name,
+            invoice?.header?.clientAddress,
+            invoice?.header?.saleMethod,
+            invoice?.footer?.currencyType?.code,
+            invoice?.footer?.exchangeRate,
+            invoice?.footer?.subtotal,
+            invoice?.footer?.otherTaxesAmount,
+            invoice?.footer?.total,
+          ];
     data.add(row);
     return data;
   }
@@ -523,30 +571,52 @@ class ReviewDataPageController extends ControllerMVC
   List<List<dynamic>> buildDetailCsvBody() {
     List<List<dynamic>> data = [];
     List<dynamic> row = [];
-    row = [
-      "Código",
-      "Producto/Servicio",
-      "Cantidad",
-      "Unidad Medida",
-      "Precio Unitario",
-      "% Bonif",
-      "Subtotal",
-      "Alícuota IVA",
-      "Subtotal c/IVA",
-    ];
+    row = invoice?.type == InvoiceTypeEnum.A
+        ? [
+            "Código",
+            "Producto/Servicio",
+            "Cantidad",
+            "Unidad Medida",
+            "Precio Unitario",
+            "% Bonif",
+            "Subtotal",
+            "Alícuota IVA",
+            "Subtotal c/IVA",
+          ]
+        : [
+            "Código",
+            "Producto/Servicio",
+            "Cantidad",
+            "Unidad Medida",
+            "Precio Unitario",
+            "% Bonif",
+            "Imp. Bonif",
+            "Subtotal",
+          ];
     data.add(row);
     for (var element in invoice!.items!) {
-      row = [
-        element.cod,
-        element.title,
-        element.amount,
-        element.measure,
-        element.unitPrice,
-        element.discountPerc,
-        element.subtotal,
-        element.vatFee,
-        element.subtotalIncFees
-      ];
+      row = invoice?.type == InvoiceTypeEnum.A
+          ? [
+              element.cod,
+              element.title,
+              element.amount,
+              element.measure,
+              element.unitPrice,
+              element.discountPerc,
+              element.subtotal,
+              element.vatFee,
+              element.subtotalIncFees
+            ]
+          : [
+              element.cod,
+              element.title,
+              element.amount,
+              element.measure,
+              element.unitPrice,
+              element.discountPerc,
+              element.discountedSubtotal,
+              element.subtotal,
+            ];
       data.add(row);
     }
 
@@ -582,15 +652,13 @@ class ReviewDataPageController extends ControllerMVC
 
           await PageManager().openInformationPopup(
             onAccept: () {
-              //TODO: intentar abrir carpeta descargas del dispositivo
-
               PageManager().goHomePage();
             },
             title:
                 "¡Se generaron correctamente los archivos con el contenido de su factura!",
             subtitle:
-                "Los archivos generados se encuentran ubicados en la carpeta  de descargas del dispositivo (\"$downloadsDirectory\" )",
-            labelButtonAccept: "Continuar",
+                "Los archivos generados se encuentran ubicados en la carpeta de descargas del dispositivo (\"$downloadsDirectory\" )",
+            labelButtonAccept: "Ir al inicio",
             imageURL: "images/icon_checkbox.png",
             imageHeight: 50,
             imageWidth: 50,
