@@ -319,7 +319,7 @@ class ImageUploadComponentState extends State<ImageUploadComponent> {
   }
 
   _placeHolder() {
-    return Row(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Image.asset(
@@ -330,10 +330,11 @@ class ImageUploadComponentState extends State<ImageUploadComponent> {
           fit: BoxFit.contain,
         ),
         const SizedBox(
-          width: 10,
+          height: 10,
         ),
         Text(
-          widget.label ?? "Toque aquí para cargar una imágen de su factura",
+          widget.label ?? "Toque aquí para cargar\nuna imágen de su factura",
+          textAlign: TextAlign.center,
           style: const TextStyle(
             color: KGrey_L2,
             fontWeight: FontWeight.normal,

@@ -4,6 +4,7 @@ import 'package:extructura_app/src/enums/page_names.dart';
 import 'package:extructura_app/src/managers/page_manager/page_manager.dart';
 import 'package:extructura_app/values/k_colors.dart';
 import 'package:extructura_app/values/k_values.dart';
+import 'package:flutter/services.dart';
 
 class MenuDrawerItem {
   final PageNames? pageName;
@@ -47,6 +48,14 @@ class MenuComponentState extends State<MenuComponent> {
         icon: const Icon(Icons.home, color: KPrimary, size: 30.0),
         onTap: () {
           PageManager().goHomePage();
+        }),
+    MenuDrawerItem(
+        pageName: PageNames.home,
+        text: "Ver tutorial",
+        icon: const Icon(Icons.video_library_rounded,
+            color: KPrimary, size: 30.0),
+        onTap: () {
+          PageManager().goTutorialPage();
         }),
   ];
 
@@ -112,28 +121,21 @@ class MenuComponentState extends State<MenuComponent> {
             width: 35,
             decoration:
                 const BoxDecoration(shape: BoxShape.circle, color: KPrimary),
-            child: const Center(
-              child: Text("IM",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                      fontSize: KFontSizeSmall30)),
+            child: Center(
+              child: Image.asset(
+                "images/app_icon/icon_transparent_background.png",
+                fit: BoxFit.fitHeight,
+              ),
             ),
           ),
-          const SizedBox(width: 20),
+          const SizedBox(width: 15),
           const Expanded(
-            child: Text("Ignacio Montaldi",
+            child: Text("Extructura",
                 style: TextStyle(
                     color: KPrimary,
-                    fontWeight: FontWeight.w500,
-                    fontSize: KFontSizeLarge40)),
+                    fontWeight: FontWeight.w700,
+                    fontSize: KFontSizeXLarge45)),
           ),
-          /* const Icon(
-            Icons.arrow_forward,
-            size: 30,
-            color: KPrimary,
-          ) */
         ],
       ),
     );
@@ -274,7 +276,14 @@ class MenuComponentState extends State<MenuComponent> {
       key: const Key('menuFooter'),
       children: <Widget>[
         // Borrar despues
-        const Text(kAPKDate),
+        const Text(
+          "Versión: $kAPKDate",
+          style: TextStyle(
+            color: KGrey,
+            fontWeight: FontWeight.w400,
+            fontSize: KFontSizeMedium35,
+          ),
+        ),
         const SizedBox(height: 20),
         // ---------------------
         const Divider(
@@ -284,7 +293,16 @@ class MenuComponentState extends State<MenuComponent> {
         ),
         _item(
           MenuDrawerItem(
-            onTap: () => {},
+            onTap: () => {
+              PageManager().openInformationPopup(
+                title: "¿Desea salir de la aplicación?",
+                imageURL: "images/icon_warning.png",
+                labelButtonAccept: "Si",
+                labelButtonCancel: "No",
+                isCancellable: false,
+                onAccept: () => SystemNavigator.pop(),
+              )
+            },
             text: "Salir",
             icon: const Icon(
               Icons.logout,
