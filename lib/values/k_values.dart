@@ -7,6 +7,7 @@ const double KFontSizeLarge40 = 15;
 const double KFontSizeXLarge45 = 17;
 const double KFontSizeXXLarge50 = 18;
 const double KFontSizeXXLarge60 = 21;
+const double KFontSizeXXLarge70 = 25;
 const double KFontSize3XLarge80 = 29;
 const double KFontSize4XLarge100 = 36;
 

@@ -3,6 +3,9 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:extructura_app/src/interfaces/i_view_controller.dart';
 import 'package:extructura_app/utils/page_args.dart';
 
+import '../../managers/data_manager.dart';
+import '../../managers/page_manager/page_manager.dart';
+
 class TutorialPageController extends ControllerMVC implements IViewController {
   static late TutorialPageController _this;
 
@@ -25,4 +28,9 @@ class TutorialPageController extends ControllerMVC implements IViewController {
 
   @override
   disposePage() {}
+
+  void onStartTap() {
+    DataManager().saveFirstSession(false);
+    PageManager().goHomePage();
+  }
 }

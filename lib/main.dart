@@ -1,3 +1,4 @@
+import 'package:extructura_app/src/ui/pages/tutorial_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:extructura_app/src/enums/culture.dart';
@@ -88,6 +89,10 @@ class MyHomePageState extends State<MyApp> {
   }
 
   _initPage() {
+    if (DataManager().isFirstSession()) {
+      return const TutorialPage(null);
+    }
+
     return const HomePage(null);
   }
 

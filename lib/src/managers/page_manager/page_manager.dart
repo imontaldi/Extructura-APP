@@ -1,3 +1,4 @@
+import 'package:extructura_app/src/ui/pages/faq_page.dart';
 import 'package:extructura_app/src/ui/pages/review_data_page.dart';
 import 'package:extructura_app/src/ui/pages/tutorial_page.dart';
 import 'package:extructura_app/src/ui/popups/calendar_popup.dart';
@@ -62,6 +63,8 @@ class PageManager with PageManagerPopUp {
             builder: (context) => ReviewDataPage(arguments));
       case PageNames.tutorial:
         return MaterialPageRoute(builder: (context) => TutorialPage(arguments));
+      case PageNames.faq:
+        return MaterialPageRoute(builder: (context) => FAQPage(arguments));
 
       default:
     }
@@ -121,6 +124,10 @@ class PageManager with PageManagerPopUp {
 
   goTutorialPage({PageArgs? args, Function(PageArgs? args)? actionBack}) {
     _goPage(PageNames.tutorial.toString(), args: args, actionBack: actionBack);
+  }
+
+  goFAQPage({PageArgs? args, Function(PageArgs? args)? actionBack}) {
+    _goPage(PageNames.faq.toString(), args: args, actionBack: actionBack);
   }
 
   goTestPage({PageArgs? args, Function(PageArgs? args)? actionBack}) {

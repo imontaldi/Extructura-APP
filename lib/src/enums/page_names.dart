@@ -6,5 +6,6 @@ enum PageNames {
   pdfView,
   reviewData,
   tutorial,
+  faq,
   test,
 }

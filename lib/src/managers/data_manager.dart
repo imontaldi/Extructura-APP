@@ -9,6 +9,7 @@ import 'package:extructura_app/src/interfaces/i_data_access.dart';
 import 'package:extructura_app/utils/extensions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/faq_model.dart';
 import '../models/image_model.dart';
 
 class DataManager {
@@ -87,6 +88,18 @@ class DataManager {
     return Culture.es;
   }
 
+  bool isFirstSession() {
+    return prefs.getBool('firstSession') ?? true;
+  }
+
+  Future<void> saveFirstSession(bool check) async {
+    try {
+      await prefs.setBool('firstSession', check);
+    } catch (ex) {
+      throw Exception(ex);
+    }
+  }
+
   // Requests
   Future<InvoiceModel?> getInvoice() async {
     return await dataAccess.getInvoice();
@@ -106,5 +119,10 @@ class DataManager {
 
   Future<bool?> postRequestFooterProcessing() async {
     return await dataAccess.postRequestFooterProcessing();
+  }
+
+  Future<List<FAQModel>?> getFaqList() async {
+    List<FAQModel>? result = await dataAccess.getFaqList();
+    return result;
   }
 }

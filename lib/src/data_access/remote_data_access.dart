@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:extructura_app/src/interfaces/i_data_access.dart';
+import 'package:extructura_app/src/models/faq_model.dart';
 import 'package:extructura_app/src/models/image_model.dart';
 import 'package:extructura_app/src/models/api_Invoice_models/invoice_model.dart';
 import 'package:extructura_app/src/support/network/http_method_enum.dart';
@@ -100,5 +101,21 @@ class RemoteDataAccess implements IDataAccess {
     } else {
       return false;
     }
+  }
+
+  @override
+  Future<List<FAQModel>?> getFaqList() {
+    List<FAQModel> response = [
+      FAQModel(
+        question:
+            '¿Porqué cuando selecciono una factura se selecciona automáticamente el médodo de captura de la imágen y porqué no siempre es correcto?',
+        answer:
+            'El sistema selecciona "Captura de factura digital" cuando se ingresa una imágen desde un documento y "Fotografía de factura" si se selecciona desde galería o desde cámara. Esto no puede siempre ser lo correcto por lo que se recomienda revisar este campo antes de empezar el análisis de la imágen.',
+      ),
+    ];
+
+    return Future.delayed(const Duration(seconds: 1)).then(
+      (value) => response,
+    );
   }
 }

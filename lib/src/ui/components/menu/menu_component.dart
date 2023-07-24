@@ -1,13 +1,11 @@
 import 'package:extructura_app/values/k_apk_date.dart';
 import 'package:flutter/material.dart';
-import 'package:extructura_app/src/enums/page_names.dart';
 import 'package:extructura_app/src/managers/page_manager/page_manager.dart';
 import 'package:extructura_app/values/k_colors.dart';
 import 'package:extructura_app/values/k_values.dart';
 import 'package:flutter/services.dart';
 
 class MenuDrawerItem {
-  final PageNames? pageName;
   final String text;
   final Widget? icon;
   final Function? onTap;
@@ -18,7 +16,6 @@ class MenuDrawerItem {
   bool isVisible;
 
   MenuDrawerItem({
-    this.pageName,
     this.text = "",
     this.icon,
     this.onTap,
@@ -43,19 +40,24 @@ class MenuComponent extends StatefulWidget {
 class MenuComponentState extends State<MenuComponent> {
   final List<MenuDrawerItem> _items = [
     MenuDrawerItem(
-        pageName: PageNames.home,
         text: "Página Principal",
-        icon: const Icon(Icons.home, color: KPrimary, size: 30.0),
+        icon: const Icon(Icons.home_rounded, color: KPrimary, size: 30.0),
         onTap: () {
           PageManager().goHomePage();
         }),
     MenuDrawerItem(
-        pageName: PageNames.home,
         text: "Ver tutorial",
         icon: const Icon(Icons.video_library_rounded,
             color: KPrimary, size: 30.0),
         onTap: () {
           PageManager().goTutorialPage();
+        }),
+    MenuDrawerItem(
+        text: "FAQ",
+        icon: const Icon(Icons.question_answer_rounded,
+            color: KPrimary, size: 30.0),
+        onTap: () {
+          PageManager().goFAQPage();
         }),
   ];
 

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:extructura_app/src/exceptions/exception_launcher.dart';
 import 'package:extructura_app/src/interfaces/i_data_access.dart';
 import 'package:extructura_app/src/models/api_Invoice_models/invoice_model.dart';
+import 'package:extructura_app/src/models/faq_model.dart';
 import 'package:extructura_app/src/models/image_model.dart';
 
 class DummyDataAccess implements IDataAccess {
@@ -39,6 +40,11 @@ class DummyDataAccess implements IDataAccess {
 
   @override
   Future<bool?> postRequestItemsProcessing() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<FAQModel>?> getFaqList() {
     throw UnimplementedError();
   }
 }

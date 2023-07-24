@@ -146,7 +146,7 @@ class ImageUploadComponentState extends State<ImageUploadComponent> {
               file = temp;
             }
           }
-          showFilePicked(file.path, ImageTypeEnum.pdf);
+          showFilePicked(file.path, ImageTypeEnum.photo);
         }
       } catch (ex) {
         debugPrint(ex.toString());
