@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:extructura_app/src/ui/pages/tutorial_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,8 +13,20 @@ import 'package:extructura_app/src/ui/pages/home_page.dart';
 import 'package:extructura_app/utils/app_localizations.dart';
 import 'package:extructura_app/values/k_colors.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:window_manager/window_manager.dart';
+import 'package:window_size/window_size.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  if (Platform.isWindows) {
+    setWindowTitle("Extructura");
+    await windowManager.ensureInitialized();
+
+    WindowManager.instance.setMinimumSize(const Size(1368, 760));
+    WindowManager.instance.setMaximumSize(const Size(1368, 760));
+  }
+
   runApp(
     const MyApp(),
   );

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:extructura_app/src/ui/components/buttons/rounded_button_component.dart';
 import 'package:extructura_app/values/k_values.dart';
 import 'package:flutter/material.dart';
@@ -57,63 +59,153 @@ class TutorialPageState extends StateMVC<TutorialPage> {
                 onMenu: () => {_key.currentState!.openDrawer()},
               )
             : null,
-        body: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          child: Column(
-            children: [
-              Expanded(
-                child: PageView(
-                  controller: _con.pageController,
-                  onPageChanged: (int page) {
-                    setState(() {
-                      _con.currentPage = page;
-                    });
-                  },
-                  physics: const BouncingScrollPhysics(),
-                  children: [
-                    const TutorialSinglePage(
-                      title: "Bienvenido a Extructura",
-                      imagePath: "images/tutorial/tuto_1.png",
-                      description:
-                          "Para comenzar toca en el recuadro blanco con el ícono de la cámara para ingresar una foto de tu factura.\n\nRecuerda que puedes traerla de una foto, una imágen de galería o de una página de un archivo pdf.",
-                    ),
-                    const TutorialSinglePage(
-                      imagePath: "images/tutorial/tuto_2.gif",
-                      description:
-                          "Automáticamente se selecionará el formáto de la imágen que cargaste pero puedes cambiarlo si consideras que no es el correcto\n\nLuego toca \"Analizar Factura\" en el botón de abajo para comenzar la extración de datos.",
-                    ),
-                    const TutorialSinglePage(
-                      imagePath: "images/tutorial/tuto_3.gif",
-                      description:
-                          "Una vez recuperados los datos verifica que estos sean correctos.\nNo olvides ir a la pestaña productos para verificar sus datos también.\n\nCuando esté todo en orden toca \"Generar CSVs\" en el botón de abajo para generar los archivos csv de la factura.",
-                    ),
-                    TutorialSinglePage(
-                      imagePath: "images/tutorial/tuto_4.png",
-                      description:
-                          "¡Listo! Los archivos generados se encuentran en la carpeta de descargas del dispositivo.\n\nSi aún tienes alguna duda consulta la sección FAQ del menú.",
-                      onTapButton: () {
-                        _con.onStartTap();
-                      },
-                      buttonText: "¡Empezar!",
-                    ),
-                  ],
+        body: Platform.isWindows ? _desktopBody() : _mobileBody(),
+      ),
+    );
+  }
+
+  _desktopBody() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height -
+                (DataManager().isFirstSession() ? 142 : 197),
+            child: _pageView(isMobile: false),
+          ),
+          _desktopButtons(),
+          const SizedBox(
+            height: 50,
+          ),
+          _pageViewIndicator(),
+        ],
+      ),
+    );
+  }
+
+  _mobileBody() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Column(
+        children: [
+          Expanded(child: _pageView(isMobile: true)),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: _pageViewIndicator(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _desktopButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        TextButton(
+          onPressed: () {
+            _con.pageController.animateToPage(_con.currentPage - 1,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut);
+          },
+          style: TextButton.styleFrom(
+            backgroundColor: _con.currentPage != 0 ? KGrey : KGrey_L2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+            ),
+            padding: const EdgeInsets.all(0),
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(0),
+            height: 40,
+            width: 125,
+            child: const Center(
+              child: Material(
+                type: MaterialType.transparency,
+                child: Text(
+                  "Atras",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: KWhite,
+                    fontWeight: FontWeight.bold,
+                    fontSize: KFontSizeLarge40,
+                  ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: PageViewDotIndicator(
-                  currentItem: _con.currentPage,
-                  count: 4,
-                  unselectedColor: KGrey_L2,
-                  selectedColor: KPrimary,
-                  duration: const Duration(milliseconds: 200),
-                  unselectedSize: const Size(8, 8),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
-      ),
+        const SizedBox(
+          width: 20,
+        ),
+        RoundedButton(
+          onPressed: () {
+            _con.currentPage == 3
+                ? _con.onStartTap()
+                : _con.pageController.animateToPage(_con.currentPage + 1,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeInOut);
+          },
+          width: 125,
+          fontWeight: FontWeight.w700,
+          text: _con.currentPage == 3 ? "¡Empezar!" : "Siguiente",
+        ),
+      ],
+    );
+  }
+
+  _pageView({required bool isMobile}) {
+    return PageView(
+      controller: _con.pageController,
+      onPageChanged: (int page) {
+        setState(() {
+          _con.currentPage = page;
+        });
+      },
+      physics: const NeverScrollableScrollPhysics(),
+      children: [
+        const TutorialSinglePage(
+          title: "Bienvenido a Extructura",
+          imagePath: "images/tutorial/tuto_1.png",
+          description:
+              "Para comenzar toca en el recuadro blanco con el ícono de la cámara para ingresar una foto de tu factura.\n\nRecuerda que puedes traerla de una foto, una imágen de galería o de una página de un archivo pdf.",
+        ),
+        const TutorialSinglePage(
+          imagePath: "images/tutorial/tuto_2.gif",
+          description:
+              "Automáticamente se selecionará el formáto de la imágen que cargaste pero puedes cambiarlo si consideras que no es el correcto\n\nLuego toca \"Analizar Factura\" en el botón de abajo para comenzar la extración de datos.",
+        ),
+        const TutorialSinglePage(
+          imagePath: "images/tutorial/tuto_3.gif",
+          description:
+              "Una vez recuperados los datos verifica que estos sean correctos.\nNo olvides ir a la pestaña productos para verificar sus datos también.\n\nCuando esté todo en orden toca \"Generar CSVs\" en el botón de abajo para generar los archivos csv de la factura.",
+        ),
+        TutorialSinglePage(
+          imagePath: "images/tutorial/tuto_4.png",
+          description:
+              "¡Listo! Los archivos generados se encuentran en la carpeta de descargas del dispositivo.\n\nSi aún tienes alguna duda consulta la sección FAQ del menú.",
+          onTapButton: isMobile
+              ? () {
+                  _con.onStartTap();
+                }
+              : null,
+          buttonText: "¡Empezar!",
+        ),
+      ],
+    );
+  }
+
+  _pageViewIndicator() {
+    return PageViewDotIndicator(
+      currentItem: _con.currentPage,
+      count: 4,
+      unselectedColor: KGrey_L2,
+      selectedColor: KPrimary,
+      duration: const Duration(milliseconds: 200),
+      unselectedSize: const Size(8, 8),
     );
   }
 }
@@ -157,7 +249,8 @@ class TutorialSinglePage extends StatelessWidget {
           ],
           Image.asset(
             imagePath,
-            width: MediaQuery.of(context).size.width / 2,
+            width: MediaQuery.of(context).size.width /
+                (Platform.isWindows ? 6 : 2),
           ),
           const SizedBox(
             height: 50,
@@ -174,7 +267,8 @@ class TutorialSinglePage extends StatelessWidget {
             visible: onTapButton != null,
             child: RoundedButton(
               onPressed: () => onTapButton!(),
-              width: MediaQuery.of(context).size.width / 2,
+              width: MediaQuery.of(context).size.width /
+                  (Platform.isWindows ? 5 : 2),
               fontWeight: FontWeight.w700,
               text: buttonText,
             ),

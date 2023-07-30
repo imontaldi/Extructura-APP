@@ -44,6 +44,13 @@ dependencies:
   open_file: ^3.3.2
   csv: ^5.0.2
   page_view_dot_indicator: ^1.1.0
+  window_manager: ^0.2.7
+
+  window_size:
+    git:
+      url: https://github.com/google/flutter-desktop-embedding.git
+      path: plugins/window_size
+      ref: fd519be1e8398c6b6c2062c2447bac960a71bc02
 
 dev_dependencies:
   flutter_lints: ^2.0.1
@@ -57,14 +64,19 @@ flutter_icons:
   android: "launcher_icon"
   adaptive_icon_background: "#0D658B"
   adaptive_icon_foreground: "images/app_icon/icon_transparent_background.png"
-  # iOS
-  ios: true
+  # Windows
+  windows:
+    generate: true
+    image_path: "images/app_icon/icon.png"
+    icon_size: 48
 
 flutter_native_splash:
   color: "#0D658B"
   image: "images/app_icon/icon_transparent_background.png"
   android_12:
     image: images/app_icon/icon_transparent_background.png
+
+
 
 flutter:
   uses-material-design: true
