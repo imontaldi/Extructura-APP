@@ -376,12 +376,12 @@ class ImageUploadComponentState extends State<ImageUploadComponent> {
   }
 
   _iconTrashDecoration() {
-    return BoxDecoration(
+    return const BoxDecoration(
       color: KPrimary,
       borderRadius: BorderRadius.all(
-        Radius.circular(widget.height),
+        Radius.circular(20),
       ),
-      boxShadow: const [
+      boxShadow: [
         BoxShadow(
           color: Color(0x40A62123),
           spreadRadius: 1,

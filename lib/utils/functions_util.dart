@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -80,4 +83,10 @@ bool isInt(String? text) {
 
 String currencyFormat(String? price) {
   return price != null ? NumberFormat("#,##0.0", "es-AR").format(price) : "";
+}
+
+getBase64(File image) {
+  List<int> imageBytes = image.readAsBytesSync();
+  String base64Image = base64Encode(imageBytes);
+  return base64Image;
 }

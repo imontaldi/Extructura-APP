@@ -24,6 +24,7 @@ class PageManager with PageManagerPopUp {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   PageNames? currentPage;
+  List<PageNames> stackPages = [];
 
   factory PageManager() {
     return _instance;
@@ -71,21 +72,62 @@ class PageManager with PageManagerPopUp {
     return null;
   }
 
-  // ignore: unused_element
-  _goPage(String pageName,
+  _goPage(PageNames pageName,
       {PageArgs? args,
       Function(PageArgs? args)? actionBack,
       bool makeRootPage = false}) {
-    if (!makeRootPage) {
-      return navigatorKey.currentState
-          ?.pushNamed(pageName, arguments: args)
-          .then((value) {
-        if (actionBack != null) actionBack(value as PageArgs?);
-      });
-    } else {
-      navigatorKey.currentState?.pushNamedAndRemoveUntil(
-          pageName, (route) => false,
-          arguments: args);
+    if (currentPage != pageName) {
+      if (stackPages.isEmpty || pageName != stackPages.last) {
+        if (!makeRootPage) {
+          stackPages.add(pageName);
+          return navigatorKey.currentState!
+              .pushNamed(pageName.toString(), arguments: args)
+              .then((value) {
+            if (actionBack != null) {
+              actionBack(value != null ? (value as PageArgs) : null);
+            }
+          });
+        } else {
+          navigatorKey.currentState!.pushNamedAndRemoveUntil(
+              pageName.toString(), (route) => false,
+              arguments: args);
+          stackPages.clear();
+          stackPages.add(pageName);
+        }
+      }
+    }
+  }
+
+  ///Quita paginas de la pila de navegacion hasta llegar a la vista especificada. Lanza una excepcion si esta vista no se encuentra en la pila de navegacion actual.
+  ///[specificPage] indica la vista a la que se quiere volver.
+  ///Adicionalmente, [thenGo] da la posibilidad de navegar a una nueva vista luego de hacer el goBack.
+  void goBackToSpecificPage({
+    required PageNames specificPage,
+    PageArgs? args,
+    PageNames? thenGo,
+    Function(PageArgs?)? actionBack,
+  }) {
+    if (!stackPages.contains(specificPage)) {
+      throw Exception(
+          "La vista especificada no existe en la pila de navegación actual");
+    }
+    Navigator.popUntil(
+      navigatorKey.currentContext!,
+      (route) {
+        if (stackPages.last == specificPage || stackPages.length == 1) {
+          return true;
+        } else {
+          stackPages.removeLast();
+          return false;
+        }
+      },
+    );
+    if (thenGo != null) {
+      _goPage(
+        thenGo,
+        args: args,
+        actionBack: actionBack,
+      );
     }
   }
 
@@ -109,28 +151,27 @@ class PageManager with PageManagerPopUp {
   }
 
   goHomePage({PageArgs? args, Function(PageArgs? args)? actionBack}) {
-    _goPage(PageNames.home.toString(),
+    _goPage(PageNames.home,
         makeRootPage: true, args: args, actionBack: actionBack);
   }
 
   goPdfViewPage({PageArgs? args, Function(PageArgs? args)? actionBack}) {
-    _goPage(PageNames.pdfView.toString(), args: args, actionBack: actionBack);
+    _goPage(PageNames.pdfView, args: args, actionBack: actionBack);
   }
 
   goReviewDataPage({PageArgs? args, Function(PageArgs? args)? actionBack}) {
-    _goPage(PageNames.reviewData.toString(),
-        args: args, actionBack: actionBack);
+    _goPage(PageNames.reviewData, args: args, actionBack: actionBack);
   }
 
   goTutorialPage({PageArgs? args, Function(PageArgs? args)? actionBack}) {
-    _goPage(PageNames.tutorial.toString(), args: args, actionBack: actionBack);
+    _goPage(PageNames.tutorial, args: args, actionBack: actionBack);
   }
 
   goFAQPage({PageArgs? args, Function(PageArgs? args)? actionBack}) {
-    _goPage(PageNames.faq.toString(), args: args, actionBack: actionBack);
+    _goPage(PageNames.faq, args: args, actionBack: actionBack);
   }
 
   goTestPage({PageArgs? args, Function(PageArgs? args)? actionBack}) {
-    _goPage(PageNames.test.toString(), args: args, actionBack: actionBack);
+    _goPage(PageNames.test, args: args, actionBack: actionBack);
   }
 }

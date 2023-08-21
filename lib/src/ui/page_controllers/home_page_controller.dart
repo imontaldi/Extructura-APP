@@ -64,8 +64,7 @@ class HomePageController extends ControllerMVC implements IViewController {
   Future<void> onAnalizeInvoice() async {
     await LoadingPopup(
       context: PageManager().navigatorKey.currentContext!,
-      onLoading: DataManager().postSendImage(
-          ImageModel(path: image!.path), getIsPerfectImageValue()),
+      onLoading: DataManager().postSendImage(image!, getIsPerfectImageValue()),
       loadingText: "Enviando imágen...",
       onResult: (data) => {},
       onError: (error) => onErrorFunction(

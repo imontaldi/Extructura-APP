@@ -131,7 +131,10 @@ class NavigationBarComponentState extends State<NavigationBarComponent> {
                 child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      _menuButton(),
+                      Visibility(
+                        visible: widget.onMenuClick != null,
+                        child: _menuButton(),
+                      ),
                       const Spacer(),
                       const Row(
                         mainAxisAlignment: MainAxisAlignment.end,

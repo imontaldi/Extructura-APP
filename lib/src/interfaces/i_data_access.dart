@@ -1,6 +1,6 @@
-import 'package:extructura_app/src/models/api_Invoice_models/invoice_model.dart';
-import 'package:extructura_app/src/models/image_model.dart';
+import 'dart:io';
 
+import 'package:extructura_app/src/models/api_Invoice_models/invoice_model.dart';
 import '../models/faq_model.dart';
 
 abstract class IDataAccess {
@@ -9,6 +9,6 @@ abstract class IDataAccess {
   Future<bool?> postRequestItemsProcessing();
   Future<bool?> postRequestHeaderProcessing();
   Future<bool?> postRequestFooterProcessing();
-  Future<bool?> postSendImage(ImageModel image, bool isPerfectImage);
+  Future<bool?> postSendImage(File image, bool isPerfectImage);
   Future<List<FAQModel>?> getFaqList();
 }

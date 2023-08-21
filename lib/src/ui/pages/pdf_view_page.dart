@@ -80,9 +80,10 @@ class PdfViewPageState extends StateMVC<PdfViewPage> {
                       _con.args!.pdfFileToShow!.path);
                   final pageImage =
                       await _renderPage(document, _con.currentPageIndex ?? 1);
-                  String? downloadsDirectory = await getDownloadPath();
+
+                  String? saveDirectory = await getImageSavePath();
                   String path = "/page${_con.currentPageIndex}.png";
-                  String filePath = downloadsDirectory! + path;
+                  String filePath = saveDirectory! + path;
                   File imgFile = File(filePath);
                   File image =
                       await File(imgFile.path).writeAsBytes(pageImage.bytes);
@@ -109,11 +110,11 @@ class PdfViewPageState extends StateMVC<PdfViewPage> {
     return pageImage!;
   }
 
-  Future<String?> getDownloadPath() async {
+  Future<String?> getImageSavePath() async {
     Directory? directory;
     try {
-      if (Platform.isIOS) {
-        directory = await getApplicationDocumentsDirectory();
+      if (Platform.isWindows) {
+        directory = await getTemporaryDirectory();
       } else {
         directory = await getExternalStorageDirectory();
       }

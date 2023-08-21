@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:extructura_app/src/interfaces/i_data_access.dart';
 import 'package:extructura_app/src/models/faq_model.dart';
@@ -8,6 +9,7 @@ import 'package:extructura_app/src/support/network/http_method_enum.dart';
 import 'package:extructura_app/src/support/network/network.dart';
 import 'package:extructura_app/src/support/network/network_request.dart';
 import 'package:extructura_app/src/support/network/network_response.dart';
+import 'package:extructura_app/utils/functions_util.dart';
 import 'package:extructura_app/values/k_api.dart';
 
 class RemoteDataAccess implements IDataAccess {
@@ -34,11 +36,11 @@ class RemoteDataAccess implements IDataAccess {
   }
 
   @override
-  Future<bool?> postSendImage(ImageModel image, bool isPerfectImage) async {
+  Future<bool?> postSendImage(File image, bool isPerfectImage) async {
     NetworkRequest request = NetworkRequest(
       url: kApiSendImage,
       jsonBody: jsonEncode(
-          {"base64Image": image.getBase64(), "isPerfectImage": isPerfectImage}),
+          {"base64Image": getBase64(image), "isPerfectImage": isPerfectImage}),
       httpMethod: HttpMethodEnum.httpPost,
       enableCache: false,
     );

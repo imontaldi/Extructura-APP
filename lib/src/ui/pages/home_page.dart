@@ -37,76 +37,174 @@ class HomePageState extends StateMVC<HomePage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: KBackground,
-        key: _key,
-        drawer: MenuComponent(
-          closeMenu: () => {_key.currentState!.openEndDrawer()},
-        ),
-        appBar: simpleNavigationBar(
-          title: "Carga de imágen",
-          hideInfoButton: true,
-          hideNotificationButton: true,
-          onMenu: () => {_key.currentState!.openDrawer()},
-        ),
-        body: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      child: Platform.isWindows ? _desktopBody() : _mobileBody(),
+    );
+  }
+
+  _desktopBody() {
+    return Scaffold(
+      body: Row(
+        children: [
+          MenuComponent(
+            closeMenu: () => {},
+            width: MediaQuery.of(context).size.width * 0.22,
+          ),
+          Expanded(
+            child: Column(
+              children: [
+                simpleNavigationBar(
+                  title: "Carga de imágen",
+                  hideInfoButton: true,
+                  hideNotificationButton: true,
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height - 60,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ImageUploadComponent(
-                        getFile: (file) {
-                          setState(() {
-                            _con.image = file;
-                          });
-                        },
-                        deleteFile: () => setState(() {
-                          _con.image = null;
-                        }),
-                        file: _con.image,
-                        editImageAfterPick: true,
-                        cropRatio: 210 / 297,
-                        height: (MediaQuery.of(context).size.width - 40) *
-                            (297 / 210),
-                        width: MediaQuery.of(context).size.width - 40,
-                        imageTypePicked: (imageType) {
-                          _con.setSelectedRadio(imageType.value);
-                        },
+                      Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: LayoutBuilder(
+                          builder: (context, constraints) =>
+                              ImageUploadComponent(
+                            getFile: (file) {
+                              setState(() {
+                                _con.image = file;
+                              });
+                            },
+                            deleteFile: () => setState(() {
+                              _con.image = null;
+                            }),
+                            file: _con.image,
+                            editImageAfterPick: false,
+                            cropRatio: 210 / 297,
+                            height: double.maxFinite,
+                            width: constraints.maxHeight * (210 / 297),
+                            imageTypePicked: (imageType) {
+                              _con.setSelectedRadio(imageType.value);
+                            },
+                          ),
+                        ),
                       ),
                       Visibility(
                         visible: _con.image != null,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 20),
-                            const Text(
-                              "Tipo de imágen subida",
-                              style: TextStyle(
-                                fontSize: KFontSizeLarge40,
-                                fontWeight: FontWeight.w500,
-                                color: KGrey,
-                              ),
+                        child: Flexible(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Tipo de imágen subida",
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    fontSize: KFontSizeLarge40,
+                                    fontWeight: FontWeight.w500,
+                                    color: KGrey,
+                                  ),
+                                ),
+                                ButtonBar(
+                                  alignment: MainAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.max,
+                                  layoutBehavior:
+                                      ButtonBarLayoutBehavior.constrained,
+                                  children: getImageTypeOptionsByPlatform(),
+                                ),
+                                Flexible(
+                                  child: Container(
+                                    height: double.infinity,
+                                  ),
+                                ),
+                                footer(),
+                              ],
                             ),
-                            ButtonBar(
-                              children: getImageTypeOptionsByPlatform(),
-                            )
-                          ],
+                          ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  _mobileBody() {
+    return Scaffold(
+      backgroundColor: KBackground,
+      key: _key,
+      drawer: MenuComponent(
+        closeMenu: () => {_key.currentState!.openEndDrawer()},
+      ),
+      appBar: simpleNavigationBar(
+        title: "Carga de imágen",
+        hideInfoButton: true,
+        hideNotificationButton: true,
+        onMenu: () => {_key.currentState!.openDrawer()},
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: _content(),
               ),
             ),
-            footer(),
-          ],
-        ),
+          ),
+          footer(),
+        ],
       ),
+    );
+  }
+
+  _content() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ImageUploadComponent(
+          getFile: (file) {
+            setState(() {
+              _con.image = file;
+            });
+          },
+          deleteFile: () => setState(() {
+            _con.image = null;
+          }),
+          file: _con.image,
+          editImageAfterPick: true,
+          cropRatio: 210 / 297,
+          height: (MediaQuery.of(context).size.width - 40) * (297 / 210),
+          width: MediaQuery.of(context).size.width - 40,
+          imageTypePicked: (imageType) {
+            _con.setSelectedRadio(imageType.value);
+          },
+        ),
+        Visibility(
+          visible: _con.image != null,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 20),
+              const Text(
+                "Tipo de imágen subida",
+                style: TextStyle(
+                  fontSize: KFontSizeLarge40,
+                  fontWeight: FontWeight.w500,
+                  color: KGrey,
+                ),
+              ),
+              ButtonBar(
+                children: getImageTypeOptionsByPlatform(),
+              )
+            ],
+          ),
+        )
+      ],
     );
   }
 

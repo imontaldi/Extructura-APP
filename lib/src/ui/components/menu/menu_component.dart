@@ -29,9 +29,12 @@ class MenuDrawerItem {
 
 class MenuComponent extends StatefulWidget {
   final Function closeMenu;
+  final double? width;
 
-  const MenuComponent({required this.closeMenu})
-      : super(key: const Key('menu'));
+  const MenuComponent({required this.closeMenu, this.width})
+      : super(
+          key: const Key('menu'),
+        );
 
   @override
   MenuComponentState createState() => MenuComponentState();
@@ -64,7 +67,7 @@ class MenuComponentState extends State<MenuComponent> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.75,
+      width: widget.width ?? MediaQuery.of(context).size.width * 0.75,
       child: Drawer(
         child: Container(
           color: KPrimary,

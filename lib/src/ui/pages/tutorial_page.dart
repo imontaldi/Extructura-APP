@@ -42,6 +42,13 @@ class TutorialPageState extends StateMVC<TutorialPage> {
     super.dispose();
   }
 
+  // @override
+  // Widget build(BuildContext context) {
+  //   return SafeArea(
+  //     child: Platform.isWindows ? _desktopBody() : _mobileBody(),
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -51,7 +58,7 @@ class TutorialPageState extends StateMVC<TutorialPage> {
         drawer: MenuComponent(
           closeMenu: () => {_key.currentState!.openEndDrawer()},
         ),
-        appBar: !DataManager().isFirstSession()
+        appBar: !DataManager().isFirstSession() && !Platform.isWindows
             ? simpleNavigationBar(
                 title: "Tutorial",
                 hideInfoButton: true,
@@ -65,22 +72,45 @@ class TutorialPageState extends StateMVC<TutorialPage> {
   }
 
   _desktopBody() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+    return Scaffold(
+      body: Row(
         children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height -
-                (DataManager().isFirstSession() ? 142 : 197),
-            child: _pageView(isMobile: false),
+          MenuComponent(
+            closeMenu: () => {},
+            width: MediaQuery.of(context).size.width * 0.22,
           ),
-          _desktopButtons(),
-          const SizedBox(
-            height: 50,
-          ),
-          _pageViewIndicator(),
+          Expanded(
+            child: Column(
+              children: [
+                simpleNavigationBar(
+                  title: "Carga de imágen",
+                  hideInfoButton: true,
+                  hideNotificationButton: true,
+                ),
+                SizedBox(
+                    height: MediaQuery.of(context).size.height - 60,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height -
+                                (DataManager().isFirstSession() ? 142 : 197),
+                            child: _pageView(isMobile: false),
+                          ),
+                          _desktopButtons(),
+                          SizedBox(
+                            height: DataManager().isFirstSession() ? 50 : 20,
+                          ),
+                          _pageViewIndicator(),
+                        ],
+                      ),
+                    )),
+              ],
+            ),
+          )
         ],
       ),
     );
@@ -165,7 +195,9 @@ class TutorialPageState extends StateMVC<TutorialPage> {
           _con.currentPage = page;
         });
       },
-      physics: const NeverScrollableScrollPhysics(),
+      physics: isMobile
+          ? const BouncingScrollPhysics()
+          : const NeverScrollableScrollPhysics(),
       children: [
         const TutorialSinglePage(
           title: "Bienvenido a Extructura",

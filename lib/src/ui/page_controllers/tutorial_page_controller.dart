@@ -30,7 +30,11 @@ class TutorialPageController extends ControllerMVC implements IViewController {
   disposePage() {}
 
   void onStartTap() {
-    DataManager().saveFirstSession(false);
-    PageManager().goHomePage();
+    if (DataManager().isFirstSession()) {
+      DataManager().saveFirstSession(false);
+      PageManager().goHomePage();
+    } else {
+      PageManager().goBack();
+    }
   }
 }
