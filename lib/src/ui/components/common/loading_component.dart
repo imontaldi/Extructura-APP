@@ -102,6 +102,7 @@ Widget loadingComponent(bool isVisible,
       color: backgroundColor,
       alignment: Alignment.center,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Loading(
             color: color,

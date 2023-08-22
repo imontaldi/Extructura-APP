@@ -10,7 +10,6 @@ import 'package:extructura_app/utils/extensions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/faq_model.dart';
-import '../models/image_model.dart';
 
 class DataManager {
   static final DataManager _instance = DataManager._constructor();

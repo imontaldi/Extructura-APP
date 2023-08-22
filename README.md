@@ -18,4 +18,4 @@ samples, guidance on mobile development, and a full API reference.
 
 ## TODO
 
-Generar Csv.
+Maquetado vistas revisar datos y pdf view

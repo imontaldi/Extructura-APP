@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:extructura_app/values/k_values.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -42,20 +44,52 @@ class FAQPageState extends StateMVC<FAQPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: KBackground,
-        key: _key,
-        drawer: MenuComponent(
-          closeMenu: () => {_key.currentState!.openEndDrawer()},
-        ),
-        appBar: simpleNavigationBar(
-          title: "Preguntas frecuentes",
-          hideInfoButton: true,
-          hideNotificationButton: true,
-          onMenu: () => {_key.currentState!.openDrawer()},
-        ),
-        body: _content(),
+      child: Platform.isWindows ? _desktopBody() : _mobileBody(),
+    );
+  }
+
+  _desktopBody() {
+    return Scaffold(
+      body: Row(
+        children: [
+          MenuComponent(
+            closeMenu: () => {},
+            width: MediaQuery.of(context).size.width * 0.22,
+          ),
+          Expanded(
+            child: Column(
+              children: [
+                simpleNavigationBar(
+                  title: "Preguntas frecuentes",
+                  hideInfoButton: true,
+                  hideNotificationButton: true,
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height - 60,
+                  child: _content(),
+                ),
+              ],
+            ),
+          )
+        ],
       ),
+    );
+  }
+
+  _mobileBody() {
+    return Scaffold(
+      backgroundColor: KBackground,
+      key: _key,
+      drawer: MenuComponent(
+        closeMenu: () => {_key.currentState!.openEndDrawer()},
+      ),
+      appBar: simpleNavigationBar(
+        title: "Preguntas frecuentes",
+        hideInfoButton: true,
+        hideNotificationButton: true,
+        onMenu: () => {_key.currentState!.openDrawer()},
+      ),
+      body: _content(),
     );
   }
 
@@ -64,7 +98,9 @@ class FAQPageState extends StateMVC<FAQPage> {
       autoStart: true,
       forceUpdate: _con.forceUpdate,
       futureBuilder: () => _con.getFAQList(),
-      busyBuilder: (context) => loadingComponent(true),
+      busyBuilder: (context) => SizedBox(
+          height: (MediaQuery.of(context).size.height - 60) / 2,
+          child: loadingComponent(true, backgroundColor: KBackground)),
       dataBuilder: (context, data) => _faqList(),
       errorBuilder: (context, error, retry) => _error(),
       //onError: (error, retry) => onErrorFunction(error: error as HttpResult, onRetry: retry),
