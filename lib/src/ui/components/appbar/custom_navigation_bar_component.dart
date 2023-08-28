@@ -31,6 +31,7 @@ pdfReaderNavigationBar({
   Function? onNotification,
   bool hideNotificationButton = false,
   bool hideInfoButton = false,
+  bool showPageIndicator = false,
   required PdfController pdfController,
 }) {
   return PdfReaderNavigationBarComponent(
@@ -38,5 +39,6 @@ pdfReaderNavigationBar({
     hasBack: onBack != null && onMenu == null,
     onBackClick: onBack,
     pdfController: pdfController,
+    showPageIndicator: showPageIndicator,
   );
 }

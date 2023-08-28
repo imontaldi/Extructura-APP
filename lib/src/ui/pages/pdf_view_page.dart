@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pdfx/pdfx.dart';
 import 'package:extructura_app/src/ui/components/appbar/custom_navigation_bar_component.dart';
-import 'package:extructura_app/src/ui/components/buttons/rounded_button_component.dart';
 import 'package:extructura_app/src/ui/page_controllers/pdf_view_page_controller.dart';
 import 'package:extructura_app/utils/page_args.dart';
 import 'package:extructura_app/values/k_values.dart';
+
+import '../../../values/k_colors.dart';
+import '../components/menu/menu_component.dart';
 
 class PdfViewPage extends StatefulWidget {
   final PageArgs? args;
@@ -42,86 +43,183 @@ class PdfViewPageState extends StateMVC<PdfViewPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.grey,
-        appBar: pdfReaderNavigationBar(
-          title: basename(_con.args!.pdfFileToShow!.path),
-          hideInfoButton: true,
-          hideNotificationButton: true,
-          onBack: () => _con.goBack(),
-          pdfController: _con.pdfController,
-        ),
-        body: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            PdfView(
-              builders: PdfViewBuilders<DefaultBuilderOptions>(
-                options: const DefaultBuilderOptions(),
-                documentLoaderBuilder: (_) =>
-                    const Center(child: CircularProgressIndicator()),
-                pageLoaderBuilder: (_) =>
-                    const Center(child: CircularProgressIndicator()),
-                pageBuilder: _pageBuilder,
-              ),
-              onPageChanged: (page) => _con.currentPageIndex = page,
-              controller: _con.pdfController,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              child: RoundedButton(
-                width: double.infinity,
-                fontSize: KFontSizeLarge40,
-                fontWeight: FontWeight.bold,
-                isEnabled: true,
-                disableTextColor: const Color(0xFFE4E4E4),
-                text: 'Seleccionar esta página para escanear',
-                onPressed: () async {
-                  final document = await PdfDocument.openFile(
-                      _con.args!.pdfFileToShow!.path);
-                  final pageImage =
-                      await _renderPage(document, _con.currentPageIndex ?? 1);
+      child: Platform.isWindows ? _desktopBody(context) : _mobileBody(context),
+    );
+  }
 
-                  String? saveDirectory = await getImageSavePath();
-                  String path = "/page${_con.currentPageIndex}.png";
-                  String filePath = saveDirectory! + path;
-                  File imgFile = File(filePath);
-                  File image =
-                      await File(imgFile.path).writeAsBytes(pageImage.bytes);
-                  // ignore: use_build_context_synchronously
-                  Navigator.pop(context, image.path);
-                },
-              ),
+  Widget _desktopBody(BuildContext context) {
+    return Scaffold(
+      // backgroundColor: KBackground,
+      body: Row(
+        children: [
+          MenuComponent(
+            closeMenu: () => {},
+            width: MediaQuery.of(context).size.width * 0.22,
+          ),
+          Expanded(
+            child: Column(
+              children: [
+                pdfReaderNavigationBar(
+                  title: basename(_con.args!.pdfFileToShow!.path),
+                  hideInfoButton: true,
+                  hideNotificationButton: true,
+                  onBack: () => _con.goBack(),
+                  pdfController: _con.pdfController,
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height - 60,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                          child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: pdfView(),
+                      )),
+                      Flexible(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const Text(
+                                    "Página",
+                                    style: TextStyle(
+                                      fontSize: KFontSizeLarge40,
+                                      fontWeight: FontWeight.w500,
+                                      color: KGrey,
+                                    ),
+                                  ),
+                                  backPageIcon(),
+                                  pageNumberIndicator(),
+                                  forwardPageIcon(),
+                                ],
+                              ),
+                              const Spacer(),
+                              footer(context)
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget backPageIcon() {
+    return InkWell(
+      customBorder: const CircleBorder(),
+      child: const Icon(
+        Icons.navigate_before,
+        size: 25,
+        color: KPrimary,
+      ),
+      onTap: () {
+        _con.pdfController.previousPage(
+          curve: Curves.ease,
+          duration: const Duration(milliseconds: 100),
+        );
+      },
+    );
+  }
+
+  Widget pageNumberIndicator() {
+    return PdfPageNumber(
+      controller: _con.pdfController,
+      builder: (_, loadingState, page, pagesCount) => Container(
+        alignment: Alignment.center,
+        child: Text(
+          '$page/${pagesCount ?? 0}',
+          style: const TextStyle(
+            fontSize: KFontSizeLarge40,
+            color: KGrey,
+          ),
         ),
       ),
     );
   }
 
-  Future<PdfPageImage> _renderPage(PdfDocument document, int pageNumber) async {
-    final page = await document.getPage(pageNumber);
-    final pageImage = await page.render(
-      width: page.width * 2,
-      height: page.height * 2,
-      format: PdfPageImageFormat.jpeg,
-      backgroundColor: '#ffffff',
+  Widget forwardPageIcon() {
+    return InkWell(
+      customBorder: const CircleBorder(),
+      child: const Icon(
+        Icons.navigate_next,
+        size: 25,
+        color: KPrimary,
+      ),
+      onTap: () {
+        _con.pdfController.nextPage(
+          curve: Curves.ease,
+          duration: const Duration(milliseconds: 100),
+        );
+      },
     );
-    await page.close();
-    return pageImage!;
   }
 
-  Future<String?> getImageSavePath() async {
-    Directory? directory;
-    try {
-      if (Platform.isWindows) {
-        directory = await getTemporaryDirectory();
-      } else {
-        directory = await getExternalStorageDirectory();
-      }
-    } catch (err) {
-      debugPrint("No se pudo encontrar la carpeta de descargas");
-    }
-    return directory?.path;
+  Widget _mobileBody(BuildContext context) {
+    return Scaffold(
+      backgroundColor: KBackground,
+      appBar: pdfReaderNavigationBar(
+        title: basename(_con.args!.pdfFileToShow!.path),
+        hideInfoButton: true,
+        hideNotificationButton: true,
+        onBack: () => _con.goBack(),
+        pdfController: _con.pdfController,
+        showPageIndicator: Platform.isAndroid,
+      ),
+      body: Column(
+        children: [
+          Expanded(child: pdfView()),
+          footer(context),
+        ],
+      ),
+    );
+  }
+
+  Widget pdfView() {
+    return PdfView(
+      backgroundDecoration: const BoxDecoration(color: KBackground),
+      builders: PdfViewBuilders<DefaultBuilderOptions>(
+        options: const DefaultBuilderOptions(),
+        documentLoaderBuilder: (_) =>
+            const Center(child: CircularProgressIndicator()),
+        pageLoaderBuilder: (_) =>
+            const Center(child: CircularProgressIndicator()),
+        pageBuilder: _pageBuilder,
+      ),
+      onPageChanged: (page) => _con.currentPageIndex = page,
+      controller: _con.pdfController,
+    );
+  }
+
+  Widget footer(BuildContext context) {
+    return InkWell(
+      onTap: () async {
+        _con.onTapSelectPage(context);
+      },
+      child: Container(
+        height: 50,
+        color: KPrimary,
+        child: const Center(
+          child: Text(
+            'Seleccionar esta página para escanear',
+            style: TextStyle(
+              color: KWhite,
+              fontSize: KFontSizeLarge40,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   PhotoViewGalleryPageOptions _pageBuilder(

@@ -14,6 +14,7 @@ class PdfReaderNavigationBarComponent extends StatefulWidget
   double contentExtendHeight;
   Widget? footerExtendedContent;
   final bool hasBack;
+  final bool showPageIndicator;
   final Function()? onBackClick;
   PdfController pdfController;
 
@@ -28,6 +29,7 @@ class PdfReaderNavigationBarComponent extends StatefulWidget
     this.titleContent,
     this.hasBack = false,
     this.onBackClick,
+    this.showPageIndicator = false,
     required this.pdfController,
   }) : super(key: key);
 
@@ -120,12 +122,17 @@ class PdfReaderNavigationBarComponentState
             Positioned.fill(
               child: (widget.titleContent != null)
                   ? widget.titleContent!
-                  : Center(
-                      child: Text(
-                      widget.title,
-                      style: const TextStyle(
-                          color: Color(0xFF666666), fontSize: 15),
-                    )),
+                  : Padding(
+                      padding: const EdgeInsets.only(left: 50),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          widget.title,
+                          style: const TextStyle(
+                              color: Color(0xFF666666), fontSize: 15),
+                        ),
+                      ),
+                    ),
             ),
             Positioned.fill(
               child: Padding(
@@ -135,14 +142,17 @@ class PdfReaderNavigationBarComponentState
                   children: [
                     _menuButton(),
                     const Spacer(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        backPageIcon(),
-                        pageNumberIndicator(),
-                        forwardPageIcon(),
-                      ],
+                    Visibility(
+                      visible: widget.showPageIndicator,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          backPageIcon(),
+                          pageNumberIndicator(),
+                          forwardPageIcon(),
+                        ],
+                      ),
                     ),
                   ],
                 ),
