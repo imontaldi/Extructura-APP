@@ -3,7 +3,7 @@ import 'package:pdfx/pdfx.dart';
 import 'package:extructura_app/src/ui/components/appbar/navigation_bar_component.dart';
 import 'package:extructura_app/src/ui/components/appbar/pdf_reader_navigation_bar_component.dart';
 
-simpleNavigationBar({
+NavigationBarComponent simpleNavigationBar({
   String title = "",
   Function? onMenu,
   VoidCallback? onBack,
@@ -22,7 +22,7 @@ simpleNavigationBar({
   );
 }
 
-pdfReaderNavigationBar({
+PdfReaderNavigationBarComponent pdfReaderNavigationBar({
   String title = "",
   Function? onMenu,
   VoidCallback? onBack,

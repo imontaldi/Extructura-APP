@@ -49,7 +49,7 @@ class PdfViewPageState extends StateMVC<PdfViewPage> {
 
   Widget _desktopBody(BuildContext context) {
     return Scaffold(
-      // backgroundColor: KBackground,
+      backgroundColor: KBackground,
       body: Row(
         children: [
           MenuComponent(

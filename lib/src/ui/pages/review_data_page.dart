@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:extructura_app/src/enums/afip_responsability_types_enum.dart';
 import 'package:extructura_app/src/enums/currency_type_enum.dart';
@@ -17,6 +19,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:extructura_app/utils/page_args.dart';
 
 import '../components/common/tooltip_shape_border_component.dart';
+import '../components/menu/menu_component.dart';
 
 class ReviewDataPage extends StatefulWidget {
   final PageArgs? args;
@@ -44,49 +47,144 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
     return WillPopScope(
       onWillPop: () => _con.onBack(),
       child: SafeArea(
-        child: Scaffold(
-          backgroundColor: KBackground,
-          appBar: simpleNavigationBar(
-            title: "Revisión de datos",
-            hideInfoButton: true,
-            hideNotificationButton: true,
-            onBack: () => _con.onBack(),
+        child: Platform.isWindows ? _desktopBody() : _mobileBody(),
+      ),
+    );
+  }
+
+  Widget _desktopBody() {
+    return Scaffold(
+      body: Row(
+        children: [
+          MenuComponent(
+            closeMenu: () => {},
+            width: MediaQuery.of(context).size.width * 0.22,
           ),
-          body: Stack(
-            children: [
-              ScrollConfiguration(
-                behavior: CustomScrollBehaviour(),
-                child: SingleChildScrollView(
+          Expanded(
+            child: Column(
+              children: [
+                appbar(),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height - 110,
                   child: Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _title(),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        _tabs(),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        _body(),
-                        const SizedBox(
-                          height: 50,
+                        const SizedBox(height: 5),
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              _desktopSection("Encabezado", _headerBody()),
+                              const SizedBox(width: 5),
+                              const VerticalDivider(
+                                thickness: 3,
+                                color: KGrey_L2,
+                              ),
+                              const SizedBox(width: 5),
+                              _desktopSection("Detalle", _detailBody())
+                            ],
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ),
+                _footer(),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _desktopSection(String title, Widget body) {
+    return Flexible(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: SizedBox(
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _desktopSectionTitle(title),
+              const SizedBox(
+                height: 15,
               ),
-              Positioned(
-                bottom: 0,
-                child: _footer(),
-              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
+                    child: body,
+                  ),
+                ),
+              )
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _desktopSectionTitle(String text) {
+    return Text(
+      text,
+      style: const TextStyle(
+        fontSize: KFontSizeLarge40,
+        fontWeight: FontWeight.w500,
+        color: KGrey,
+      ),
+    );
+  }
+
+  Widget _mobileBody() {
+    return Scaffold(
+      backgroundColor: KBackground,
+      appBar: appbar(),
+      body: Stack(
+        children: [
+          ScrollConfiguration(
+            behavior: CustomScrollBehaviour(),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _title(),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    _tabs(),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    _body(),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            child: _footer(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  PreferredSizeWidget appbar() {
+    return simpleNavigationBar(
+      title: "Revisión de datos",
+      hideInfoButton: true,
+      hideNotificationButton: true,
+      onBack: () => _con.onBack(),
     );
   }
 

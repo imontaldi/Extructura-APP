@@ -110,6 +110,7 @@ class InformationAlertPopup {
   _content() {
     return SingleChildScrollView(
         child: Container(
+      width: 350,
       key: const Key('informationAlertPopupContent'),
       padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
       child: Column(
