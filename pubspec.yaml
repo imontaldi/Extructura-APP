@@ -45,6 +45,7 @@ dependencies:
   csv: ^5.0.2
   page_view_dot_indicator: ^1.1.0
   window_manager: ^0.2.7
+  flutter_twain_scanner: ^0.1.0
 
   window_size:
     git:

@@ -1,9 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:extructura_app/values/k_colors.dart';
 
 class SnackBarPictureSourceComponent {
-  static SnackBar build(context, onTakePictureFromPDFButtonTap,
-      onTakePictureFromCameraButtonTap, onTakePictureFromGaleryButtonTap) {
+  static SnackBar build(
+    context,
+    onTakePictureFromPDFButtonTap,
+    onTakePictureFromGaleryButtonTap, {
+    onTakePictureFromCameraButtonTap,
+    onTakePictureFromPrinterButtonTap,
+  }) {
     return SnackBar(
       dismissDirection: DismissDirection.down,
       duration: const Duration(seconds: 5),
@@ -51,7 +58,7 @@ class SnackBarPictureSourceComponent {
                   onTakePictureFromGaleryButtonTap();
                   ScaffoldMessenger.of(context).removeCurrentSnackBar();
                 },
-                child: const Card(
+                child: Card(
                   color: Colors.white,
                   elevation: 2,
                   child: Center(
@@ -59,12 +66,12 @@ class SnackBarPictureSourceComponent {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Icon(Icons.perm_media, color: KPrimary),
-                        SizedBox(height: 3),
+                        const Icon(Icons.perm_media, color: KPrimary),
+                        const SizedBox(height: 3),
                         Text(
-                          "Galería\n(Imágen)",
+                          "Imágen\n(${Platform.isWindows ? "Archivos" : "Galería"})",
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 12,
                             height: 1.2,
                             fontWeight: FontWeight.w600,
@@ -78,37 +85,71 @@ class SnackBarPictureSourceComponent {
               ),
             ),
             const SizedBox(width: 10),
-            Expanded(
-              child: GestureDetector(
-                onTap: () async {
-                  await onTakePictureFromCameraButtonTap();
-                  ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                },
-                child: const Card(
-                  color: Colors.white,
-                  elevation: 2,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(Icons.camera_alt, color: KPrimary),
-                        SizedBox(height: 3),
-                        Text(
-                          "Cámara",
-                          style: TextStyle(
-                            fontSize: 12,
-                            height: 1.2,
-                            fontWeight: FontWeight.w600,
-                            color: KGrey,
+            if (Platform.isAndroid) ...[
+              Expanded(
+                child: GestureDetector(
+                  onTap: () async {
+                    await onTakePictureFromCameraButtonTap();
+                    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                  },
+                  child: const Card(
+                    color: Colors.white,
+                    elevation: 2,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(Icons.camera_alt, color: KPrimary),
+                          SizedBox(height: 3),
+                          Text(
+                            "Cámara",
+                            style: TextStyle(
+                              fontSize: 12,
+                              height: 1.2,
+                              fontWeight: FontWeight.w600,
+                              color: KGrey,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
+            ],
+            if (Platform.isWindows)
+              Expanded(
+                child: GestureDetector(
+                  onTap: () async {
+                    await onTakePictureFromPrinterButtonTap();
+                    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                  },
+                  child: const Card(
+                    color: Colors.white,
+                    elevation: 2,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(Icons.print, color: KPrimary),
+                          SizedBox(height: 3),
+                          Text(
+                            "Scanner",
+                            style: TextStyle(
+                              fontSize: 12,
+                              height: 1.2,
+                              fontWeight: FontWeight.w600,
+                              color: KGrey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),

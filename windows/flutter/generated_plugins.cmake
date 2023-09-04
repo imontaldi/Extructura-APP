@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  flutter_twain_scanner
   pdfx
   permission_handler_windows
   screen_retriever

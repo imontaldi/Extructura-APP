@@ -58,7 +58,7 @@ class HomePageState extends StateMVC<HomePage> {
                   hideNotificationButton: true,
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height - 60,
+                  height: MediaQuery.of(context).size.height - 63,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

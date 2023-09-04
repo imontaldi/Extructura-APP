@@ -629,13 +629,13 @@ class ReviewDataPageController extends ControllerMVC
     switch (permission) {
       case PermissionStatusEnum.granted:
         try {
-          String? downloadsDirectory = await getDownloadPath();
+          String? appSupportDirectory = await getAppSupportPath();
 
           //Encabezado
           String headerPath =
               "${invoice?.header?.documentType}_${invoice?.header?.documentNumber}_encabezado.csv";
 
-          String headerFilePath = downloadsDirectory! + headerPath;
+          String headerFilePath = appSupportDirectory! + headerPath;
           File headerFile = File(headerFilePath);
           // convert rows to String and write as csv file
           String csv = const ListToCsvConverter().convert(headerBody);
@@ -644,7 +644,7 @@ class ReviewDataPageController extends ControllerMVC
           //Detalle
           String detailPath =
               "${invoice?.header?.documentType}_${invoice?.header?.documentNumber}_detalle.csv";
-          String detailFilePath = downloadsDirectory + detailPath;
+          String detailFilePath = appSupportDirectory + detailPath;
           File detailFile = File(detailFilePath);
           // convert rows to String and write as csv file
           csv = const ListToCsvConverter().convert(detailBody);
@@ -657,7 +657,7 @@ class ReviewDataPageController extends ControllerMVC
             title:
                 "¡Se generaron correctamente los archivos con el contenido de su factura!",
             subtitle:
-                "Los archivos generados se encuentran ubicados en la carpeta de descargas del dispositivo (\"$downloadsDirectory\" )",
+                "Los archivos generados se encuentran ubicados en la carpeta de descargas del dispositivo (\"$appSupportDirectory\" )",
             labelButtonAccept: "Ir al inicio",
             imageURL: "images/icon_checkbox.png",
             imageHeight: 50,
@@ -710,11 +710,11 @@ class ReviewDataPageController extends ControllerMVC
         element.name == statuses[permission_handler.Permission.storage]!.name);
   }
 
-  Future<String?> getDownloadPath() async {
+  Future<String?> getAppSupportPath() async {
     Directory? directory;
     try {
-      if (Platform.isIOS) {
-        directory = await getApplicationDocumentsDirectory();
+      if (Platform.isWindows) {
+        directory = await getApplicationSupportDirectory();
       } else {
         directory = Directory('/storage/emulated/0/Download/');
 

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:extructura_app/src/enums/image_type_enum.dart';
+import 'package:extructura_app/src/ui/pages/scan_page.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -116,11 +117,9 @@ class ImageUploadComponentState extends State<ImageUploadComponent> {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBarPictureSourceComponent.build(
-        context,
-        getImageFromPDF,
-        getImageFromCamera,
-        getImageFromGallery,
-      ),
+          context, getImageFromPDF, getImageFromGallery,
+          onTakePictureFromCameraButtonTap: getImageFromCamera,
+          onTakePictureFromPrinterButtonTap: getImageFromPrinter),
     );
   }
 
@@ -216,6 +215,20 @@ class ImageUploadComponentState extends State<ImageUploadComponent> {
   }
 
   // Fin PDF
+
+  // Inicio Impresora
+  Future getImageFromPrinter() async {
+    String? navigationResult = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const ScanPage(null),
+      ),
+    );
+    if (navigationResult != null) {
+      showFilePicked(navigationResult, ImageTypeEnum.pdf);
+    }
+  }
+
+  // Fin Impresora
 
   // Inicio Camera
   getImageFromCamera() async {
