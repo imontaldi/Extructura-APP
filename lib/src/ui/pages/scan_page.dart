@@ -101,7 +101,6 @@ class ScanPageState extends StateMVC<ScanPage> {
               onPressed: () async {
                 var list = await QuickScanner.getScanners();
                 _scanners.addAll(list);
-                _scanners.forEach(print);
               },
             ),
           ],
