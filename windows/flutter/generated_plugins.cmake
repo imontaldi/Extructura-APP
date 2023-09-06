@@ -3,9 +3,11 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  file_selector_windows
   flutter_twain_scanner
   pdfx
   permission_handler_windows
+  quick_scanner
   screen_retriever
   window_manager
   window_size

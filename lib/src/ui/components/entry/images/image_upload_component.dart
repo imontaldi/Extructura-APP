@@ -160,7 +160,7 @@ class ImageUploadComponentState extends State<ImageUploadComponent> {
       final androidInfo = await DeviceInfoPlugin().androidInfo;
       Map<permission_handler.Permission, permission_handler.PermissionStatus>
           statuses = {};
-      if ((androidInfo.version.sdkInt ?? 0) <= 32) {
+      if ((androidInfo.version.sdkInt) <= 32) {
         statuses = await [
           permission_handler.Permission.storage,
         ].request();

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:extructura_app/src/interfaces/i_view_controller.dart';
@@ -29,4 +31,6 @@ class ScanPageController extends ControllerMVC implements IViewController {
 
   @override
   disposePage() {}
+
+  File? scannedImage;
 }
