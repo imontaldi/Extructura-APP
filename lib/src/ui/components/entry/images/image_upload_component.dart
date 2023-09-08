@@ -2,12 +2,13 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:extructura_app/src/enums/image_type_enum.dart';
-import 'package:extructura_app/src/ui/pages/scan_page.dart';
+import 'package:extructura_app/src/managers/page_manager/page_manager.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart'
     as permission_handler;
 import 'package:extructura_app/src/ui/components/entry/images/snack_bar_picture_source_component.dart';
@@ -16,6 +17,7 @@ import 'package:extructura_app/src/ui/popups/loading_popup.dart';
 import 'package:extructura_app/utils/page_args.dart';
 import 'package:extructura_app/values/k_colors.dart';
 import 'package:extructura_app/values/k_values.dart';
+import 'package:quick_scanner/quick_scanner.dart';
 
 // ignore: must_be_immutable
 class ImageUploadComponent extends StatefulWidget {
@@ -119,7 +121,7 @@ class ImageUploadComponentState extends State<ImageUploadComponent> {
       SnackBarPictureSourceComponent.build(
           context, getImageFromPDF, getImageFromGallery,
           onTakePictureFromCameraButtonTap: getImageFromCamera,
-          onTakePictureFromPrinterButtonTap: getImageFromPrinter),
+          onTakePictureFromPrinterButtonTap: getImageFromScanner),
     );
   }
 
@@ -216,16 +218,31 @@ class ImageUploadComponentState extends State<ImageUploadComponent> {
 
   // Fin PDF
 
-  // Inicio Impresora
-  Future getImageFromPrinter() async {
-    String? navigationResult = await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const ScanPage(null),
-      ),
-    );
-    if (navigationResult != null) {
-      showFilePicked(navigationResult, ImageTypeEnum.pdf);
-    }
+  // Inicio Scanner
+  Future getImageFromScanner() async {
+    await LoadingPopup(
+      context: context,
+      loadingText: "Escaneando...",
+      onLoading: getImageFromScannerLoading(),
+      onResult: (data) => getImageFromScannerResult(data),
+      onError: (error) => {
+        PageManager().openDefaultErrorAlert(
+            "No se pudo obtener imágen desde el escaner. Por favor, prueba reiniciandolo e intentando nuevamente.")
+      },
+    ).show();
+  }
+
+  Future<String?> getImageFromScannerLoading() async {
+    QuickScanner.startWatch();
+    Directory directory = await getApplicationSupportDirectory();
+    String scannedFilePath = await QuickScanner.scanFile(
+        (await QuickScanner.getScanners()).first, directory.path);
+    QuickScanner.stopWatch();
+    return scannedFilePath;
+  }
+
+  void getImageFromScannerResult(String scannedFilePath) {
+    showFilePicked(scannedFilePath, ImageTypeEnum.scan);
   }
 
   // Fin Impresora

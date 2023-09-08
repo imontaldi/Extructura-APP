@@ -114,7 +114,7 @@ class ScanPageState extends StateMVC<ScanPage> {
                 var directory = await getApplicationDocumentsDirectory();
                 var scannedFile = await QuickScanner.scanFile(
                     _scanners.first, directory.path);
-                print('scannedFile $scannedFile');
+                // print('scannedFile $scannedFile');
                 setState(() {
                   _con.scannedImage = File(scannedFile);
                 });

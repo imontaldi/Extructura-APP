@@ -65,42 +65,54 @@ class HomePageController extends ControllerMVC implements IViewController {
       context: PageManager().navigatorKey.currentContext!,
       onLoading: DataManager().postSendImage(image!, getIsPerfectImageValue()),
       loadingText: "Enviando imágen...",
-      onResult: (data) => {},
+      onResult: (data) => {postRequestHeaderProcessing()},
       onError: (error) => onErrorFunction(
         error: error,
         onRetry: () {},
       ),
     ).show();
+  }
+
+  Future<void> postRequestHeaderProcessing() async {
     await LoadingPopup(
       context: PageManager().navigatorKey.currentContext!,
       onLoading: DataManager().postRequestHeaderProcessing(),
       loadingText: "Procesando encabezado de factura...",
-      onResult: (data) => {},
+      onResult: (data) => {postRequestItemsProcessing()},
       onError: (error) => onErrorFunction(
         error: error,
         onRetry: () {},
       ),
     ).show();
+  }
+
+  Future<void> postRequestItemsProcessing() async {
     await LoadingPopup(
       context: PageManager().navigatorKey.currentContext!,
       onLoading: DataManager().postRequestItemsProcessing(),
       loadingText: "Procesando productos...",
-      onResult: (data) => {},
+      onResult: (data) => {postRequestFooterProcessing()},
       onError: (error) => onErrorFunction(
         error: error,
         onRetry: () {},
       ),
     ).show();
+  }
+
+  Future<void> postRequestFooterProcessing() async {
     await LoadingPopup(
       context: PageManager().navigatorKey.currentContext!,
       onLoading: DataManager().postRequestFooterProcessing(),
       loadingText: "Procesando pie de factura...",
-      onResult: (data) => {},
+      onResult: (data) => {postRequestFooterProcessing()},
       onError: (error) => onErrorFunction(
         error: error,
         onRetry: () {},
       ),
     ).show();
+  }
+
+  Future<void> getInvoice() async {
     await LoadingPopup(
       context: PageManager().navigatorKey.currentContext!,
       onLoading: DataManager().getInvoice(),

@@ -74,7 +74,7 @@ class PdfViewPageController extends ControllerMVC implements IViewController {
     Directory? directory;
     try {
       if (Platform.isWindows) {
-        directory = await getTemporaryDirectory();
+        directory = await getApplicationSupportDirectory();
       } else {
         directory = await getExternalStorageDirectory();
       }
