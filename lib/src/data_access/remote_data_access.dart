@@ -35,11 +35,11 @@ class RemoteDataAccess implements IDataAccess {
   }
 
   @override
-  Future<bool?> postSendImage(File image, bool isPerfectImage) async {
+  Future<bool?> postSendImage(File image, int imageTypeId) async {
     NetworkRequest request = NetworkRequest(
       url: kApiSendImage,
       jsonBody: jsonEncode(
-          {"base64Image": getBase64(image), "isPerfectImage": isPerfectImage}),
+          {"base64Image": getBase64(image), "imageTypeId": imageTypeId}),
       httpMethod: HttpMethodEnum.httpPost,
       enableCache: false,
     );

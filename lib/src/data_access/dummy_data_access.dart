@@ -28,7 +28,7 @@ class DummyDataAccess implements IDataAccess {
   }
 
   @override
-  Future<bool?> postSendImage(File image, bool isPerfectImage) {
+  Future<bool?> postSendImage(File image, int imageTypeId) {
     throw UnimplementedError();
   }
 

@@ -9,6 +9,6 @@ abstract class IDataAccess {
   Future<bool?> postRequestItemsProcessing();
   Future<bool?> postRequestHeaderProcessing();
   Future<bool?> postRequestFooterProcessing();
-  Future<bool?> postSendImage(File image, bool isPerfectImage);
+  Future<bool?> postSendImage(File image, int imageTypeId);
   Future<List<FAQModel>?> getFaqList();
 }

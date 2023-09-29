@@ -63,7 +63,7 @@ class HomePageController extends ControllerMVC implements IViewController {
   Future<void> onAnalizeInvoice() async {
     await LoadingPopup(
       context: PageManager().navigatorKey.currentContext!,
-      onLoading: DataManager().postSendImage(image!, getIsPerfectImageValue()),
+      onLoading: DataManager().postSendImage(image!, getImageTypeId()),
       loadingText: "Enviando imágen...",
       onResult: (data) => {postRequestHeaderProcessing()},
       onError: (error) => onErrorFunction(
@@ -104,7 +104,7 @@ class HomePageController extends ControllerMVC implements IViewController {
       context: PageManager().navigatorKey.currentContext!,
       onLoading: DataManager().postRequestFooterProcessing(),
       loadingText: "Procesando pie de factura...",
-      onResult: (data) => {postRequestFooterProcessing()},
+      onResult: (data) => {getInvoice()},
       onError: (error) => onErrorFunction(
         error: error,
         onRetry: () {},
@@ -125,8 +125,8 @@ class HomePageController extends ControllerMVC implements IViewController {
     ).show();
   }
 
-  bool getIsPerfectImageValue() {
-    return imageType == ImageTypeEnum.pdf;
+  int getImageTypeId() {
+    return imageType?.value ?? 2;
   }
 
   onGetInvoiceResult(InvoiceModel? invoice) async {

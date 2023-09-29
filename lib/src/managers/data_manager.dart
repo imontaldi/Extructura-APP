@@ -104,8 +104,8 @@ class DataManager {
     return await dataAccess.getInvoice();
   }
 
-  Future<bool?> postSendImage(File image, bool isPerfectImage) async {
-    return await dataAccess.postSendImage(image, isPerfectImage);
+  Future<bool?> postSendImage(File image, int imageTypeId) async {
+    return await dataAccess.postSendImage(image, imageTypeId);
   }
 
   Future<bool?> postRequestHeaderProcessing() async {
