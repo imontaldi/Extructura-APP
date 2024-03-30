@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:extructura_app/src/enums/culture.dart';
 import 'package:extructura_app/src/managers/data_manager.dart';
 import 'package:extructura_app/src/managers/page_manager/page_manager.dart';
-import 'package:extructura_app/src/providers/app_provider.dart';
 import 'package:extructura_app/src/support/futuristic.dart';
 import 'package:extructura_app/src/ui/components/common/loading_component.dart';
 import 'package:extructura_app/src/ui/pages/home_page.dart';
@@ -128,6 +127,5 @@ class MyHomePageState extends State<MyApp> {
   _initApp() async {
     //AppSettings.init(context);
     await DataManager().init();
-    await AppProvider().init();
   }
 }

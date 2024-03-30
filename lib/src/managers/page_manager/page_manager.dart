@@ -5,7 +5,6 @@ import 'package:extructura_app/src/ui/popups/calendar_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:extructura_app/src/enums/page_names.dart';
 import 'package:extructura_app/src/managers/data_manager.dart';
-import 'package:extructura_app/src/providers/app_provider.dart';
 import 'package:extructura_app/src/ui/pages/home_page.dart';
 import 'package:extructura_app/src/ui/pages/pdf_view_page.dart';
 import 'package:extructura_app/src/ui/popups/information_alert_popup.dart';
@@ -145,7 +144,6 @@ class PageManager with PageManagerPopUp {
   }
 
   goDoLogout() {
-    AppProvider().closeAlert();
     DataManager().cleanData();
     //goLoginPage();
   }
