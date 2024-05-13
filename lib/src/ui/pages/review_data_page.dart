@@ -446,6 +446,16 @@ class ReviewDataPageState extends StateMVC<ReviewDataPage> {
               isValid: _con.isNetAmountTaxedNumberValid,
               title: "Importe Neto Grabado",
             ),
+            if (_con.invoice?.footer?.netAmountUntaxed != null) ...[
+              const SizedBox(height: 10),
+              TextInputComponent(
+                controller: _con.netAmountUntaxedTextController,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                isValid: _con.isNetAmountUntaxedNumberValid,
+                title: "Importe Neto No Grabado",
+              ),
+            ],
             const SizedBox(height: 10),
             TextInputComponent(
               controller: _con.vat27TextController,

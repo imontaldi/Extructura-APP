@@ -83,6 +83,9 @@ class ReviewDataPageController extends ControllerMVC
   late TextEditingController netAmountTaxedTextController =
       TextEditingController();
   bool isNetAmountTaxedNumberValid = true;
+  late TextEditingController netAmountUntaxedTextController =
+      TextEditingController();
+  bool isNetAmountUntaxedNumberValid = true;
   late TextEditingController subtotalFooterTextController =
       TextEditingController();
   late TextEditingController vat27TextController = TextEditingController();
@@ -193,9 +196,16 @@ class ReviewDataPageController extends ControllerMVC
       isExchangeRateNumberValid = isDouble(exchangeRateTextController.text);
       setState(() {});
     });
+
     netAmountTaxedTextController.addListener(() {
       invoice?.footer?.netAmountTaxed = netAmountTaxedTextController.text;
       isNetAmountTaxedNumberValid = isDouble(netAmountTaxedTextController.text);
+      setState(() {});
+    });
+    netAmountUntaxedTextController.addListener(() {
+      invoice?.footer?.netAmountUntaxed = netAmountUntaxedTextController.text;
+      isNetAmountUntaxedNumberValid =
+          isDouble(netAmountUntaxedTextController.text);
       setState(() {});
     });
     subtotalFooterTextController.addListener(() {
@@ -322,6 +332,10 @@ class ReviewDataPageController extends ControllerMVC
 
       // currencyTextController.text = invoice?.footer?.currency ?? "";
       exchangeRateTextController.text = invoice?.footer?.exchangeRate ?? "";
+      //Si es nulo no se lo va a mostrar
+      if (invoice?.footer?.netAmountTaxed != null) {
+        netAmountUntaxedTextController.text = invoice!.footer!.netAmountTaxed!;
+      }
       netAmountTaxedTextController.text = invoice?.footer?.netAmountTaxed ?? "";
       subtotalFooterTextController.text = invoice?.footer?.subtotal ?? "";
       vat27TextController.text = invoice?.footer?.vat27 ?? "";
@@ -481,6 +495,7 @@ class ReviewDataPageController extends ControllerMVC
             "Moneda",
             "Tipo de Cambio",
             "Importe Neto Grabado",
+            "Importe Neto No Grabado",
             "IVA 27%",
             "IVA 21%",
             "IVA 10.5%",
@@ -533,6 +548,7 @@ class ReviewDataPageController extends ControllerMVC
             invoice?.footer?.currencyType?.code,
             invoice?.footer?.exchangeRate,
             invoice?.footer?.netAmountTaxed,
+            invoice?.footer?.netAmountUntaxed,
             invoice?.footer?.vat27,
             invoice?.footer?.vat21,
             invoice?.footer?.vat10_5,
