@@ -21,8 +21,8 @@ class NetworkRequest {
     this.enableRepeat = false,
     this.throwExceptions = true,
     this.cacheDurationInMinutes = 15,
-    this.timeOutInSeconds = 30,
-    this.connectionTimeout = 15,
+    this.timeOutInSeconds = 120,
+    this.connectionTimeout = 120,
     this.mediaType = "application/json;",
     this.jsonBody,
   });
