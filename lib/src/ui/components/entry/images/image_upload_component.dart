@@ -253,7 +253,8 @@ class ImageUploadComponentState extends State<ImageUploadComponent> {
     if (permissionsGranted) {
       // ignore: use_build_context_synchronously
       await LoadingPopup(
-          context: context,
+          // ignore: use_build_context_synchronously
+          context: PageManager().navigatorKey.currentState!.context,
           onLoading: getCameras(),
           onResult: (data) => openViewer(data),
           onError: (error) => {}).show();
@@ -431,7 +432,7 @@ class TakePictureScreen extends StatefulWidget {
 }
 
 class TakePictureScreenState extends State<TakePictureScreen> {
-  CameraController? _controller;
+  late CameraController _controller;
   late Future<void> _initializeControllerFuture;
   CameraDescription? cameraDescription;
 
@@ -439,6 +440,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   void initState() {
     super.initState();
     _initCamera(widget.cameras.first);
+    //WidgetsBinding.instance.addPostFrameCallback((_) => yourFunction(context));
   }
 
   void _initCamera(CameraDescription description) {
@@ -447,27 +449,22 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       ResolutionPreset.max,
       enableAudio: false,
     );
-    if (_controller != null) {
-      try {
-        _initializeControllerFuture = _controller!.initialize();
-        setState(() {});
-      } catch (e) {
-        Navigator.pop(context);
-      }
+    try {
+      _initializeControllerFuture = _controller.initialize();
+      setState(() {});
+    } catch (e) {
+      Navigator.pop(context);
     }
   }
 
   @override
   void dispose() {
-    _controller?.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
   takePicture() async {
-    await _initializeControllerFuture;
-    if (_controller != null) {
-      return await _controller!.takePicture();
-    }
+    return await _controller.takePicture();
   }
 
   FlashMode flashMode = FlashMode.off;
@@ -480,12 +477,11 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       body: FutureBuilder<void>(
         future: _initializeControllerFuture,
         builder: (context, snapshot) {
-          if (_controller != null &&
-              snapshot.connectionState == ConnectionState.done) {
-            _controller!.lockCaptureOrientation(DeviceOrientation.portraitUp);
+          if (snapshot.connectionState == ConnectionState.done) {
+            _controller.lockCaptureOrientation(DeviceOrientation.portraitUp);
             flashMode == FlashMode.off
-                ? _controller!.setFlashMode(FlashMode.off)
-                : _controller!.setFlashMode(FlashMode.always);
+                ? _controller.setFlashMode(FlashMode.off)
+                : _controller.setFlashMode(FlashMode.always);
             return Center(
               child: Column(
                 children: [
@@ -496,7 +492,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                         Container(
                           color: KBlack,
                         ),
-                        CameraPreview(_controller!),
+                        CameraPreview(_controller),
                         Positioned(
                           bottom: MediaQuery.of(context).size.height / 8,
                           child: Row(
@@ -508,12 +504,11 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                                   onPressed: () {
                                     setState(() {
                                       if (flashMode == FlashMode.off) {
-                                        _controller!
+                                        _controller
                                             .setFlashMode(FlashMode.always);
                                         flashMode = FlashMode.always;
                                       } else {
-                                        _controller!
-                                            .setFlashMode(FlashMode.off);
+                                        _controller.setFlashMode(FlashMode.off);
                                         flashMode = FlashMode.off;
                                       }
                                     });
@@ -546,7 +541,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                                     onPressed: () async {
                                       setState(() {
                                         // get current lens direction (front / rear)
-                                        final lensDirection = _controller!
+                                        final lensDirection = _controller
                                             .description.lensDirection;
                                         CameraDescription newDescription;
                                         if (lensDirection ==
@@ -588,10 +583,10 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 }
 
 class CustomCropperOptions {
-  CropAspectRatio aspectRatio = const CropAspectRatio(ratioX: 1, ratioY: 1);
-  ImageCompressFormat compressFormat = ImageCompressFormat.jpg;
-  int compressQuality = 90;
-  CropStyle cropStyle = CropStyle.rectangle;
+  CropAspectRatio aspectRatio;
+  ImageCompressFormat compressFormat;
+  int compressQuality;
+  CropStyle cropStyle;
   int? maxHeight;
   int? maxWidth;
   List<PlatformUiSettings>? uiSettings = [
@@ -609,8 +604,8 @@ class CustomCropperOptions {
 
   CustomCropperOptions({
     this.aspectRatio = const CropAspectRatio(ratioX: 1, ratioY: 1),
-    this.compressFormat = ImageCompressFormat.jpg,
-    this.compressQuality = 90,
+    this.compressFormat = ImageCompressFormat.png,
+    this.compressQuality = 100,
     this.cropStyle = CropStyle.rectangle,
     this.maxHeight,
     this.maxWidth,
