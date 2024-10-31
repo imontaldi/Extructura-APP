@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:csv/csv.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:extructura_app/src/enums/afip_responsability_types_enum.dart';
 import 'package:extructura_app/src/enums/currency_type_enum.dart';
 import 'package:extructura_app/src/managers/page_manager/page_manager.dart';
@@ -466,7 +467,22 @@ class ReviewDataPageController extends ControllerMVC
     await LoadingPopup(
       context: PageManager().navigatorKey.currentContext!,
       onLoading: saveCsvs(headerBody, detailBody),
-      onResult: (data) {},
+      onResult: (String appSupportDirectory) async {
+        await PageManager().openInformationPopup(
+          onAccept: () {
+            PageManager().goHomePage();
+          },
+          title:
+              "¡Se generaron correctamente los archivos con el contenido de su factura!",
+          subtitle:
+              "Los archivos generados se encuentran ubicados en la carpeta de descargas del dispositivo (\"$appSupportDirectory\" )",
+          labelButtonAccept: "Ir al inicio",
+          imageURL: "images/icon_checkbox.png",
+          imageHeight: 50,
+          imageWidth: 50,
+          isCancellable: false,
+        );
+      },
       onError: (error) => showErrorPopUp(error.toString()),
     ).show();
   }
@@ -644,86 +660,71 @@ class ReviewDataPageController extends ControllerMVC
     PermissionStatusEnum? permission = await checkStoragePermission();
     switch (permission) {
       case PermissionStatusEnum.granted:
-        try {
-          String? appSupportDirectory = await getAppSupportPath();
+        String? appSupportDirectory = await getAppSupportPath();
 
-          //Encabezado
-          String headerPath =
-              "${invoice?.header?.documentType}_${invoice?.header?.documentNumber}_encabezado.csv";
+        //Encabezado
+        String headerPath =
+            "${invoice?.header?.documentType}_${invoice?.header?.documentNumber}_encabezado.csv";
 
-          String headerFilePath = appSupportDirectory! + headerPath;
-          File headerFile = File(headerFilePath);
-          // convert rows to String and write as csv file
-          String csv = const ListToCsvConverter().convert(headerBody);
-          headerFile.writeAsString(csv);
+        String headerFilePath = appSupportDirectory! + headerPath;
+        File headerFile = File(headerFilePath);
+        // convert rows to String and write as csv file
+        String csv = const ListToCsvConverter().convert(headerBody);
+        headerFile.writeAsString(csv);
 
-          //Detalle
-          String detailPath =
-              "${invoice?.header?.documentType}_${invoice?.header?.documentNumber}_detalle.csv";
-          String detailFilePath = appSupportDirectory + detailPath;
-          File detailFile = File(detailFilePath);
-          // convert rows to String and write as csv file
-          csv = const ListToCsvConverter().convert(detailBody);
-          detailFile.writeAsString(csv);
+        //Detalle
+        String detailPath =
+            "${invoice?.header?.documentType}_${invoice?.header?.documentNumber}_detalle.csv";
+        String detailFilePath = appSupportDirectory + detailPath;
+        File detailFile = File(detailFilePath);
+        // convert rows to String and write as csv file
+        csv = const ListToCsvConverter().convert(detailBody);
+        detailFile.writeAsString(csv);
 
-          await PageManager().openInformationPopup(
-            onAccept: () {
-              PageManager().goHomePage();
-            },
-            title:
-                "¡Se generaron correctamente los archivos con el contenido de su factura!",
-            subtitle:
-                "Los archivos generados se encuentran ubicados en la carpeta de descargas del dispositivo (\"$appSupportDirectory\" )",
-            labelButtonAccept: "Ir al inicio",
-            imageURL: "images/icon_checkbox.png",
-            imageHeight: 50,
-            imageWidth: 50,
-            isCancellable: false,
-          );
+        return appSupportDirectory;
 
-          //Open file - Descartado porque son dos archivos
-          //En cambio mustro el popup con la carpeta que los va a contener
+      //Open file - Descartado porque son dos archivos
+      //En cambio mustro el popup con la carpeta que los va a contener
 
-          // headerPath = headerFile.path;
-          // if (headerPath.isEmpty) {
-          //   throw "Archivo no encontrado";
-          // }
-          // OpenResult result = await OpenFile.open(headerPath, type: "text/csv");
-          // switch (result.type) {
-          //   case ResultType.done:
-          //     return result;
-          //   case ResultType.noAppToOpen:
-          //     throw "El archivo se ha descargado correctamente en el dispositivo pero no tienes una aplicación para abrir este archivo";
-          //   case ResultType.permissionDenied:
-          //     throw "La aplicación no recibió los permisos necesarios para abrir el archivo";
-          //   default:
-          //     break;
-          // }
-
-          break;
-        } catch (e) {
-          PageManager().openDefaultErrorAlert(
-              "Ocurrió un error en el proceso generación de archivos con los datos de la factura. Intente nuevamente más tarde");
-          break;
-        }
+      // headerPath = headerFile.path;
+      // if (headerPath.isEmpty) {
+      //   throw "Archivo no encontrado";
+      // }
+      // OpenResult result = await OpenFile.open(headerPath, type: "text/csv");
+      // switch (result.type) {
+      //   case ResultType.done:
+      //     return result;
+      //   case ResultType.noAppToOpen:
+      //     throw "El archivo se ha descargado correctamente en el dispositivo pero no tienes una aplicación para abrir este archivo";
+      //   case ResultType.permissionDenied:
+      //     throw "La aplicación no recibió los permisos necesarios para abrir el archivo";
+      //   default:
+      //     break;
+      // }
 
       case PermissionStatusEnum.permanentlyDenied:
-        PageManager().openPermanentlyDeniedWarningPopUp(
-            "El permiso de la cámara se denegó permanentemente, si desea puede modificarlo en las configuraciones de la aplicación");
-        break;
+        throw Exception("permisoDenegadoPermantemente");
+
       case PermissionStatusEnum.denied:
+        return null;
       default:
+        return null;
     }
   }
 
   checkStoragePermission() async {
-    Map<permission_handler.Permission, permission_handler.PermissionStatus>
-        statuses = await [
-      permission_handler.Permission.storage,
-    ].request();
+    final androidInfo = await DeviceInfoPlugin().androidInfo;
+    if ((androidInfo.version.sdkInt) <= 32) {
+      Map<permission_handler.Permission, permission_handler.PermissionStatus>
+          statuses = await [
+        permission_handler.Permission.storage,
+      ].request();
 
-    return PermissionStatusEnum.values.firstWhereOrNull((element) =>
-        element.name == statuses[permission_handler.Permission.storage]!.name);
+      return PermissionStatusEnum.values.firstWhereOrNull((element) =>
+          element.name ==
+          statuses[permission_handler.Permission.storage]!.name);
+    }
+    return PermissionStatusEnum.granted;
   }
 
   Future<String?> getAppSupportPath() async {
@@ -745,6 +746,11 @@ class ReviewDataPageController extends ControllerMVC
   }
 
   void showErrorPopUp(String error) {
-    PageManager().openDefaultErrorAlert(error);
+    if (error == "permisoDenegadoPermanentemente") {
+      PageManager().openDefaultErrorAlert(
+          "El permiso de la cámara se denegó permanentemente, si desea puede modificarlo en las configuraciones de la aplicación");
+    }
+
+    PageManager().openDefaultErrorAlert(error.toString());
   }
 }

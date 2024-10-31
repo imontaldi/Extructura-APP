@@ -75,24 +75,22 @@ class PageManager with PageManagerPopUp {
       {PageArgs? args,
       Function(PageArgs? args)? actionBack,
       bool makeRootPage = false}) {
-    if (currentPage != pageName) {
-      if (stackPages.isEmpty || pageName != stackPages.last) {
-        if (!makeRootPage) {
-          stackPages.add(pageName);
-          return navigatorKey.currentState!
-              .pushNamed(pageName.toString(), arguments: args)
-              .then((value) {
-            if (actionBack != null) {
-              actionBack(value != null ? (value as PageArgs) : null);
-            }
-          });
-        } else {
-          navigatorKey.currentState!.pushNamedAndRemoveUntil(
-              pageName.toString(), (route) => false,
-              arguments: args);
-          stackPages.clear();
-          stackPages.add(pageName);
-        }
+    if (stackPages.isEmpty || pageName != stackPages.last) {
+      if (!makeRootPage) {
+        stackPages.add(pageName);
+        return navigatorKey.currentState!
+            .pushNamed(pageName.toString(), arguments: args)
+            .then((value) {
+          if (actionBack != null) {
+            actionBack(value != null ? (value as PageArgs) : null);
+          }
+        });
+      } else {
+        navigatorKey.currentState!.pushNamedAndRemoveUntil(
+            pageName.toString(), (route) => false,
+            arguments: args);
+        stackPages.clear();
+        stackPages.add(pageName);
       }
     }
   }
@@ -131,6 +129,7 @@ class PageManager with PageManagerPopUp {
   }
 
   goBack({PageArgs? args, PageNames? specificPage}) {
+    stackPages.removeLast();
     if (specificPage != null) {
       navigatorKey.currentState!
           .popAndPushNamed(specificPage.toString(), arguments: args);
